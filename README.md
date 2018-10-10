@@ -13,7 +13,12 @@
 
 ## 目前問題
 
-use dev_appserve.py app.yaml start the server
+use 
+```
+dev_appserve.py app.yaml
+```
+
+start the server
 
 GET /debugging/generated/en/compressed.js return 404
 
