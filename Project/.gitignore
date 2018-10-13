@@ -1,0 +1,12 @@
+.DS_Store
+*.pyc
+
+appengine/generated/
+appengine/*/generated/
+appengine/*/*/generated/
+appengine/third-party-backup/*
+third-party-backup/*
+
+*.komodoproject
+
+temp/*
