@@ -1,5 +1,7 @@
 # DebugaMo
 
+python version == 2.7
+
 ## 進度
 > [time=Tue, Oct 9, 2018 9:26 PM]
 > 
@@ -61,4 +63,30 @@ make debugging-zh (optional)
     * `gcloud app deploy`
 **Note** If you want to deploy on google app engine, you need to have prepartion to receiev the the bill if you run out...
 
-    
+
+---
+
+## find.py
+
+Help you find string in all files.
+**Note :** Due to using re module, please give more information in string when using the program or you may receiev a lot of trash filepath. 
+
+### Usage
+
+python version == 3.6.6
+
+```
+python3 find.py string1 string2 ...
+```
+
+## findpath.py
+
+Help you find the file path.
+
+### Usage
+
+python version == 3.6.6
+
+```
+python3 findpath.py filename1 filename2 ...
+```
