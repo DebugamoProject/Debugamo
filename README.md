@@ -11,16 +11,3 @@
 是整個網頁前端的資料夾
 其他的東西像是maze...之類的好像不太重要
 
-## 目前問題
-
-use 
-```
-dev_appserve.py app.yaml
-```
-
-start the server
-
-GET /debugging/generated/en/compressed.js return 404
-
-the web I can't access so that I can't trace continually.
-
