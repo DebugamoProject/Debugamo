@@ -1,0 +1,18 @@
+body{
+    margin: 0%;
+}
+
+div.leftSide{
+    text-align: center;
+}
+
+div.header{
+    text-align: center;
+}
+a{
+    color: black
+}
+
+.header .rightSide nav.nav a{
+    color: white;
+}
