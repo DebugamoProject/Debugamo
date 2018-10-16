@@ -16,3 +16,6 @@ a{
 .header .rightSide nav.nav a{
     color: white;
 }
+.header .rightSide nav.nav a.dropdown-item{
+    color: black
+}
