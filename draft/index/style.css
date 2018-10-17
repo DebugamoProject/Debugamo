@@ -61,9 +61,10 @@ img#blockly-input{
 
 
 #login{
-    background: rgb(241, 237, 2);
+    background: rgb(241, 237, 2, 0);
     color: black;
     margin-right: 0px;
+    border: 0px;
 }
 
 #fast-login-fb{
@@ -75,14 +76,18 @@ div.login-button{
     right: 260px; */
     position: absolute;
     top: 3px;
-    right: 15px;
-    
+    right: 10px;
+    /* font-family: 'Courier New', Courier, monospace */
 }
 
 .rightSide input{
     border-radius: 3px;
 }
 
-body div.container{
+body div#container{
     margin: 10px auto;
+
+}
+.row{
+    
 }
