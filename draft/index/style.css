@@ -26,4 +26,6 @@ form#login-form.form-inline{
 }
 .header .leftSide{
     text-align: left;
+    position: absolute;
+    left: 10px;
 }
