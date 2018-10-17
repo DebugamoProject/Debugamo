@@ -15,15 +15,24 @@
     <div class="header">
         <div id="leftSide" class="leftSide">
         </div>
-        <div id="rightSide" class="rightSide" style="text-align:center;">
-            <div style="margin:4px auto;display: inline-block;width: 850px">
-                <input type="text" id="email" placeholder="Email">
-                <!-- <input type="text" id="password" placeholder="Password"> -->
-                <!-- <input type="text" id="password"> -->
-                <img src="./login.png" alt="">
-                <input type="text" id="password" placeholder="Password">
-                <!-- <button></button> -->
-                <button id="login-summit" type="submit" class="btn btn-primary mb-2">Login</button>
+        <div id="rightSide" class="rightSide" style="text-align:center;display: inline-block">
+            <div style="margin:4px auto;display: inline-block;">
+                <div style="display:inline-block;width: auto;">
+                    <input type="text" id="email" placeholder="Email">
+                    <img id="blockly-input" src="./login.png" alt="">
+                    <input type="text" id="password" placeholder="Password">
+                    <div class="login-button" style="display:inline-block;width: 400px">
+                            <button id="login" type="submit" class="btn btn-primary mb-2">Login</button>
+                            <!-- <div></div> -->
+                            <button id="fast-login-fb" type="submit" class="btn btn-primary mb-2">Facebook 登入</button>
+                            <button id="login-summit-go" type="submit" class="btn btn-primary mb-2">Google登入</button>
+                    </div>
+                </div>
+                <!-- <div class="login-button" style="display:inline-block">
+                    <button id="login" type="submit" class="btn btn-primary mb-2">Login</button>
+                    <button id="fast-login-fb" type="submit" class="btn btn-primary mb-2">Login</button>
+                    <button id="login-summit-go" type="submit" class="btn btn-primary mb-2">Login</button>
+                </div> -->
             </div>
         </div>
     </div>
