@@ -8,6 +8,7 @@ div.leftSide{
 
 div.header{
     text-align: center;
+    height: 60px;
 }
 a{
     color: black
@@ -18,4 +19,12 @@ a{
 }
 .header .rightSide nav.nav a.dropdown-item{
     color: black
+}
+
+#login-summit{
+    margin: auto;
+}
+
+form#login-form.form-inline{
+    margin-top: 10px;
 }
