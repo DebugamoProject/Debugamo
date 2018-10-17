@@ -37,3 +37,10 @@ $('#login').click(function (e) {
 });
 
 console.log('hello')
+
+/*var lestSide = `
+<div id="title" style="margin:0px auto;">
+<a class="nav-link" href="">Debugamo : 幫幫迪摩</a>
+</div>`
+
+$('.leftSide').append(leftSide);*/

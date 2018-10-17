@@ -2,10 +2,6 @@ body{
     margin: 0%;
 }
 
-div.leftSide{
-    text-align: center;
-}
-
 div.header{
     text-align: center;
 }
@@ -18,4 +14,8 @@ a{
 }
 .header .rightSide nav.nav a.dropdown-item{
     color: black
+}
+
+.header .leftSide{
+    text-align: left;
 }
