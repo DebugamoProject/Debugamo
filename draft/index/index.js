@@ -17,7 +17,7 @@
 var default_rightSide = ` <nav class="nav">
 <a class="nav-link active">首頁</a>
 <a class="nav-link" >我的迪摩</a>
-<a id="login" class="nav-link" href="" >登入</a>
+<a id="log" class="nav-link" href="" >登入</a>
 <a class="nav-link disabled" >註冊</a>
 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>
 <div class="dropdown-menu">
@@ -28,29 +28,29 @@ var default_rightSide = ` <nav class="nav">
 </div>
 </nav>`
 
-var login=`<div id="login-input">
-<form id="login-form" class="form-inline">
-    <div class="form-group mb-2">
-        <label for="inputPassword2" class="sr-only">Password</label>
-        <input type="password" class="form-control" id="inputPassword2" placeholder="Email">
+var login=`<div style="margin:4px auto;display: inline-block;">
+<div style="display:inline-block;width: auto;">
+    <input type="text" id="email" placeholder="Email">
+    <img id="blockly-input" src="./login.png" alt="">
+    <input type="text" id="password" placeholder="Password">
+    <div class="login-button" style="display:inline-block;width: 400px">
+            <button id="login" type="submit" class="btn btn-primary mb-2">Login</button>
+            <!-- <div></div> -->
+            <button id="fast-login-fb" type="submit" class="btn btn-primary mb-2">Facebook 登入</button>
+            <button id="login-summit-go" type="submit" class="btn btn-primary mb-2" style="background:red">Google+登入</button>
     </div>
-    <div class="form-group mx-sm-3 mb-2">
-    <label for="inputPassword2" class="sr-only">Password</label>
-    <input type="password" class="form-control" id="inputPassword2" placeholder="Password">
-    </div>
-    <button id="login-summit" type="submit" class="btn btn-primary mb-2">Login</button>
-</form>
+</div>
 </div>`
 
 
 
 
-// $('.rightSide').append(default_rightSide);
+$('.rightSide').append(default_rightSide);
 
-$('#login').click(function (e) { 
+$('#log').click(function (e) { 
     e.preventDefault();
     $('.nav').remove();
-    // $('.rightSide').append(login)
+    $('.rightSide').append(login)
 });
 
 console.log('hello')

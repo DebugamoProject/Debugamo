@@ -31,9 +31,6 @@ form#login-form.form-inline{
     width: 500px;
 }
 
-.header .rightSide{
-
-}
 
 #email{
     position: absolute;
@@ -75,10 +72,14 @@ div.login-button{
     right: 260px; */
     position: absolute;
     top: 3px;
-    right: 20px;
+    right: 15px;
     
 }
 
 .rightSide input{
     border-radius: 3px;
+}
+
+body div.container{
+    margin: 10px auto;
 }
