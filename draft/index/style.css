@@ -29,12 +29,60 @@ form#login-form.form-inline{
 }
 .header .leftSide{
     text-align: left;
-    display: inline-block;
+    position: absolute;
+    left: 10px;
+    width: 500px;
+}
+
+
+#email{
+    position: absolute;
+    right: 598px;
+    z-index: 1;
+    top: 13px;
+}
+
+img#blockly-input{
+    position: absolute;
+    right: 300px;
+    top:4px;
+    z-index: 0;
+}
+
+#password{
+    /* position: relative;
+    right: 275px; */
+    /* bottom: 43px;  */
+    position: absolute;
+    right: 410px;
+    top: 13px;
+    width: 160px;
+}
+
+
+#login{
+    background: rgb(241, 237, 2);
+    color: black;
+    margin-right: 0px;
+}
+
+#fast-login-fb{
+    margin-left: 15px;
+}
+
+div.login-button{
+    /* position: relative;
+    right: 260px; */
+    position: absolute;
+    top: 3px;
+    right: 15px;
     
 }
 
-#leftSide{
-    position: absolute; 
-    /* top: 10px; */
-    left: 10px;
+.rightSide input{
+    border-radius: 3px;
+}
+
+body div.container{
+    margin: 10px auto;
 }
