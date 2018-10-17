@@ -28,4 +28,28 @@ form#login-form.form-inline{
     text-align: left;
     position: absolute;
     left: 10px;
+    width: 500px;
+}
+
+.header .rightSide{
+
+}
+
+#email{
+    position: relative;
+    left: 250px;
+
+}
+
+#password{
+    position: relative;
+    left: 210px;
+    bottom: 48px;
+    width: 160px;
+}
+
+#login-summit{
+    position: relative;
+    left: 310px;
+    bottom: 47px;
 }

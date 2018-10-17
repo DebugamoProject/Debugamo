@@ -43,12 +43,14 @@ var login=`<div id="login-input">
 </div>`
 
 
-$('.rightSide').append(default_rightSide);
+
+
+// $('.rightSide').append(default_rightSide);
 
 $('#login').click(function (e) { 
     e.preventDefault();
     $('.nav').remove();
-    $('.rightSide').append(login)
+    // $('.rightSide').append(login)
 });
 
 console.log('hello')
