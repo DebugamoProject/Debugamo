@@ -2,10 +2,6 @@ body{
     margin: 0%;
 }
 
-div.leftSide{
-    text-align: center;
-}
-
 div.header{
     text-align: center;
     height: 60px;
@@ -27,4 +23,7 @@ a{
 
 form#login-form.form-inline{
     margin-top: 10px;
+}
+.header .leftSide{
+    text-align: left;
 }
