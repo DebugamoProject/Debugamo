@@ -6,6 +6,9 @@ div.header{
     text-align: center;
     height: 60px;
 }
+div#header{
+    
+}
 a{
     color: black
 }
@@ -26,4 +29,12 @@ form#login-form.form-inline{
 }
 .header .leftSide{
     text-align: left;
+    display: inline-block;
+    
+}
+
+#leftSide{
+    position: absolute; 
+    /* top: 10px; */
+    left: 10px;
 }
