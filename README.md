@@ -2,6 +2,8 @@
 
 python version == 2.7
 
+**大家可以去Reference新增參考資料喔喔喔**
+
 ## 進度
 > [time=Tue, Oct 9, 2018 9:26 PM]
 > 
