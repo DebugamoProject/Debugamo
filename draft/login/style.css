@@ -79,3 +79,37 @@ img#blockly-input{
 #right-main{
     margin-left: 63px;
 }
+/* ------------------------------------------------------ */
+
+.wrapper{
+    display: grid;
+    grid-template-columns: 4fr 3fr ;
+    grid-column-gap: 1px;
+    grid-auto-columns: auto;
+    background-color: black;
+    margin-right: 0px;
+    width: 100%;
+}
+.letter{
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  /* font-size: 70px; */
+  color: black;
+  line-height: 1;
+  font-family: 'hobeaux-rococeaux-background', Helvetica;
+  font-weight: 200;
+  cursor: pointer;
+  transition: all .3s ease;
+}
+.register{
+    grid-row-gap: 1px;
+    width: 100%;
+    
+}
+
+.part{
+    font-size: 25px
+}
