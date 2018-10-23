@@ -1,5 +1,8 @@
+｀
+
 body{
     margin: 0%;
+    overflow: scroll;
 }
 
 div.header{
@@ -10,28 +13,25 @@ div.header{
 div.login-button{
     /* position: relative;
     right: 260px; */
-    position: absolute;
+    /* position: absolute;
     top: 3px;
-    right: 10px;
+    right: 10px; */
     /* font-family: 'Courier New', Courier, monospace */
 }
 .rightSide input{
     border-radius: 3px;
 }
 img#blockly-input{
-    position: absolute;
+    /* position: absolute;
     right: 300px;
-    top:4px;
+    top:4px; */
     z-index: 0;
 }
 
 #password{
-    /* position: relative;
-    right: 275px; */
-    /* bottom: 43px;  */
-    position: absolute;
+    /* position: absolute;
     right: 410px;
-    top: 13px;
+    top: 13px; */
     width: 160px;
 }
 #login{
@@ -42,17 +42,29 @@ img#blockly-input{
 }
 .header .leftSide{
     text-align: left;
-    position: absolute;
-    left: 10px;
-    width: 500px;
+    /* position: absolute;
+    left: 10px; */
+    width: auto;
+    float: left;
 }
 #login-summit{
     margin: auto;
 }
 
 #email{
-    position: absolute;
-    right: 598px;
+    /* position: absolute;
+    right: 598px; */
     z-index: 1;
     top: 13px;
+}
+
+#input-div{
+    width: auto;
+    display: inline-block;
+    /* position: relative;
+    left: 30; */
+}
+
+#right-main{
+    margin-left: 63px;
 }
