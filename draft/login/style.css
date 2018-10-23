@@ -1,4 +1,8 @@
-｀
+@media only screen and (max-width:900){
+    .header div#leftSide.leftSide{
+        width: 80px
+    }
+}
 
 body{
     margin: 0%;
@@ -8,6 +12,11 @@ body{
 div.header{
     text-align: center;
     height: 60px;
+}
+
+#title{
+    margin:0px auto;
+    width: auto;
 }
 
 div.login-button{
@@ -44,8 +53,10 @@ img#blockly-input{
     text-align: left;
     /* position: absolute;
     left: 10px; */
-    width: auto;
+    width: 180px;
     float: left;
+    overflow: hidden;
+    margin: 10px auto;
 }
 #login-summit{
     margin: auto;
