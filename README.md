@@ -22,15 +22,20 @@ python version == 2.7
 
 ## 資料庫欄位
 
-username
-userID
-password
-email
-birthday
-school
+這是目前規劃得資料庫欄位
+請大家新增或更改
+
+username VARCHAR(20)
+userID VARCHAR(20)
+password VARCHAR(50)
+email VARCHAR(100)
+birthday DATE
+school VARCHAR(50)
 
 
 ---
+
+推個 [Create Login System With flask and MySQL](https://www.youtube.com/watch?v=6L3HNyXEais)
 
 ## Introduction
 
