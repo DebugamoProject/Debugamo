@@ -9,9 +9,16 @@
 資料庫語法大同小異 應該還可以參考看看(?
 裡面包含使用者登入 以及加新使用者
 
+### SQLite
+
 * [Create Database](https://www.youtube.com/watch?v=QOUJEcphpyI)
 * [Login System](https://www.youtube.com/watch?v=ngynJQ0iVwM&t)
 * [Add New User](https://www.youtube.com/watch?v=NKHUPhfBaW0&)
+* [Add New Column](https://pythontic.com/database/sqlite/alter%20table)
+
+### MySQL
+
+
 
 ---
 

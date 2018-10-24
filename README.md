@@ -20,6 +20,18 @@ python version == 2.7
 
 今天終於可以在local host 運行DebugoMo。今天在debugging資料夾中發現template.soy 發現是整個網頁的模板，於是一直在找是誰使用了這個模板來運行。找著找著順便上網爬文才發現需要compile .soy檔才會出現.js檔，於是就覺得應該是makefile幫我們compile好的。去看makefile發現自己的判斷沒錯，就是makefile搞的鬼哈哈。
 
+## 資料庫欄位
+
+username
+userID
+password
+email
+birthday
+school
+
+
+---
+
 ## Introduction
 
 The Website is composed of template.soy. The .soy file needs to be compiled to .js file. 
@@ -91,4 +103,7 @@ python version == 3.6.6
 
 ```
 python3 findpath.py filename1 filename2 ...
+
 ```
+
+---
