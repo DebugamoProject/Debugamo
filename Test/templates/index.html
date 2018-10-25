@@ -8,37 +8,56 @@
     <title>Document</title>
 </head>
 <body>
-    <form method="POST" style="margin-left:5em">
+    <!-- <form action="" method="POST">
+        Name <input type="text" name="name" >
+        <br>
+        Email <input type="email" name='email'>
+        <br>
+        <input type="submit" name="" id="">
+    </form> -->
+    <form action="" method="post" style="margin-left:5em">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="inputName">Name</label>
+                <input type="text" class="form-control" id="inputName" placeholder="Name" name="name">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="inputID">ID</label>
+                <input type="text" class="form-control" id="inputID" placeholder="ID" name="ID">
+            </div>
+        </div>
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="inputEmail4">Email</label>
-                <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
+                <input type="email" class="form-control" id="inputEmail4" placeholder="Email" name="email">
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="inputPassword4">Password</label>
-                <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
+                <input type="password" class="form-control" id="inputPassword4" placeholder="Password" name="password">
             </div>
         </div>
         
         <div class="form-row">
                 <div id="Year"class="form-group col-md-3">
                         <label for="inputYear">Year</label>
-                        <select id="inputYear" class="form-control">
+                        <select id="inputYear" class="form-control" name="Year">
                           <option selected>Choose...</option>
                         </select>
                       </div>
                 <div class="form-group col-md-3" id="Month">
                   <label for="inputMonth">Month</label>
-                  <select id="inputMonth" class="form-control">
+                  <select id="inputMonth" class="form-control" name='Month'>
                     <option selected>Choose...</option>
                   </select>
                 </div>
                 <div class="form-group col-md-2" id="Date">
                         <label for="inputDate">Date</label>
-                        <select id="inputDate" class="form-control">
+                        <select id="inputDate" class="form-control" name="Date">
                           <option selected>Choose...</option>
                           <option id="Notice">Please Choose Year and Month first</option>
                         </select>
@@ -47,17 +66,15 @@
               <div class="form-row">
                     <div class="form-group col-md-3">
                       <label for="inputCity">City</label>
-                      <input type="text" class="form-control" id="inputCity">
+                      <input type="text" class="form-control" id="inputCity" name="City">
                     </div>
                     <div class="form-group col-md-3">
                       <label for="inputState">State</label>
-                      <select id="inputState" class="form-control">
-                        <option selected>Choose...</option>
-                      </select>
+                      <input type="text" class="form-control" id="inputState" name="State">
                     </div>
                     <div class="form-group col-md-2">
-                      <label for="inputZip">Zip</label>
-                      <input type="text" class="form-control" id="inputZip">
+                      <label for="inputSchool">School</label>
+                      <input type="text" class="form-control" id="inputSchool" name="School">
                     </div>
                   </div>
         
@@ -65,7 +82,7 @@
         
         <div class="form-group">
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="gridCheck">
+            <input class="form-check-input" type="checkbox" id="gridCheck" name="checkbox">
             <label class="form-check-label" for="gridCheck">
               Check me out
             </label>
