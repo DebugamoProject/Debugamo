@@ -31,24 +31,28 @@ def index():
         school = userDetails['School']
 
         cursor = mysql.connection.cursor()
+        cursor.execute("SELECT * FROM students WHERE email = '{}'".format(email))
+        email = cursor.checkout()
         cursor.execute('INSERT INTO students(name, ID, password, email, school, birthday) VALUES(%s, %s, %s, %s, %s, %s)',(name,ID,password,email,city+state+school,year+'-'+month+'-'+date))
         mysql.connection.commit()
         cursor.close()
         return 'successful'
     return render_template('./index.html')
 
-
 @app.route('/user',methods=['GET','POST'])
 def test():
     if request.method == 'POST':
-        loginSQL = "SELECT * FROM students WHERE email = '{}'"
+        loginSQL = "SELECT * FROM students WHERE email = '{}' and password = '{}'"
         userDetails = request.form
         email = userDetails['email']
         password = userDetails['password']
         cursor = mysql.connection.cursor()
-        cursor.execute(loginSQL.format(email))
+        cursor.execute(loginSQL.format(email,password))
         result = cursor.fetchall()
-        return '{}'.format(result)
+        if len(result) == 1:
+            return 'successful'
+        else:
+            return 'failed'
     return render_template('./users.html')
 
 
