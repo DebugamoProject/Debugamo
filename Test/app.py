@@ -55,7 +55,10 @@ def test():
             return 'failed'
     return render_template('./users.html')
 
-
+@app.route('/record',methods = ['POST','GET'])
+def repeatCheck():
+    data = request.form
+    return '{}'.format(data['email'])
 
 if __name__ == '__main__':
     app.run(debug=True)
