@@ -15,11 +15,9 @@ function generateMonth(){
 
 
 function generateDate(Year,Month) {
-    /*-------- ERROR------------
     $('.date').each(function (index, element) { 
         element.remove();
     });
-    ---------------------------*/
     console.log('after remove')
     if(Year != 0 && Month != 0){
         $('#Notice').remove();
@@ -37,6 +35,7 @@ function generateDate(Year,Month) {
         else dates_amount = 30;
 
         console.log(dates_amount)
+        date = '';
         for(var day = 1;day <= dates_amount;day++){
             date += `<option class="date" value="${day}">${day}</option>`
         }
