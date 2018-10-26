@@ -96,8 +96,6 @@ $('#inputYear').append(year);
 
 
 
-
-
 //--------------------Event Listener---------------------//
 
 $('#Year').on('change',"select",function (e) {
