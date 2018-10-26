@@ -22,7 +22,7 @@ python version == 2.7
 
 ## 資料庫欄位
 
-這是目前規劃得資料庫欄位
+這是目前規劃的資料庫欄位
 請大家新增或更改
 
 username VARCHAR(20)
@@ -32,6 +32,7 @@ email VARCHAR(100)
 birthday DATE
 school VARCHAR(50)
 
+class INTEGER
 
 ---
 
@@ -40,6 +41,7 @@ school VARCHAR(50)
 ## Introduction
 
 The Website is composed of template.soy. The .soy file needs to be compiled to .js file. 
+
 * [.Soy file command](https://developers.google.com/closure/templates/docs/commands)
 * [.Soy Compile Example](https://developers.google.com/closure/templates/docs/helloworld_js)
 

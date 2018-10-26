@@ -20,15 +20,14 @@ function generateDate(Year,Month) {
     $('.date').each(function (index, element) { 
         element.remove();
     });
-    console.log('after remove')
     if(Year != 0 && Month != 0){
         $('#Notice').remove();
         var Fab_dates_amount = 0;
         var dates_amount = 0;
-        if (Year % 4 != 0) Fab_dates_amount = 28;
-        else if (Year % 400 == 0) Fab_dates_amount = 29;
-        else if(Year % 100 == 0 && Year % 400 != 0) Fab_dates_amount = 28;
-        else if(Year % 4 == 0 && Year % 100 != 0) Fab_dates_amount = 29;
+
+        if ((Year % 4 == 0 && Year % 100 != 0)||(Year % 400 == 0)) Fab_dates_amount = 29;
+        else Fab_dates_amount = 28;
+
 
 
         if(Month == 2) dates_amount = Fab_dates_amount;
@@ -137,3 +136,11 @@ $('#inputID').change(function(e){
     },'#ID','id','inputID','this id have been used');
 })
 //======================================================//
+
+$.ajax({
+    method:'GET',
+    url: '/school/senior_high',
+    success: function (response) {
+        console.log(response)
+    }
+});

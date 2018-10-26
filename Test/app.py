@@ -1,19 +1,24 @@
+import flask
+import yaml
+import json
 from flask import Flask,render_template,request
 from flask_mysqldb import MySQL
-import yaml
+
+import school
 
 app = Flask(__name__)
-
 db = yaml.load(open('yuchundb.yaml'))
 
+app.config['JSON_AS_ASCII'] = False
 app.config['MYSQL_HOST'] = db['mysql_host']
-
-
 app.config['MYSQL_USER'] = db['mysql_user']
 app.config['MYSQL_PASSWORD'] = db['mysql_password']
 app.config['MYSQL_DB'] = db['mysql_db']
 
+
 mysql = MySQL(app)
+
+schools = school.School('./school/')
 
 REPEAT_CHECK_API = '/record'
 
@@ -59,7 +64,6 @@ def test():
 
 @app.route(REPEAT_CHECK_API,methods = ['POST','GET'])
 def repeatCheck():
-    
     data = request.form
     keys = [i for i in data]
     repeatCheckfomula = "SELECT * FROM students WHERE {} = '{}'"
@@ -70,6 +74,14 @@ def repeatCheck():
         return '{}'.format(True) # means this email is available
     else:
         return '{}'.format(False) # means this email isn't available
+
+@app.route('/school/<grade>',methods = ['GET'])
+def School(grade):
+    if grade in schools.keys():
+        return flask.jsonify(schools.Schools(grade)),200
+    else:
+        return 'Connot found {}'.format(grade),404
+
 
 if __name__ == '__main__':
     app.run(debug=True)
