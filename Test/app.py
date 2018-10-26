@@ -4,7 +4,7 @@ import yaml
 
 app = Flask(__name__)
 
-db = yaml.load(open('db.yaml'))
+db = yaml.load(open('yuchundb.yaml'))
 
 app.config['MYSQL_HOST'] = db['mysql_host']
 
@@ -57,10 +57,19 @@ def test():
             return 'failed'
     return render_template('./users.html')
 
-@app.route('/record',methods = ['POST','GET'])
+@app.route(REPEAT_CHECK_API,methods = ['POST','GET'])
 def repeatCheck():
+    
     data = request.form
-    return '{}'.format(data['email'])
+    keys = [i for i in data]
+    repeatCheckfomula = "SELECT * FROM students WHERE {} = '{}'"
+    cursor = mysql.connection.cursor()
+    cursor.execute(repeatCheckfomula.format(keys[0],data[keys[0]]))
+    result = cursor.fetchall()
+    if len(result) == 0:
+        return '{}'.format(True) # means this email is available
+    else:
+        return '{}'.format(False) # means this email isn't available
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -49,7 +49,7 @@ generateYear()
 //========================================================//
 
 
-function RepeatCheck(data) {
+function RepeatCheck(data,div_id,name,input_id,text) {
     var result;
     $.ajax({
         method:"POST",
@@ -62,13 +62,28 @@ function RepeatCheck(data) {
         },
         success: function(response){
             console.log('repeat check successful')
+            console.log(response)
             result = response;
         }
     })
-    return result;
+    if(result == 'False'){
+        IsnotAvailable(div_id,name,input_id,text)
+    }else
+        IsAvailable(name,input_id)
 }
 
+function IsnotAvailable(div_id,name,input_id,text){
+    console.log('isnot available')
+    console.log(`divid = ${div_id}`)
+    $('.'+name+'-'+'warning').remove();
+    $(div_id).append(`<small class="${name+'-'+'warning'}"style="color:red;">${text}</small>`)
+    $(input_id).css('background-color','#FFB6C1')
+}
 
+function IsAvailable(name,input_id){
+    $('.'+name+'-'+'warning').remove()
+    $(input_id).css('background-color','#FFFFFF')
+}
 
 
 //---------------------append html------------------------//
@@ -99,25 +114,28 @@ $('#inputEmail').change(function (e) {
     e.preventDefault();
     RepeatCheck({
         "email":this.value
-    })
+    },'#Email','email','#inputEmail')
 });
 $('#inputPassword').change(function(e){
     if($('#inputPasswordagain').val() != 0 && $('#inputPasswordagain').val() != this.value){
-        $('#inputPasswordagain').css('background-color','#FFB6C1')
-        if(document.getElementsByClassName('password-warning') != null)
-            $('#password-again').append('<small class="password-warning"style="color:red;">false</small>')
-    }
+        IsnotAvailable('#password-again','password','#inputPasswordagain','this password is not available')
+    }else
+        IsAvailable('password','#inputPasswordagain')
 });
 $('#inputPasswordagain').change(function(e){
     var value = $('#inputPassword').val()
     if(value != this.value){
         console.log('false')
-        if(document.getElementsByClassName('password-warning') != null)
-            $('#password-again').append('<small class="password-warning"style="color:red;">false</small>')
-        $('#inputPasswordagain').css('background-color','#FFB6C1')
+        IsnotAvailable('#password-again','password','#inputPasswordagain','this password is not available')
     }else{
-        $('.password-warning').remove()
-        $('#inputPasswordagain').css('background-color','#FFFFFF')
+        // $('.password-warning').remove()
+        // $('#inputPasswordagain').css('background-color','#FFFFFF')
+        IsAvailable('password','#inputPasswordagain')
     }
 });
+$('#inputID').change(function(e){
+    RepeatCheck({
+        'ID':this.value
+    },'#ID','id','inputID','this id have been used');
+})
 //======================================================//
