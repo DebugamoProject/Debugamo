@@ -2,7 +2,7 @@
 
 ## 原則
 
-如果發現底下的API有誤
+如果發現底下的API有誤
 原則可以幫你更快找到前端post的form-data
 
 ---
@@ -13,7 +13,7 @@
     <form method="POST">
         <input name="password">
         <input name="email">
-        <buttom type="submit"></buttom>
+        <buttom type="submit"></buttom>
     </form>
     ```
     form-data:
@@ -23,4 +23,4 @@
     ```
 * 沒有表單的post(event listener)會在JavaScript中用$.ajax
 
-----
+----
