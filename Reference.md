@@ -18,7 +18,8 @@
 
 ### MySQL
 
-
+* [Python with MySQL](https://www.youtube.com/watch?v=x7SwgcpACng&list=PLB5jA40tNf3tRMbTpBA0N7lfDZNLZAa9G)
+* [Python flask with MySQL](https://youtu.be/6L3HNyXEais)
 
 ---
 

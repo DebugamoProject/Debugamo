@@ -2,6 +2,7 @@ var month='';
 var year='';
 var date=''
 var ChooseYear = 0,ChooseMonth = 0;
+let REPEAT_CHEACK_API ='/record'
 
 
 //---------------------generate for form-------------------//
@@ -48,6 +49,25 @@ generateYear()
 //========================================================//
 
 
+function RepeatCheck(data) {
+    var result;
+    $.ajax({
+        method:"POST",
+        url: REPEAT_CHEACK_API,
+        data:data,
+        async:false,
+        error:function(response){
+            console.log('repeat check failed');
+            console.log(response)
+        },
+        success: function(response){
+            console.log('repeat check successful')
+            result = response;
+        }
+    })
+    return result;
+}
+
 
 
 
@@ -77,23 +97,27 @@ $('#Month').on('change','select',function(e){
 })
 $('#inputEmail').change(function (e) { 
     e.preventDefault();
-    // alert(this.value)
-    console.log(this.value)
-    $.ajax({
-        method: "POST",
-        url: "/record",
-        data: {
-            "email":this.value
-        },
-        async: false,
-        error: function(e){
-            console.log('error')
-            console.log(e)
-        },
-        success: function (e) {
-            console.log('successful')
-            console.log(e)
-        }
-    });
+    RepeatCheck({
+        "email":this.value
+    })
+});
+$('#inputPassword').change(function(e){
+    if($('#inputPasswordagain').val() != 0 && $('#inputPasswordagain').val() != this.value){
+        $('#inputPasswordagain').css('background-color','#FFB6C1')
+        if(document.getElementsByClassName('password-warning') != null)
+            $('#password-again').append('<small class="password-warning"style="color:red;">false</small>')
+    }
+});
+$('#inputPasswordagain').change(function(e){
+    var value = $('#inputPassword').val()
+    if(value != this.value){
+        console.log('false')
+        if(document.getElementsByClassName('password-warning') != null)
+            $('#password-again').append('<small class="password-warning"style="color:red;">false</small>')
+        $('#inputPasswordagain').css('background-color','#FFB6C1')
+    }else{
+        $('.password-warning').remove()
+        $('#inputPasswordagain').css('background-color','#FFFFFF')
+    }
 });
 //======================================================//

@@ -15,6 +15,8 @@ app.config['MYSQL_DB'] = db['mysql_db']
 
 mysql = MySQL(app)
 
+REPEAT_CHECK_API = '/record'
+
 @app.route('/',methods=['GET','POST'])
 def index():
     if request.method == 'POST':
