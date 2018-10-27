@@ -68,22 +68,33 @@
                         <label for="inputDate">Date</label>
                         <select id="inputDate" class="form-control" name="Date">
                           <option selected>Choose...</option>
-                          <option id="Notice">Please Choose Year and Month first</option>
+                          <option id="DateNotice">Please Choose Year and Month first</option>
                         </select>
                       </div>
               </div>
               <div class="form-row">
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-3" id="Grade">
+                      <label for="inputGrade">Grade</label>
+                        <select id="inputGrade" class="form-control" name="Grade">
+                          <option selected>Choose...</option>
+                          <option>elementary</option>
+                          <option>junior</option>
+                          <option>senior_high</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3" id="City">
                       <label for="inputCity">City</label>
-                      <input type="text" class="form-control" id="inputCity" name="City">
+                        <select id="inputCity" class="form-control" name="City">
+                          <option selected>Choose...</option>
+                          <!-- <option id="CityNotice">請先選擇年級</option> -->
+                        </select>
                     </div>
-                    <div class="form-group col-md-3">
-                      <label for="inputState">State</label>
-                      <input type="text" class="form-control" id="inputState" name="State">
-                    </div>
-                    <div class="form-group col-md-2">
+                    <div class="form-group col-md-2" id="School">
                       <label for="inputSchool">School</label>
-                      <input type="text" class="form-control" id="inputSchool" name="School">
+                      <select id="inputSchool" class="form-control" name="School">
+                        <option selected>Choose...</option>
+                        <!-- <option id="SchoolNotice">請先選擇年級及縣市</option> -->
+                      </select>
                     </div>
                   </div>
         
@@ -104,7 +115,7 @@
 <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-<script src="{{url_for('static',filename='index.js')}}"></script>
-<!-- <script src="../static/index.js"></script> -->
+<!-- <script src="{{url_for('static',filename='index.js')}}"></script> -->
+<script src="../static/index.js"></script>
 </body>
 </html>

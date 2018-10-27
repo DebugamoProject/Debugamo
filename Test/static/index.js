@@ -2,6 +2,8 @@ var month='';
 var year='';
 var date=''
 var ChooseYear = 0,ChooseMonth = 0;
+var Grade;
+var Schools_json;
 let REPEAT_CHEACK_API ='/record'
 
 
@@ -21,7 +23,7 @@ function generateDate(Year,Month) {
         element.remove();
     });
     if(Year != 0 && Month != 0){
-        $('#Notice').remove();
+        $('#DateNotice').remove();
         var Fab_dates_amount = 0;
         var dates_amount = 0;
 
@@ -84,7 +86,26 @@ function IsAvailable(name,input_id){
     $(input_id).css('background-color','#FFFFFF')
 }
 
+function getSchools(Grade){
+    var result;
+    $.ajax({
+        method:'GET',
+        url:'school/'+Grade,
+        async:false,
+        success:function(response){
+            Schools_json = result = response
+        },
+    })
+    return result
+}
 
+function Notice(value,clas,input_id,Noticeid,text){
+    // $(clas).remove();
+    if(value == 'Choose...' && !document.getElementById(Noticeid)){
+        $(input_id).append(`<small id="${Noticeid}">${text}</small>`)
+        console.log(input_id)
+    }
+}
 //---------------------append html------------------------//
 
 $('#Month select').append(month);
@@ -111,7 +132,7 @@ $('#inputEmail').change(function (e) {
     e.preventDefault();
     RepeatCheck({
         "email":this.value
-    },'#Email','email','#inputEmail')
+    },'#Email','email','#inputEmail','this email have been used')
 });
 $('#inputPassword').change(function(e){
     if($('#inputPasswordagain').val() != 0 && $('#inputPasswordagain').val() != this.value){
@@ -135,12 +156,64 @@ $('#inputID').change(function(e){
         'ID':this.value
     },'#ID','id','inputID','this id have been used');
 })
+
+
+// 當選擇Grade時，javascript會跟後端拿學校的資料 裡頭包含縣市以及學校名稱
+// 縣市會直接填入City的select裡
+$('#Grade').on('change',"select",function(e){
+    var html_city = '';
+    var schools,cities;
+    $('.city').remove()
+    $('.school').remove()
+    if(this.value != 'Choose...'){
+        $('#CityNotice').remove();
+        Grade = this.value
+        schools = getSchools(Grade)
+        cities = Object.keys(schools);
+        for(city of cities){
+            html_city += `<option class="city">${city}</option>`
+        }
+        
+        $('#inputCity').append(html_city);
+    }
+})
+
+//當選擇City時，學校名稱會被填入
+$('#City').on('change','select',function(e){
+    var html_school = ''
+    $('.school').remove()
+    if(this.value != 'Choose...'){
+        $('#SchoolNotice').remove()
+        for(school of Schools_json[this.value]){
+            html_school += `<option class="school">${school}</option>`
+        }
+        $('#inputSchool').append(html_school)
+    }
+})
+
+$('#inputCity').click(function (e) { 
+    e.preventDefault();
+    if($('#inputGrade').val() == 'Choose...')
+        Notice(this.value,'.city','#City','CityNotice','請先選擇年級')
+    console.log($('#inputGrade').val())
+});
+
+$('#inputSchool').click(function (e) { 
+    e.preventDefault();
+    if($('#inputCity').val() == 'Choose...')
+        Notice(this.value,'.school','#School','SchoolNotice','請先選擇年級及縣市')
+});
 //======================================================//
 
-$.ajax({
-    method:'GET',
-    url: '/school/senior_high',
-    success: function (response) {
-        console.log(response)
-    }
-});
+// $.ajax({
+//     method:'GET',
+//     url: '/school/senior_high',
+//     success: function (response) {
+//         console.log(Object.keys(response))
+//     }
+// });
+
+// if (document.getElementById('inputSchool')){
+//     console.log('exist')
+// }
+// else console.log('it does not exist')

@@ -33,14 +33,14 @@ def index():
         year = userDetails['Year']
         month = userDetails['Month']
         date = userDetails['Date']
+        grade = userDetails['Grade']
         city = userDetails['City']
-        state = userDetails['State']
         school = userDetails['School']
 
         cursor = mysql.connection.cursor()
-        cursor.execute("SELECT * FROM students WHERE email = '{}'".format(email))
-        email = cursor.checkout()
-        cursor.execute('INSERT INTO students(name, ID, password, email, school, birthday) VALUES(%s, %s, %s, %s, %s, %s)',(name,ID,password,email,city+state+school,year+'-'+month+'-'+date))
+        # cursor.execute("SELECT * FROM students WHERE email = '{}'".format(email))
+        # email = cursor.checkout()
+        cursor.execute('INSERT INTO students(name, ID, password, email, school, birthday) VALUES(%s, %s, %s, %s, %s, %s)',(name,ID,password,email,city+school,year+'-'+month+'-'+date))
         mysql.connection.commit()
         cursor.close()
         return 'successful'
@@ -81,6 +81,7 @@ def School(grade):
         return flask.jsonify(schools.Schools(grade)),200
     else:
         return 'Connot found {}'.format(grade),404
+
 
 
 if __name__ == '__main__':

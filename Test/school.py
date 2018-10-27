@@ -47,7 +47,7 @@ def main(PATH,FileName:str,*,county_clean=0):
 
 
 if __name__ == '__main__':
-    # main('./school/','elementary',county_clean=4)
-    # main('./school/','junior')
-    # main('./school/','senior_high',county_clean=4)
-    print('elementary' in School('./school/').keys())
+    main('./school/','elementary',county_clean=4)
+    main('./school/','junior')
+    main('./school/','senior_high',county_clean=4)
+    # print('elementary' in School('./school/').keys())
