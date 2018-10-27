@@ -3,6 +3,25 @@ import json
 from os import system
 
 class School(object):
+    """
+        The constructor will open json files which have been converted from csv file to json file
+
+        School is an iterable object, so you can use for loop on this object.
+        If you use, the object will return schools from elementary to senior_high
+
+        Constructor Parameter:
+
+        PATH:
+            PATH is the directory of the json file.
+            For example, the json files now are in ./school/
+            So, if you want to make an instance of School, 
+            you need to program: school = School('./school/') 
+
+        Function Description:
+
+            Schools: return schools data
+            keys: return ['elementary','junior',senior_high']
+    """
     def __init__(self,PATH:str()):
         self.__Schools = {}
         self.__Schools['elementary'] = self.__OpenSchooljson(PATH+'elementary')
@@ -25,13 +44,22 @@ class School(object):
             raise StopIteration
 
     def Schools(self,grade:str):
+        """
+        return schools data which is dict type data
+
+        Parameter:
+            grade : you need to pass 'elementary' or 'junior' or 'senior_high'
+        """
         return self.__Schools[grade]
 
     def keys(self):
         return list(self.__Schools.keys())
+    
+    def __str__(self):
+        return 'there are three types of school in object, which are {}'.format(self.keys())
    
 
-def main(PATH,FileName:str,*,county_clean=0):
+def __main(PATH,FileName:str,*,county_clean=0):
     js_schools = {}
 
     with open(PATH+'{}.csv'.format(FileName),'r') as f:
@@ -47,7 +75,10 @@ def main(PATH,FileName:str,*,county_clean=0):
 
 
 if __name__ == '__main__':
-    main('./school/','elementary',county_clean=4)
-    main('./school/','junior')
-    main('./school/','senior_high',county_clean=4)
+    # __main('./school/','elementary',county_clean=4)
+    # __main('./school/','junior')
+    # __main('./school/','senior_high',county_clean=4)
     # print('elementary' in School('./school/').keys())
+    
+    shcool = School('./school/')
+    print(shcool)
