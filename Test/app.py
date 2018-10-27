@@ -21,6 +21,7 @@ mysql = MySQL(app)
 schools = school.School('./school/')
 
 REPEAT_CHECK_API = '/record'
+SCHOOL_API = '/school/'
 
 @app.route('/',methods=['GET','POST'])
 def index():
@@ -75,7 +76,7 @@ def repeatCheck():
     else:
         return '{}'.format(False) # means this email isn't available
 
-@app.route('/school/<grade>',methods = ['GET'])
+@app.route(SCHOOL_API+'<grade>',methods = ['GET'])
 def School(grade):
     if grade in schools.keys():
         return flask.jsonify(schools.Schools(grade)),200
@@ -86,4 +87,3 @@ def School(grade):
 
 if __name__ == '__main__':
     app.run(debug=True)
-    

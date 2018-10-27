@@ -5,6 +5,7 @@ var ChooseYear = 0,ChooseMonth = 0;
 var Grade;
 var Schools_json;
 let REPEAT_CHEACK_API ='/record'
+let SCHOOL_API = '/school/'
 
 
 //---------------------generate for form-------------------//
@@ -19,7 +20,7 @@ function generateMonth(){
 }
 
 function generateDate(Year,Month) {
-    $('.date').each(function (index, element) { 
+    $('.date').each(function (index, element) {
         element.remove();
     });
     if(Year != 0 && Month != 0){
@@ -90,7 +91,7 @@ function getSchools(Grade){
     var result;
     $.ajax({
         method:'GET',
-        url:'school/'+Grade,
+        url:SCHOOL_API+Grade,
         async:false,
         success:function(response){
             Schools_json = result = response
@@ -128,7 +129,7 @@ $('#Month').on('change','select',function(e){
     console.log(ChooseMonth)
     generateDate(ChooseYear,ChooseMonth)
 })
-$('#inputEmail').change(function (e) { 
+$('#inputEmail').change(function (e) {
     e.preventDefault();
     RepeatCheck({
         "email":this.value
@@ -157,7 +158,6 @@ $('#inputID').change(function(e){
     },'#ID','id','inputID','this id have been used');
 })
 
-
 // 當選擇Grade時，javascript會跟後端拿學校的資料 裡頭包含縣市以及學校名稱
 // 縣市會直接填入City的select裡
 $('#Grade').on('change',"select",function(e){
@@ -173,7 +173,7 @@ $('#Grade').on('change',"select",function(e){
         for(city of cities){
             html_city += `<option class="city">${city}</option>`
         }
-        
+
         $('#inputCity').append(html_city);
     }
 })
@@ -191,29 +191,16 @@ $('#City').on('change','select',function(e){
     }
 })
 
-$('#inputCity').click(function (e) { 
+$('#inputCity').click(function (e) {
     e.preventDefault();
     if($('#inputGrade').val() == 'Choose...')
         Notice(this.value,'.city','#City','CityNotice','請先選擇年級')
     console.log($('#inputGrade').val())
 });
 
-$('#inputSchool').click(function (e) { 
+$('#inputSchool').click(function (e) {
     e.preventDefault();
     if($('#inputCity').val() == 'Choose...')
         Notice(this.value,'.school','#School','SchoolNotice','請先選擇年級及縣市')
 });
 //======================================================//
-
-// $.ajax({
-//     method:'GET',
-//     url: '/school/senior_high',
-//     success: function (response) {
-//         console.log(Object.keys(response))
-//     }
-// });
-
-// if (document.getElementById('inputSchool')){
-//     console.log('exist')
-// }
-// else console.log('it does not exist')
