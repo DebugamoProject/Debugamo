@@ -8,6 +8,7 @@ let REPEAT_CHEACK_API ='/record'
 let SCHOOL_API = '/school/'
 
 
+
 //---------------------generate for form-------------------//
 function generateYear(){
     for(var i = 2018; i >= 1911;i--)
