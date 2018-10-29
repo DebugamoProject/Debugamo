@@ -262,15 +262,6 @@ $('select#language-select').on('change',function(e){
     window.location.reload(true);
 })
 
-// $('#language-select').click(function (e) { 
-//     e.preventDefault();
-//     console.log('lang select is clicked')
-// });
-
-// $('language').on('change', function () {
-    
-// });
-
 i18next.init({
     lng:`${lang}`,
     resources:language_package,

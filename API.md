@@ -65,3 +65,12 @@
     * `password` : 使用者password
     * `Year`+`-`+`Month`+`-`+`Date`:使用者生日(`Year Month Date`都是form-data的名稱，`-`需要自己新增在與資料庫溝通的時後，才會符合資料庫的格式)
     * `City`+`School`: 是使用者的學校的名稱
+
+* **多國語言**
+  * 這部分在javaScript使用的method是**GET** 
+  * API:
+    * `LANGUAGE_API`
+    * method: **GET**
+    * 目前`LANGUAGE_API`是`/language/+lang`(lang會是語言 ex:en, zh ...)
+    * 目前語言包是`LangPkg`
+    * example: GET `language/en`就需要後端框架從LangPkg **GET** en.json 然後回傳給前端javaScript做處理
