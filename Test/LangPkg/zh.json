@@ -1,0 +1,41 @@
+{
+    "zh":{
+        "translation":{
+            "form":{
+                "name":{
+                    "label":"名字",
+                    "placeholder":"請輸入名字"
+                },
+                "ID":{
+                    "label":"ID",
+                    "placeholder":"請輸入遊戲ID"
+                },
+                "Email":{
+                    "label" : "Email",
+                    "placeholder": "請輸入你的Email"
+                },
+                "password":{
+                    "label":"密碼",
+                    "placeholder":"請輸入你的密碼"
+                },
+                "passwordagain":{
+                    "label":"再輸入一次你的密碼",
+                    "placeholder":"請輸入你的密碼"
+                },
+                "year":{
+                    "label":"生日"
+                },
+                "month":{
+                    "label":"月份"
+                },
+                "date":{
+                    "label":"日期"
+                },
+                "button":{
+                    "register":"註冊"
+                }
+            },
+            "select-lang":"Choose other language"
+        }
+    }
+}

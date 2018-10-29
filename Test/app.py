@@ -22,6 +22,7 @@ schools = school.School('./school/')
 
 REPEAT_CHECK_API = '/record'
 SCHOOL_API = '/school/'
+LANGUAGE_API = '/language/'
 
 @app.route('/',methods=['GET','POST'])
 def index():
@@ -83,6 +84,16 @@ def School(grade):
     else:
         return 'Connot found {}'.format(grade),404
 
+
+@app.route(LANGUAGE_API+'<lang>',methods=['GET'])
+def Lang(lang):
+    try:
+        with open('./LangPkg/{}.json'.format(lang),'r') as file:
+            pkg = json.loads(file.read())
+            return flask.jsonify(pkg),200
+    
+    except:
+        return 'Connot find this language package',404
 
 
 if __name__ == '__main__':

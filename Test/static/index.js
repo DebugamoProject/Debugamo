@@ -2,13 +2,40 @@ var month='';
 var year='';
 var date=''
 var ChooseYear = 0,ChooseMonth = 0;
-var Grade;
+var Grade = ''
 var Schools_json;
+
 let REPEAT_CHEACK_API ='/record'
 let SCHOOL_API = '/school/'
+let LANGUAGE_API = '/language/'
 
+var language_package;
 
+var lang;
 
+function setLanguage(){
+    var cookies = Cookies.get('lang')
+    if(!cookies){
+        Cookies.set('lang','zh',{expires: 7});
+        lang = 'zh';
+        console.log('set cookies')
+    }else{
+        lang = Cookies.get('lang')
+        console.log('cookies has already set')
+    }
+    $.ajax({
+        method:"GET",
+        url:LANGUAGE_API + lang,
+        async:false,
+        success : function(response){
+            language_package = response
+        }
+    })
+    // console.log(lang)
+    // console.log(language_package)
+}
+
+setLanguage();
 //---------------------generate for form-------------------//
 function generateYear(){
     for(var i = 2018; i >= 1911;i--)
@@ -20,7 +47,9 @@ function generateMonth(){
         month += `<option class="month" value="${i}">${i}</option>`
 }
 
-function generateDate(Year,Month) {
+function generateDate() {
+    var Year = $('#inputYear').val()
+    var Month = $('#inputMonth').val()
     $('.date').each(function (index, element) {
         element.remove();
     });
@@ -45,9 +74,40 @@ function generateDate(Year,Month) {
     }
 }
 
+function generateCityandSchool(){
+    if($('#inputGrade').val() == '1~6') Grade = 'elementary'
+    else if ($('#inputGrade').val() == '7~9') Grade = 'junior'
+    else Grade = 'senior_high'
+    
+    result = getSchools(Grade);
+    generateCity(Object.keys(result))
+
+    // console.log()
+    generateSchool(result[$('#inputCity').val()])
+
+}
+
+function generateCity(cities){
+    var html_city = ''
+    for(city of cities){
+        html_city += `<option class="city">${city}</option>`
+    }
+    $('#inputCity').append(html_city);
+}
+
+function generateSchool(schools){
+    var html_school = ''
+    for(school of schools){
+        html_school += `<option class="school">${school}</option>`
+    }
+    $('#inputSchool').append(html_school)
+}
+
 // auto generate
 generateMonth()
 generateYear()
+generateDate()
+generateCityandSchool()
 
 //========================================================//
 
@@ -123,12 +183,12 @@ $('#inputYear').append(year);
 $('#Year').on('change',"select",function (e) {
     ChooseYear = $(this).children('option:selected').text();
     console.log(ChooseYear)
-    generateDate(ChooseYear,ChooseMonth)
+    generateDate()
 });
 $('#Month').on('change','select',function(e){
     ChooseMonth = $(this).children('option:selected').text();
     console.log(ChooseMonth)
-    generateDate(ChooseYear,ChooseMonth)
+    generateDate()
 })
 $('#inputEmail').change(function (e) {
     e.preventDefault();
@@ -166,30 +226,14 @@ $('#Grade').on('change',"select",function(e){
     var schools,cities;
     $('.city').remove()
     $('.school').remove()
-    if(this.value != 'Choose...'){
-        $('#CityNotice').remove();
-        Grade = this.value
-        schools = getSchools(Grade)
-        cities = Object.keys(schools);
-        for(city of cities){
-            html_city += `<option class="city">${city}</option>`
-        }
-
-        $('#inputCity').append(html_city);
-    }
+    generateCityandSchool();
 })
 
 //當選擇City時，學校名稱會被填入
 $('#City').on('change','select',function(e){
     var html_school = ''
     $('.school').remove()
-    if(this.value != 'Choose...'){
-        $('#SchoolNotice').remove()
-        for(school of Schools_json[this.value]){
-            html_school += `<option class="school">${school}</option>`
-        }
-        $('#inputSchool').append(html_school)
-    }
+    generateSchool(Schools_json[this.value])
 })
 
 $('#inputCity').click(function (e) {
@@ -205,3 +249,35 @@ $('#inputSchool').click(function (e) {
         Notice(this.value,'.school','#School','SchoolNotice','請先選擇年級及縣市')
 });
 //======================================================//
+
+//----------------------i18next-------------------------//
+
+$('select#language-select').on('change',function(e){
+    if($('#language-select').val() == '繁體中文')
+        lang = 'zh'
+    else if($('#language-select').val() == 'English')
+        lang = 'en'
+    Cookies.set('lang',lang);
+    console.log('cookies set again')
+    window.location.reload(true);
+})
+
+// $('#language-select').click(function (e) { 
+//     e.preventDefault();
+//     console.log('lang select is clicked')
+// });
+
+// $('language').on('change', function () {
+    
+// });
+
+i18next.init({
+    lng:`${lang}`,
+    resources:language_package,
+},function(err,t){
+    // console.log(lang)
+    // console.log(language_package)
+    jqueryI18next.init(i18next, $);
+    $('form').localize();
+    $('#language-select').localize();
+})
