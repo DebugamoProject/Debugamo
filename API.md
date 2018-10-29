@@ -73,4 +73,4 @@
     * method: **GET**
     * 目前`LANGUAGE_API`是`/language/+lang`(lang會是語言 ex:en, zh ...)
     * 目前語言包是`LangPkg`
-    * example: GET `language/en`就需要後端框架從LangPkg **GET** en.json 然後回傳給前端javaScript做處理
+    * example: GET `language/en`就需要後端框架從LangPkg **GET** en.json 然後回傳給前端javaScript做處理
