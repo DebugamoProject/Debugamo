@@ -1,12 +1,8 @@
-@media only screen and (max-width:900){
-    .header div#leftSide.leftSide{
-        width: 80px
-    }
-}
-
 body{
     margin: 0%;
     overflow: scroll;
+    display: grid;
+    grid-template-rows: auto auto auto;
 }
 
 div.header{
@@ -112,4 +108,23 @@ img#blockly-input{
 
 .part{
     font-size: 25px
+}
+
+.footer{
+    box-sizing: border-box;
+    padding: 10px;
+    width: 100%;
+    background-color: #00adbc;
+    /* height: 60px; */
+    font-size: 12px;
+    grid-row-start:3;
+    grid-row-end: 4;
+}
+
+.footer a{
+    text-decoration: none;
+    color: white;
+}
+#copyright{
+    float: right;
 }
