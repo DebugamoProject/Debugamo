@@ -1,6 +1,7 @@
 body{
     margin: 0px;
 }
+
 .header{
     background-color: #00adbc;
     width: 100%;
@@ -60,6 +61,7 @@ body{
     grid-auto-columns: auto;
     margin-right: 0px;
     width: 100%;
+    height: 700px;
     /* background: #00adbc; */
     
 }
@@ -181,11 +183,19 @@ body{
     float: right;
 }
 
-/* ::-webkit-scrollbar{
-    display: none;
-    width: 10px;
-} */
+.footer{
+    box-sizing: border-box;
+    padding: 10px;
+    width: 100%;
+    background-color: #00adbc;
+    height: 60px;
+    font-size: 12px;
+}
 
-/* ::-webkit-scrollbar{
-    display: none;
-} */
+.footer a{
+    text-decoration: none;
+    color: white;
+}
+#copyright{
+    float: right;
+}
