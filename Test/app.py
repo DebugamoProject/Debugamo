@@ -53,8 +53,8 @@ def test():
     if request.method == 'POST':
         loginSQL = "SELECT * FROM students WHERE email = '{}' and password = '{}'"
         userDetails = request.form
-        email = userDetails['email']
-        password = userDetails['password']
+        email = userDetails['login-email']
+        password = userDetails['login-password']
         cursor = mysql.connection.cursor()
         cursor.execute(loginSQL.format(email,password))
         result = cursor.fetchall()

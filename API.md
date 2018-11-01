@@ -27,6 +27,19 @@
 
 ## 正文開始
 
+### 登入
+
+* **email & password**
+  * 會直接使用form表單的post
+    * `login-email` : email
+    * `login-password` : password
+    * 框架需要做的事情是從資料庫中判斷他的帳密是否正確
+    ```python
+    loginSQL = "SELECT * FROM students WHERE email = '{}' and password = '{}'"
+    ```
+
+### 註冊
+
 * **inputID**
   * ID 會用event listener 的方式跟資料庫確認ID是否重複
   * API :
