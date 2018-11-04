@@ -6,34 +6,63 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="../../static/login/style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/8.1.0/i18next.min.js" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-i18next/1.2.0/jquery-i18next.min.js" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js" ></script>
     <title>Login</title>
 </head>
 <body>
     <div class="header">
         <div id="title">
-            <a href="../index/index.html" style="color:white;outline: none;">Debugamo : 幫幫迪摩</a>
+            <a href="/" style="color:white;outline: none;" data-i18n="header.title">Debugamo : 幫幫迪摩</a>
         </div>
         <div class="mid"></div>
             <form method="POST" action="/user" id="login-side">
                 <div id="login-left">
                     <div class="form-group">
-                        <input name="login-email" type="email" class="form-control" id="login-email" aria-describedby="emailHelp" placeholder="Enter email">
+                        <input name="login-email" type="email" class="form-control" id="login-email" aria-describedby="emailHelp" data-i18n="[placeholder]header.login.email">
                     </div>
                 </div>
                 <div id="login-right">
                     <div class="form-group">
-                        <input name="login-password" type="password" class="form-control" id="login-password" placeholder="Password">
+                        <input name="login-password" type="password" class="form-control" id="login-password" data-i18n="[placeholder]header.login.password">
                     </div>
-                    <button id="normal-button" type="submit" class="btn btn-primary" style="">Submit</button>
+                    <button id="normal-button" type="submit" class="btn btn-primary" data-i18n="header.login.button"></button>
                 </div>
                 <div id="fast-login">
                     <!-- fl -->
                 </div>
             </form>
     </div>
-    
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <div id="container">
+        <div id="image">
+            a
+        </div>
+        <div id="register">
+            b
+        </div>
+    </div>
+    <div class="footer">
+        <div class="mid"></div>
+            <div class="right-side">
+                <select name="lang" id="language-select">
+                    <option selected>Choose other language...</option>
+                    <option value="en">English</option>
+                    <option value="zh">繁體中文</option>
+                </select>
+                <div id="copyright-div">
+                    <p id="copyright"> 
+                        <a href="" data-i18n="footer.report"></a>
+                        <a href="" style="margin-right:10px;" data-i18n="footer.aboutus"></a>
+                            ©Debugamo
+                    </p>
+                </div>
+        </div>
+    </div>
+   
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script src="../../static/login/index.js"></script>

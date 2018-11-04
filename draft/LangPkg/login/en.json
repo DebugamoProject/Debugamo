@@ -1,0 +1,17 @@
+{
+    "en":{
+        "translation":{
+            "header":{
+                "title":"Debugamo : Help Demo",
+                "login":{
+                    "email":"Enter Email",
+                    "password":"Password"
+                }
+            },
+            "footer":{
+                "report":"Report",
+                "aboutus":"About Us"
+            }
+        }
+    }
+}

@@ -1,9 +1,10 @@
 html{
     height: 120%;
 }
-a{
+body a{
     text-decoration: none;
     color: white;
+    outline: none;
 }
 body{
     height: 100%;
@@ -62,5 +63,22 @@ body{
     background: none;
     border: none;
     color: black;
+}
 
+#container{
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    grid-column-gap: 1px;
+}
+
+.footer{
+    height: 100%;
+    background: #00adbc;
+    display: grid;
+    grid-template-columns: 6fr 3fr;
+}
+
+#copyright-div{
+    width: auto;
+    display: inline-block;
 }

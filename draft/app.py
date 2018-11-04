@@ -40,8 +40,6 @@ def index():
         school = userDetails['School']
 
         cursor = mysql.connection.cursor()
-        # cursor.execute("SELECT * FROM students WHERE email = '{}'".format(email))
-        # email = cursor.checkout()
         cursor.execute('INSERT INTO students(name, ID, password, email, school, birthday) VALUES(%s, %s, %s, %s, %s, %s)',(name,ID,password,email,city+school,year+'-'+month+'-'+date))
         mysql.connection.commit()
         cursor.close()
@@ -85,10 +83,10 @@ def School(grade):
         return 'Connot found {}'.format(grade),404
 
 
-@app.route(LANGUAGE_API+'<lang>',methods=['GET'])
-def Lang(lang):
+@app.route(LANGUAGE_API+'<page>/<lang>',methods=['GET'])
+def Lang(page,lang):
     try:
-        with open('./LangPkg/{}.json'.format(lang),'r') as file:
+        with open('./LangPkg/{}/{}.json'.format(page,lang),'r') as file:
             pkg = json.loads(file.read())
             return flask.jsonify(pkg),200
     

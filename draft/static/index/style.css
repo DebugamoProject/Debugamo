@@ -11,18 +11,19 @@ body{
     margin: 0px;
     display: grid;
     overflow: scroll;
-    grid-template-rows: 8% 76% auto;
+    grid-template-rows: 70px 76% auto;
 }
 #main-img{
     height: 100%;
     background-color: white;
+    z-index: -1;
     /* overflow: hidden; */
 }
 .footer{
     height: 100%;
     background: #00adbc;
     display: grid;
-    grid-template-columns: 6fr 2fr;
+    grid-template-columns: 6fr 3fr;
 }
 
 #copyright-div{

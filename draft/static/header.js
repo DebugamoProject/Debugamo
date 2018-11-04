@@ -17,9 +17,9 @@ margin: 8px auto;
 }
 #right-side{
 padding: 10px;
-padding-right: 15px;
+padding-right:30px;
 display: grid;
-grid-template-columns: 1fr 1fr 1fr 1fr 1.5fr;
+grid-template-columns: 1fr 1fr 2fr ;
 text-align: center;
 }
 #right-side a.normal{
@@ -76,24 +76,25 @@ float: right;
 </style>
 <div class="header">
 <div id="left-side">
-    <p id="title">Debugamo : 幫幫迪摩</p>
+    <p id="title" data-i18n="header.title"></p>
 </div>
 <div id="mid"></div>
 <div id="right-side">
-    <a class="normal "href="">首頁</a>
-    <a class="normal" href="">我的迪摩</a>
-    <a class="normal"href="">登入</a>
-    <a class="normal" href="">註冊</a>
+    <a class="normal "href="/" data-i18n="header.home"></a>
+    <a class="normal" href="/" data-i18n="header.mydemo"></a>
+    <a class="normal"href="/login" data-i18n="header.lg-re"></a>
+    <!--
     <div id="setting-dropdown-div">
-        <button class="dropdown-btn" id="setting">設定
+        <button class="dropdown-btn" id="setting" data-i18n="header.setting.setting">
             <i class="fa fa-caret-down"></i>
         </button>
         <div class="dropdown-container">
-            <a href="" class="dropdown-option">遊戲設定</a>
+            <a href="" class="dropdown-option" data-i18n="">遊戲設定</a>
             <a href="" class="dropdown-option">個人資料設定</a>
             <a href="" class="dropdown-option">選項2</a>
         </div>
     </div>
+    -->
 </div>
 </div>
 <script>

@@ -1,0 +1,12 @@
+{
+    "en":{
+        "translation":{
+            "header":{
+                "title":"Debugamo : Help Demo",
+                "home":"Home",
+                "mydemo":"My Demo",
+                "setting":"Setting"
+            }
+        }
+    }
+}

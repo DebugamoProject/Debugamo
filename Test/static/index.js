@@ -31,8 +31,6 @@ function setLanguage(){
             language_package = response
         }
     })
-    // console.log(lang)
-    // console.log(language_package)
 }
 
 setLanguage();
