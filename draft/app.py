@@ -46,9 +46,9 @@ def index():
         mysql.connection.commit()
         cursor.close()
         return 'successful'
-    return render_template('./index.html')
+    return render_template('./index/index.html')
 
-@app.route('/user',methods=['GET','POST'])
+@app.route('/login',methods=['GET','POST'])
 def test():
     if request.method == 'POST':
         loginSQL = "SELECT * FROM students WHERE email = '{}' and password = '{}'"
@@ -62,7 +62,7 @@ def test():
             return 'successful'
         else:
             return 'failed'
-    return render_template('./users.html')
+    return render_template('./login/index.html')
 
 @app.route(REPEAT_CHECK_API,methods = ['POST','GET'])
 def repeatCheck():
