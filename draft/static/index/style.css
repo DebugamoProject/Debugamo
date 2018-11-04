@@ -11,9 +11,20 @@ body{
     overflow: scroll;
 }
 
-div.header{
-    text-align: center;
+.header{
+    width: 100%;
+    background-color: #00adbc;
     height: 60px;
+    display: grid;
+    grid-template-columns: 2fr 4fr 2fr;
+}
+#right-side{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1.5fr;
+    padding: 10px;
+}
+#dropdown-container{
+    display: none;
 }
 
 a{
