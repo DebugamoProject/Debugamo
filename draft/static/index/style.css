@@ -1,122 +1,31 @@
 html{
-    height: 100%;
-    
+    height: 120%;
+    /* overflow: scroll; */
 }
-
-body{
-    margin: 0%;
-    min-height: 100%;
-    display: flex;
-    flex-direction: column;
-    overflow: scroll;
-}
-
-.header{
-    width: 100%;
-    background-color: #00adbc;
-    height: 60px;
-    display: grid;
-    grid-template-columns: 2fr 4fr 2fr;
-}
-#right-side{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1.5fr;
-    padding: 10px;
-}
-#dropdown-container{
-    display: none;
-}
-
 a{
-    color: black
-}
-
-.header .rightSide nav.nav a{
     color: white;
+    text-decoration: none;
 }
-.header .rightSide nav.nav a.dropdown-item{
-    color: black
+body{
+    height: 100%;
+    margin: 0px;
+    display: grid;
+    overflow: scroll;
+    grid-template-rows: 8% 76% auto;
 }
-
-#login-summit{
-    margin: auto;
+#main-img{
+    height: 100%;
+    background-color: white;
+    /* overflow: hidden; */
 }
-
-form#login-form.form-inline{
-    margin-top: 10px;
-}
-.header .leftSide{
-    text-align: left;
-    /* position: absolute; */
-    /* left: 10px;
-    width: 500px; */
-    float: left;
-}
-
-
-#email{
-    position: absolute;
-    right: 598px;
-    z-index: 1;
-    top: 13px;
+.footer{
+    height: 100%;
+    background: #00adbc;
+    display: grid;
+    grid-template-columns: 6fr 2fr;
 }
 
-img#blockly-input{
-    position: absolute;
-    right: 300px;
-    top:4px;
-    z-index: 0;
-}
-
-#password{
-    /* position: relative;
-    right: 275px; */
-    /* bottom: 43px;  */
-    position: absolute;
-    right: 410px;
-    top: 13px;
-    width: 160px;
-}
-
-
-#login{
-    background: rgb(241, 237, 2, 0);
-    color: black;
-    margin-right: 0px;
-    border: 0px;
-}
-
-#fast-login-fb{
-    margin-left: 15px;
-}
-
-div.login-button{
-    /* position: relative;
-    right: 260px; */
-    position: absolute;
-    top: 3px;
-    right: 10px;
-    /* font-family: 'Courier New', Courier, monospace */
-}
-
-.rightSide input{
-    border-radius: 3px;
-}
-
-
-#container{
-    margin-top: 0px;
-    margin-bottom: 0px;
-    height: 600px;
-    overflow: hidden;
-    flex: 1;
-}
-
-footer{
-    padding: 0 25px;
-    background-color: #00adbc;
-    height: auto;
-    z-index: 10;
-    /* position: relative; */
-    margin-top: -100px;
+#copyright-div{
+    width: auto;
+    display: inline-block;
 }
