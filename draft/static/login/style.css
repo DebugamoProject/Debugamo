@@ -82,3 +82,9 @@ body{
     width: auto;
     display: inline-block;
 }
+
+#register{
+    display:grid;
+    background-color: blue;
+    grid-template-rows: 60px 60px;
+}
