@@ -84,7 +84,31 @@ body{
 }
 
 #register{
-    display:grid;
-    background-color: blue;
-    grid-template-rows: 60px 60px;
+    /* display:grid; */
+    /* background-color: blue; */
+    /* grid-template-rows: 209px 60px; */
+}
+
+
+#register label{
+    color: white;
+    font-size: 20px;
+    margin-top: 4px;
+    margin-bottom : 0px;
+}
+
+#register input{
+    height: 40px;
+    width: 314px;
+    float: right;
+}
+
+#register .type1,.type2,.type3{
+    background-repeat: no-repeat;
+    padding-left: 25px;
+    padding-right: 40px;
+}
+
+.type2{
+    padding-top:15px;
 }
