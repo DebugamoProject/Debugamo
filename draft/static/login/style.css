@@ -84,31 +84,45 @@ body{
 }
 
 #register{
-    /* display:grid; */
+    display:grid;
     /* background-color: blue; */
-    /* grid-template-rows: 209px 60px; */
+    
+    grid-row-gap: 2px;
+    grid-template-rows: 105px 51px 51px 51px 51px 51px 51px 51px;
 }
 
 
 #register label{
     color: white;
-    font-size: 20px;
+    font-size: 18px;
     margin-top: 4px;
     margin-bottom : 0px;
 }
 
 #register input{
-    height: 40px;
-    width: 314px;
+    height: 35px;
+    width: 239px;
     float: right;
 }
 
 #register .type1,.type2,.type3{
-    background-repeat: no-repeat;
     padding-left: 25px;
-    padding-right: 40px;
+    padding-right: 24px;
+    padding-top:8px;
 }
 
 .type2{
-    padding-top:15px;
+    /* padding-top:15px; */
+}
+
+#inputIdentity{
+    width:239px;
+    height:35px;
+    float: right;
+}
+.type3 select{
+    width: 75px;
+    height: 35px;
+    /* display: inline-block; */
+    float: right;
 }

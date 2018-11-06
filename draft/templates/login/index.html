@@ -38,28 +38,52 @@
         <div id="image">
             a
         </div>
-        <div id="register">
-            <div id="name"class="type1" style="background-image:url('../../static/login/register/register-1.bmp');height: 207px;padding-top: 155px;">
-                <label for="inputName" data-i18n="form.name.label">Name</label>
-                <input class="form-control" type="text" name="name" id="inputName" style="float:right;" data-i18n="[placeholder]form.name.placeholder">
+        <div style="background-image:url('../../static/login/register/register.jpg');background-repeat: no-repeat;">
+            <div id="register" style="width:400px">
+                <div></div>
+                <div id="name"class="type1" style="padding-top:9px;padding-right:25px;">
+                    <label for="inputName" data-i18n="form.name.label">Name</label>
+                    <input class="form-control" type="text" name="name" id="inputName" data-i18n="[placeholder]form.name.placeholder">
+                </div>
+                <div id="ID" class="type2">
+                    <label for="inputID" data-i18n="form.ID.label">Game ID</label>
+                    <input type="text" class="form-control" id="inputID" data-i18n="[placeholder]form.ID.placeholder" name="ID">
+                </div>
+                <div id="Email" class="type2" style="padding-right:22px;">
+                    <label for="inputEmail" data-i18n="form.Email.label">Email</label>
+                    <input type="email" class="form-control" id="inputEmail" data-i18n="[placeholder]form.Email.placeholder" name="email">
+                </div>
+                <div id="password"class="type2" style="padding-right:21px;">
+                    <label for="inputPassword" data-i18n="form.password.label" >Password </label>
+                    <input type="password" class="form-control" id="inputPassword" data-i18n="[placeholder]form.password.placeholder" name="password">
+                </div>
+                <div id="password-again"class="type2" style="padding-right:21px;">
+                    <label for="inputPasswordagain" data-i18n="form.passwordagain.label" style="font-size: 14px;width:90px;margin-top: 0px;">Password Again </label>
+                    <input type="password" class="form-control" id="inputPasswordagain" data-i18n="[placeholder]form.passwordagain.placeholder"name="password-again" style="background-color:white;">
+                </div>
+                <div id="identity"class="type2" style="padding-right:20px;padding-top:7px;">
+                    <label for="inputIdentity" data-i18n="form.identity.label" style="font-size: 16px;width:90px;margin-top: 0px;">Identity</label>
+                    <!-- <input type="password" class="form-control" id="inputPasswordagain" data-i18n="[placeholder]form.passwordagain.placeholder"name="password-again" style="background-color:white;"> -->
+                    <select class="custom-select"name="inputIdentity" id="inputIdentity">
+                        <option value="none" data-i18n="form.identity.select.notice">Choose Your Identity</option>
+                        <option value="student" data-i18n="form.identity.select.student">Student</option>
+                        <option value="teacher" data-i18n="form.identity.select.teacher">Teacher</option>
+                        <option value="parents" data-i18n="form.identity.select.parent">Parent</option>
+                    </select>
+                </div>
+                <div class="type3" style="padding-right:21px;padding-top:6px;">
+                    <label for="birthday" data-i18n="form.birthday">Birthday</label>
+                    <select id="inputYear" class="form-control" name="Year" style="margin-left:4px;">
+                        <!-- <option selected>Choose...</option> -->
+                    </select>
+                    <select id="inputMonth" class="form-control" name='Month' style="margin-left:8px;">
+                        <!-- <option selected>Choose...</option> -->
+                    </select>
+                    <select id="inputDate" class="form-control" name="Date">
+                        <!-- <option selected>Choose...</option> -->
+                    </select>
+                </div>
             </div>
-            <div id="ID" class="type2" style="background-image:url('../../static/login/register/register-2.bmp');height: 69px;margin-left:4px;padding-top:15px">
-                <label for="inputID" data-i18n="form.ID.label">Game ID</label>
-                <input type="text" class="form-control" id="inputID" data-i18n="[placeholder]form.ID.placeholder" name="ID">
-            </div>
-            <div id="Email" class="type2" style="background-image:url('../../static/login/register/register-2.bmp');height: 70px;margin-left:5px">
-                <label for="inputEmail" data-i18n="form.Email.label">Email</label>
-                <input type="email" class="form-control" id="inputEmail" data-i18n="[placeholder]form.Email.placeholder" name="email">
-            </div>
-            <div id="password"class="type2" style="background-image:url('../../static/login/register/register-2.bmp');height: 69px;margin-left:5px">
-                <label for="inputPassword" data-i18n="form.password.label">Password</label>
-                <input type="password" class="form-control" id="inputPassword" data-i18n="[placeholder]form.password.placeholder" name="password">
-            </div>
-            <div id="password-again"class="type2" style="background-image:url('../../static/login/register/register-2.bmp');height: 71px;margin-left:5px">
-                <label for="inputPasswordagain" data-i18n="form.passwordagain.label" style="font-size: 16px;width:90px;margin-top: 0px;">Password Again</label>
-                <input type="password" class="form-control" id="inputPasswordagain" data-i18n="[placeholder]form.passwordagain.placeholder"name="password-again" style="background-color:white;">
-            </div>
-            <div class="type3" style="background-image:url('../../static/login/register/register-3.bmp');height: 70px;"></div>
         </div>
     </div>
     <div class="footer">
