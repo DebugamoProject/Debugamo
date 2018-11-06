@@ -25,6 +25,8 @@ function setLanguage(){
 
 setLanguage();
 
+
+
 $('select#language-select').on('change',function(e){
     // if($('#language-select').val() == '繁體中文'){
     //     console.log('zh has been selected');

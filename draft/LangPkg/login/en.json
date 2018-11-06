@@ -11,6 +11,38 @@
             "footer":{
                 "report":"Report",
                 "aboutus":"About Us"
+            },
+            "form":{
+                "name":{
+                    "label":"Name",
+                    "placeholder":"Enter Your Name"
+                },
+                "ID":{
+                    "label":"Game ID",
+                    "placeholder":"Enter Your ID"
+                },
+                "Email":{
+                    "label":"Email",
+                    "placeholder":"Enter Your Email"
+                },
+                "password":{
+                    "label":"Password",
+                    "placeholder":"Enter Your Password"
+                },
+                "passwordagain":{
+                    "label":"Password Again",
+                    "placeholder":"Enter Your Password Again"
+                },
+                "identity":{
+                    "label":"Identity",
+                    "select":{
+                        "notice":"Choose Your Identity",
+                        "student":"Student",
+                        "teacher":"Teacher",
+                        "parent":"Parent"
+                    }
+                },
+                "birthday":"Birthday"
             }
         }
     }
