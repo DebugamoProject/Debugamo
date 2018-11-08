@@ -3,7 +3,7 @@ var year='';
 var date=''
 var ChooseYear = 0,ChooseMonth = 0;
 
-
+let REPEAT_CHEACK_API ='/record'
 let LANGUAGE_API = '/language/login/'
 
 var language_package;
@@ -53,12 +53,8 @@ i18next.init({
     lng:`${lang}`,
     resources:language_package,
 },function(err,t){
-    // console.log(lang)
-    // console.log(language_package)
     jqueryI18next.init(i18next, $);
     $('body').localize();
-    // $('form').localize();
-    // $('#language-select').localize();
 })
 
 function generateYear(){
@@ -134,7 +130,9 @@ function IsnotAvailable(div_id,name,input_id,text){
     console.log('isnot available')
     console.log(`divid = ${div_id}`)
     $('.'+name+'-'+'warning').remove();
-    $(div_id).append(`<small class="${name+'-'+'warning'}"style="color:red;">${text}</small>`)
+    
+    $(div_id).append(`<small class="${name+'-'+'warning'}"style="color:red;margin-left:10px;" data-i18n="[append]">${text}"</small>`)
+    // $(div_id).i18n();
     $(input_id).css('background-color','#FFB6C1')
 }
 
@@ -143,6 +141,25 @@ function IsAvailable(name,input_id){
     $(input_id).css('background-color','#FFFFFF')
 }
 
+function LoginOrRegister(API,userdata){
+    var result;
+    
+    $.ajax({
+        method:"POST",
+        url:API,
+        data:userdata,
+        async:false,
+        success:function(response){
+            result = response;
+            // window.location.replace('/user')
+        },
+        error:function(response){
+            alert('Server Problem ! Please Report It to Us')
+        }
+    })
+    console.log('in Login or register');
+    return (result == 'successful') ? true : false;
+}
 
 
 //--------------------Event Listener---------------------//
@@ -159,9 +176,14 @@ $('#inputMonth').on('change',function(e){
 })
 $('#inputEmail').change(function (e) {
     e.preventDefault();
-    RepeatCheck({
-        "email":this.value
-    },'#Email','email','#inputEmail','this email have been used')
+    if(this.value)
+        RepeatCheck({
+            "email":this.value
+        },'#Email','email','#inputEmail','form.Email.notice')
+    else{
+        $('.email-warning').remove()
+        console.log('connot be zero')
+    }
 });
 $('#inputPassword').change(function(e){
     if($('#inputPasswordagain').val() != 0 && $('#inputPasswordagain').val() != this.value){
@@ -181,7 +203,52 @@ $('#inputPasswordagain').change(function(e){
     }
 });
 $('#inputID').change(function(e){
+    if(this.value)
     RepeatCheck({
         'ID':this.value
     },'#ID','id','inputID','this id have been used');
+    else{
+        $('.email-warning').remove()
+        console.log('connot be zero')
+    }
+})
+
+//-----------------Post the data---------------------------//
+
+// let button_click = document.getElementsByClassName('form-button')
+// console.log(button_click)
+// for(var i of button_click){
+//     i.addEventListener('keyup',function(e){
+//         e.preventDefault();
+//         e.keyCode===13 && $('login-email').val() ? $('#normal-button').click() : $('#register-button').click();
+//     })
+// }
+
+$(document).keypress(function(e){
+    e.which == 13 && $('#login-email').val() ? $('#normal-button').click() : $('#register-button').click();
+});
+
+$('#normal-button').click(function(e){
+    console.log($('#login-email').val())
+    // window.location.replace('./user')
+    var data = {
+        "login-email":$('#login-email').val(),
+        "login-password":$('#login-password').val()
+    }
+    if(!LoginOrRegister('./login',data)) alert('Wrong Password')
+    else{
+        window.location.replace('/user'); 
+    }
+});
+
+$('.footer').click(function(e){
+    console.log($('#login-email').val())
+    var data = {
+        "login-email":$('#login-email').val(),
+        "login-password":$('#login-password').val()
+    }
+    if(!LoginOrRegister('./login',data)) alert('Wrong Password')
+    else{
+        window.location.replace('./user')
+    }
 })

@@ -17,9 +17,9 @@ margin: 8px auto;
 }
 #right-side{
 padding: 10px;
-padding-right:30px;
+padding-right:50px;
 display: grid;
-grid-template-columns: 1fr 1fr 2fr ;
+grid-template-columns: 1fr 1fr 1.5fr ;
 text-align: center;
 }
 #right-side a.normal{
@@ -82,7 +82,7 @@ float: right;
 <div id="right-side">
     <a class="normal "href="/" data-i18n="header.home"></a>
     <a class="normal" href="/" data-i18n="header.mydemo"></a>
-    <a class="normal"href="/login" data-i18n="header.lg-re"></a>
+    <a class="normal"href="/login-register" data-i18n="header.lg-re"></a>
     <!--
     <div id="setting-dropdown-div">
         <button class="dropdown-btn" id="setting" data-i18n="header.setting.setting">

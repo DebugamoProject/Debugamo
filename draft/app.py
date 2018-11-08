@@ -1,7 +1,7 @@
 import flask
 import yaml
 import json
-from flask import Flask,render_template,request
+from flask import Flask,render_template,request,redirect,url_for
 from flask_mysqldb import MySQL
 
 import school
@@ -24,29 +24,63 @@ REPEAT_CHECK_API = '/record'
 SCHOOL_API = '/school/'
 LANGUAGE_API = '/language/'
 
-@app.route('/',methods=['GET','POST'])
+@app.route('/',methods=['GET'])
 def index():
-    if request.method == 'POST':
-        userDetails = request.form
-        name = userDetails['name']
-        ID = userDetails['ID']
-        email = userDetails['email']
-        password = userDetails['password']
-        year = userDetails['Year']
-        month = userDetails['Month']
-        date = userDetails['Date']
-        grade = userDetails['Grade']
-        city = userDetails['City']
-        school = userDetails['School']
+    # if request.method == 'POST':
+    #     userDetails = request.form
+    #     name = userDetails['name']
+    #     ID = userDetails['ID']
+    #     email = userDetails['email']
+    #     password = userDetails['password']
+    #     year = userDetails['Year']
+    #     month = userDetails['Month']
+    #     date = userDetails['Date']
+    #     grade = userDetails['Grade']
+    #     city = userDetails['City']
+    #     school = userDetails['School']
 
-        cursor = mysql.connection.cursor()
-        cursor.execute('INSERT INTO students(name, ID, password, email, school, birthday) VALUES(%s, %s, %s, %s, %s, %s)',(name,ID,password,email,city+school,year+'-'+month+'-'+date))
-        mysql.connection.commit()
-        cursor.close()
-        return 'successful'
+    #     cursor = mysql.connection.cursor()
+    #     cursor.execute('INSERT INTO students(name, ID, password, email, school, birthday) VALUES(%s, %s, %s, %s, %s, %s)',(name,ID,password,email,city+school,year+'-'+month+'-'+date))
+    #     mysql.connection.commit()
+    #     cursor.close()
+    #     return 'successful'
     return render_template('./index/index.html')
 
-@app.route('/login',methods=['GET','POST'])
+@app.route('/register',methods=["POST"])
+def register():
+    userDetails = request.form
+    name = userDetails['name']
+    ID = userDetails['ID']
+    email = userDetails['email']
+    password = userDetails['password']
+    year = userDetails['Year']
+    month = userDetails['Month']
+    date = userDetails['Date']
+    grade = userDetails['Grade']
+    city = userDetails['City']
+    school = userDetails['School']
+
+    cursor = mysql.connection.cursor()
+    cursor.execute('INSERT INTO students(name, ID, password, email, school, birthday) VALUES(%s, %s, %s, %s, %s, %s)',(name,ID,password,email,city+school,year+'-'+month+'-'+date))
+    mysql.connection.commit()
+    cursor.close()
+    return 'successful'
+
+@app.route('/login',methods=['POST'])
+def test2():
+    loginSQL = "SELECT * FROM students WHERE email = '{}' and password = '{}'"
+    userDetails = request.form
+    email = userDetails['login-email']
+    password = userDetails['login-password']
+    cursor = mysql.connection.cursor()
+    cursor.execute(loginSQL.format(email,password))
+    result = cursor.fetchall()
+    if len(result) == 1:
+        return 'successful'
+    else:
+        return 'failed'
+
+@app.route('/login-register',methods=['GET','POST'])
 def test():
     if request.method == 'POST':
         loginSQL = "SELECT * FROM students WHERE email = '{}' and password = '{}'"
@@ -61,6 +95,10 @@ def test():
         else:
             return 'failed'
     return render_template('./login/index.html')
+
+@app.route('/user',methods=['GET'])
+def user():
+    return render_template('./user/users.html')
 
 @app.route(REPEAT_CHECK_API,methods = ['POST','GET'])
 def repeatCheck():

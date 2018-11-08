@@ -5,7 +5,8 @@
                 "title":"Debugamo : Help Demo",
                 "login":{
                     "email":"Enter Email",
-                    "password":"Password"
+                    "password":"Password",
+                    "button":"Login"
                 }
             },
             "footer":{
@@ -19,11 +20,13 @@
                 },
                 "ID":{
                     "label":"Game ID",
-                    "placeholder":"Enter Your ID"
+                    "placeholder":"Enter Your ID",
+                    "notice":"This ID is registered."
                 },
                 "Email":{
                     "label":"Email",
-                    "placeholder":"Enter Your Email"
+                    "placeholder":"example@gmail.com",
+                    "notice":"This email is registered."
                 },
                 "password":{
                     "label":"Password",
@@ -42,7 +45,8 @@
                         "parent":"Parent"
                     }
                 },
-                "birthday":"Birthday"
+                "birthday":"Birthday",
+                "button":"Submit"
             }
         }
     }

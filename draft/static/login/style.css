@@ -67,7 +67,7 @@ body{
 
 #container{
     display: grid;
-    grid-template-columns: 3fr 2fr;
+    grid-template-columns: 3fr 3fr;
     grid-column-gap: 1px;
 }
 
@@ -102,7 +102,9 @@ body{
 #register input{
     height: 35px;
     width: 239px;
-    float: right;
+    display:inline-block;
+    /* float: right; */
+    
 }
 
 #register .type1,.type2,.type3{
@@ -118,11 +120,20 @@ body{
 #inputIdentity{
     width:239px;
     height:35px;
-    float: right;
+    /* float: right; */
+    display: inline-block;
 }
 .type3 select{
     width: 75px;
     height: 35px;
-    /* display: inline-block; */
-    float: right;
+    display: inline-block;
+    /* float: right; */
+}
+
+/* select{
+    
+} */
+
+#register .notice{
+    display:inline-block;
 }
