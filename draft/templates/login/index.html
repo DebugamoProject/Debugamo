@@ -42,55 +42,58 @@
         <div style="background-image:url('../../static/login/register/2.png');background-repeat: no-repeat;">
             <div id="register" >
                 <div></div>
-                <div id="name"class="type1" style="padding-top:9px;padding-right:25px;">
+                <div id="name"class="type2" style="padding-top:16px;padding-right:25px;">
                     <label for="inputName" data-i18n="form.name.label">Name</label>
-                    <input class="form-control" type="text" name="name" id="inputName" data-i18n="[placeholder]form.name.placeholder">
+                    <input class="form-control" type="text" name="name" id="inputName" data-i18n="[placeholder]form.name.placeholder" >
                     <!-- <div class="notice"></div> -->
                 </div>
-                <div id="ID" class="type2">
+                <div id="ID" class="type2" style="padding-top:16px">
                     <label for="inputID" data-i18n="form.ID.label">Game ID</label>
                     <input type="text" class="form-control" id="inputID" data-i18n="[placeholder]form.ID.placeholder" name="ID">
                     <!-- <div class="notice"></div> -->
                 </div>
-                <div id="Email" class="type2" style="padding-right:22px;">
+                <div id="Email" class="type2" style="padding-top:15px;">
                     <label for="inputEmail" data-i18n="form.Email.label">Email</label>
                     <input type="email" class="form-control" id="inputEmail" data-i18n="[placeholder]form.Email.placeholder" name="email">
                     <!-- <div class="notice"></div> -->
                 </div>
-                <div id="password"class="type2" style="padding-right:21px;">
+                <div id="password"class="type2" style="padding-top:15px;">
                     <label for="inputPassword" data-i18n="form.password.label" >Password </label>
                     <input type="password" class="form-control" id="inputPassword" data-i18n="[placeholder]form.password.placeholder" name="password">
                     <!-- <div class="notice"></div> -->
                 </div>
-                <div id="password-again"class="type2" style="padding-right:21px;">
-                    <label for="inputPasswordagain" data-i18n="form.passwordagain.label" style="font-size: 14px;width:60px;margin-top: 0px;">Password Again </label>
-                    <input type="password" class="form-control" id="inputPasswordagain" data-i18n="[placeholder]form.passwordagain.placeholder"name="password-again" style="background-color:white;">
+                <div id="password-again"class="type2" style="padding-top:14px;">
+                    <label for="inputPassword" data-i18n="form.passwordagain.label" style="font-size:14px;padding-top: 8px;">Password Again</label>
+                    <input type="password" class="form-control" id="inputPasswordagain" data-i18n="[placeholder]form.passwordagain.placeholder" name="password-again" style="width:241px">
                     <!-- <div class="notice"></div> -->
                 </div>
-                <div id="identity"class="type2" style="padding-right:20px;padding-top:7px;">
+                <div id="identity"class="type2" style="padding-right:20px;padding-top:13px;">
                     <label for="inputIdentity" data-i18n="form.identity.label" style="font-size: 18px;width:80px;margin-top: 3px;">Identity</label>
                     <!-- <input type="password" class="form-control" id="inputPasswordagain" data-i18n="[placeholder]form.passwordagain.placeholder"name="password-again" style="background-color:white;"> -->
-                    <select class="custom-select"name="inputIdentity" id="inputIdentity">
+                    <select class="custom-select"name="inputIdentity" id="inputIdentity" style="width:242px;">
                         <option value="none" data-i18n="form.identity.select.notice">Choose Your Identity</option>
                         <option value="student" data-i18n="form.identity.select.student">Student</option>
                         <option value="teacher" data-i18n="form.identity.select.teacher">Teacher</option>
                         <option value="parents" data-i18n="form.identity.select.parent">Parent</option>
                     </select>
                 </div>
-                <div class="type3" style="padding-right:21px;padding-top:6px;">
+                <div class="type3" style="padding-top:13px;">
                     <label for="birthday" data-i18n="form.birthday">Birthday</label>
-                    <select id="inputYear" class="form-control" name="Year" style="margin-left:4px;">
+                    <select id="inputYear" class="form-control" name="Year" style="width:78px">
                         <!-- <option selected>Choose...</option> -->
                     </select>
-                    <select id="inputMonth" class="form-control" name='Month' style="margin-left:8px;">
+                    <select id="inputMonth" class="form-control" name='Month' style="width:78px">
                         <!-- <option selected>Choose...</option> -->
                     </select>
                     <select id="inputDate" class="form-control" name="Date" >
                         <!-- <option selected>Choose...</option> -->
                     </select>
                 </div>
-                <div>
-                    <button class="form-button" id="register-button" type="button" data-i18n="form.button"></button>
+                <div style="padding-top:15px;padding-left:50px;display: grid;grid-template-columns: 330px auto;">
+                    <div>
+                        <button class="form-button" id="register-button" type="button" data-i18n="form.button" style="border-radius:5px; border:1px solid black; background:none;outline: none; float: right;">送出</button>
+                    </div>
+                    <div></div>
                 </div>
             </div>
             

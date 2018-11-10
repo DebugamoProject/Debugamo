@@ -12,3 +12,13 @@ for (i = 0; i < dropdown.length; i++) {
     }
   });
 }
+
+
+function IsLogin(){
+  if(!('TRUE' == Cookies.get('login'))){
+    alert('You have\'t login');
+    window.location.replace('/login-register');
+  }
+}
+
+IsLogin();

@@ -58,8 +58,8 @@ body{
 
 #normal-button{
     float:right;
-    margin-top: 6px;
-    margin-right: 10px;
+    margin-top: 10px;
+    margin-right: 12px;
     background: none;
     border: none;
     color: black;
@@ -67,7 +67,7 @@ body{
 
 #container{
     display: grid;
-    grid-template-columns: 3fr 3fr;
+    grid-template-columns: 4fr 3fr;
     grid-column-gap: 1px;
 }
 
@@ -88,14 +88,14 @@ body{
     /* background-color: blue; */
     
     grid-row-gap: 2px;
-    grid-template-rows: 105px 51px 51px 51px 51px 51px 51px 51px;
+    grid-template-rows: 105px 51px 51px 51px 51px 51px 51px 51px 51px;
 }
 
 
 #register label{
     color: white;
     font-size: 18px;
-    margin-top: 4px;
+    /* margin-top: 4px; */
     margin-bottom : 0px;
 }
 
@@ -110,11 +110,7 @@ body{
 #register .type1,.type2,.type3{
     padding-left: 25px;
     padding-right: 24px;
-    padding-top:8px;
-}
-
-.type2{
-    /* padding-top:15px; */
+    /* padding-top:8px; */
 }
 
 #inputIdentity{
@@ -130,10 +126,17 @@ body{
     /* float: right; */
 }
 
-/* select{
-    
-} */
 
 #register .notice{
     display:inline-block;
+}
+
+#register .type2{
+    display: grid;
+    grid-template-columns: 116.94px 250px auto;
+}
+
+#register .type3{
+    display: grid;
+    grid-template-columns: 122px 82px 81px 85px auto;
 }

@@ -34,14 +34,6 @@ setLanguage();
 
 
 $('select#language-select').on('change',function(e){
-    // if($('#language-select').val() == '繁體中文'){
-    //     console.log('zh has been selected');
-    //     lang = 'zh'
-    // }
-    // else if($('#language-select').val() == 'English'){
-    //     console.log('en has been selected');
-    //     lang = 'en'
-    // }
     lang = $('#language-select').val()
     // console.log($('#language-select').val())
     Cookies.set('lang',lang);
@@ -157,7 +149,7 @@ function LoginOrRegister(API,userdata){
             alert('Server Problem ! Please Report It to Us')
         }
     })
-    console.log('in Login or register');
+   
     return (result == 'successful') ? true : false;
 }
 
@@ -237,18 +229,7 @@ $('#normal-button').click(function(e){
     }
     if(!LoginOrRegister('./login',data)) alert('Wrong Password')
     else{
+        Cookies.set('login','TRUE')
         window.location.replace('/user'); 
     }
 });
-
-$('.footer').click(function(e){
-    console.log($('#login-email').val())
-    var data = {
-        "login-email":$('#login-email').val(),
-        "login-password":$('#login-password').val()
-    }
-    if(!LoginOrRegister('./login',data)) alert('Wrong Password')
-    else{
-        window.location.replace('./user')
-    }
-})

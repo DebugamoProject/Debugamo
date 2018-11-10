@@ -98,7 +98,10 @@ def test():
 
 @app.route('/user',methods=['GET'])
 def user():
-    return render_template('./user/users.html')
+    if request.cookies.get('login') == 'TRUE' : 
+        return render_template('./user/users.html')
+    else:
+        return redirect('/login-register')
 
 @app.route(REPEAT_CHECK_API,methods = ['POST','GET'])
 def repeatCheck():
