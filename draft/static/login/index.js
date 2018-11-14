@@ -197,10 +197,10 @@ $('#inputPasswordagain').change(function(e){
 $('#inputID').change(function(e){
     if(this.value)
     RepeatCheck({
-        'ID':this.value
-    },'#ID','id','inputID','this id have been used');
+        'gameID':this.value
+    },'#ID','id','#inputID','this id have been used');
     else{
-        $('.email-warning').remove()
+        $('.id-warning').remove()
         console.log('connot be zero')
     }
 })
@@ -217,9 +217,15 @@ $('#inputID').change(function(e){
 // }
 
 $(document).keypress(function(e){
-    e.which == 13 && $('#login-email').val() ? $('#normal-button').click() : $('#register-button').click();
+    console.log(e.which);
+    console.log(e.which == 13);
+    if(e.which == 13 &&  $('#login-email').val())
+        $('#normal-button').click()
+    else if (e.which == 13 && emptyCheck(getformData()))
+        $('#register-button').click();
 });
 
+//--------login---------------------//
 $('#normal-button').click(function(e){
     console.log($('#login-email').val())
     // window.location.replace('./user')
@@ -230,6 +236,49 @@ $('#normal-button').click(function(e){
     if(!LoginOrRegister('./login',data)) alert('Wrong Password')
     else{
         Cookies.set('login','TRUE')
+        Cookies.set('user',data['login-email'])
         window.location.replace('/user'); 
     }
 });
+
+function getformData(){
+    var data = {
+        "name" : $('#inputName').val(),
+        "gameID" : $('#inputID').val(),
+        "email" : $('#inputEmail').val(),
+        "password" : $('#inputPassword').val(),
+        "identity" : $('#inputIdentity').val(),
+        "Year" : $('#inputYear').val(),
+        "Month" : $('#inputMonth').val(),
+        "Date" : $('#inputDate').val()
+    }
+    return data;
+}
+
+function emptyCheck(data){
+    for(var i of Object.keys(data)){
+        if(data[i] == '' || data[i] == 'none'){
+            return false;
+        }
+    }
+    return true;
+}
+
+$('#register-button').click(function (e) {
+    var data = getformData();
+
+    if(emptyCheck(data)){
+        if(!LoginOrRegister('./register',data))alert('Fail to register')
+        else{
+            Cookies.set('login','TRUE')
+            Cookies.set('user',data['email'])
+            window.location.replace('/user');
+        }
+    }else{
+        alert("不可以為空")
+    }
+})
+
+$('.footer').click(function(e){
+    console.log($('#inputIdentity').val());
+})

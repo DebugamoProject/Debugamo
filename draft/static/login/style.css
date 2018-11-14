@@ -59,10 +59,16 @@ body{
 #normal-button{
     float:right;
     margin-top: 10px;
-    margin-right: 12px;
+    margin-right: 14px;
     background: none;
-    border: none;
+    border: 1px solid black;
+    border-radius: 5px;
     color: black;
+}
+
+#normal-button:hover{
+    transition: 0.3s;
+    background-color: rgb(238, 190, 14);
 }
 
 #container{
@@ -139,4 +145,13 @@ body{
 #register .type3{
     display: grid;
     grid-template-columns: 122px 82px 81px 85px auto;
+}
+
+button#register-button{
+    background:none;
+}
+
+button#register-button:hover {
+    transition: background-color 0.3s;
+    background-color: rgb(238, 190, 14);
 }

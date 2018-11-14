@@ -21,4 +21,13 @@ function IsLogin(){
   }
 }
 
+
+$('#log-out').click(function(e){
+  Cookies.set('login','FALSE');
+})
+
 IsLogin();
+
+function getUserData(){
+  
+}

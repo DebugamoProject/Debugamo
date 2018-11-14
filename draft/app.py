@@ -26,49 +26,32 @@ LANGUAGE_API = '/language/'
 
 @app.route('/',methods=['GET'])
 def index():
-    # if request.method == 'POST':
-    #     userDetails = request.form
-    #     name = userDetails['name']
-    #     ID = userDetails['ID']
-    #     email = userDetails['email']
-    #     password = userDetails['password']
-    #     year = userDetails['Year']
-    #     month = userDetails['Month']
-    #     date = userDetails['Date']
-    #     grade = userDetails['Grade']
-    #     city = userDetails['City']
-    #     school = userDetails['School']
-
-    #     cursor = mysql.connection.cursor()
-    #     cursor.execute('INSERT INTO students(name, ID, password, email, school, birthday) VALUES(%s, %s, %s, %s, %s, %s)',(name,ID,password,email,city+school,year+'-'+month+'-'+date))
-    #     mysql.connection.commit()
-    #     cursor.close()
-    #     return 'successful'
     return render_template('./index/index.html')
 
 @app.route('/register',methods=["POST"])
 def register():
     userDetails = request.form
     name = userDetails['name']
-    ID = userDetails['ID']
+    ID = userDetails['gameID']
     email = userDetails['email']
     password = userDetails['password']
     year = userDetails['Year']
     month = userDetails['Month']
     date = userDetails['Date']
-    grade = userDetails['Grade']
-    city = userDetails['City']
-    school = userDetails['School']
-
+    identity = userDetails['identity']
     cursor = mysql.connection.cursor()
-    cursor.execute('INSERT INTO students(name, ID, password, email, school, birthday) VALUES(%s, %s, %s, %s, %s, %s)',(name,ID,password,email,city+school,year+'-'+month+'-'+date))
+    cursor.execute("""
+    INSERT INTO users(name, gameID, password, email,identity,birthday) 
+    VALUES(%s, %s, %s, %s,%s,%s)"""
+    ,(name,ID,password,email,identity,year+'-'+month+'-'+date)
+    )
     mysql.connection.commit()
     cursor.close()
     return 'successful'
 
 @app.route('/login',methods=['POST'])
 def test2():
-    loginSQL = "SELECT * FROM students WHERE email = '{}' and password = '{}'"
+    loginSQL = "SELECT * FROM users WHERE email = '{}' and password = '{}'"
     userDetails = request.form
     email = userDetails['login-email']
     password = userDetails['login-password']
@@ -83,7 +66,7 @@ def test2():
 @app.route('/login-register',methods=['GET','POST'])
 def test():
     if request.method == 'POST':
-        loginSQL = "SELECT * FROM students WHERE email = '{}' and password = '{}'"
+        loginSQL = "SELECT * FROM users WHERE email = '{}' and password = '{}'"
         userDetails = request.form
         email = userDetails['login-email']
         password = userDetails['login-password']
@@ -97,17 +80,25 @@ def test():
     return render_template('./login/index.html')
 
 @app.route('/user',methods=['GET'])
-def user():
+def userpage():
     if request.cookies.get('login') == 'TRUE' : 
         return render_template('./user/users.html')
     else:
         return redirect('/login-register')
 
+@app.route('/user/<email>',methods=['GET'])
+def userData(email):
+    mycursor = mysql.connection.cursor()
+    mycursor.execute("SELECT * FROM users WHERE email = '{}'".format(email))
+    myresult = mycursor.fetchall()
+
+    return flask.jsonify(myresult),200
+
 @app.route(REPEAT_CHECK_API,methods = ['POST','GET'])
 def repeatCheck():
     data = request.form
     keys = [i for i in data]
-    repeatCheckfomula = "SELECT * FROM students WHERE {} = '{}'"
+    repeatCheckfomula = "SELECT * FROM users WHERE {} = '{}'"
     cursor = mysql.connection.cursor()
     cursor.execute(repeatCheckfomula.format(keys[0],data[keys[0]]))
     result = cursor.fetchall()
