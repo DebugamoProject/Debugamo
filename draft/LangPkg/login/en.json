@@ -21,20 +21,22 @@
                 "ID":{
                     "label":"Game ID",
                     "placeholder":"Enter Your ID",
-                    "notice":"This ID is registered."
+                    "Notice":"This ID is registered."
                 },
                 "Email":{
                     "label":"Email",
                     "placeholder":"example@gmail.com",
-                    "notice":"This email is registered."
+                    "Notice":"This email is registered."
                 },
                 "password":{
                     "label":"Password",
-                    "placeholder":"Enter Your Password"
+                    "placeholder":"Enter Your Password",
+                    "Notice":"Those passwords didn't match. Try again"
                 },
                 "passwordagain":{
-                    "label":"Password Again",
-                    "placeholder":"Enter Your Password Again"
+                    "label":"Comfirm",
+                    "placeholder":"Enter Your Password Again",
+                    "Notice":"Those passwords didn't match. Try again"
                 },
                 "identity":{
                     "label":"Identity",

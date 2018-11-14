@@ -88,11 +88,13 @@ def userpage():
 
 @app.route('/user/<email>',methods=['GET'])
 def userData(email):
-    mycursor = mysql.connection.cursor()
-    mycursor.execute("SELECT * FROM users WHERE email = '{}'".format(email))
-    myresult = mycursor.fetchall()
-
-    return flask.jsonify(myresult),200
+    if request.cookies.get('login') == 'TRUE' : 
+        mycursor = mysql.connection.cursor()
+        mycursor.execute("SELECT * FROM users WHERE email = '{}'".format(email))
+        myresult = mycursor.fetchall()
+        return flask.jsonify(myresult[0]),200
+    else :
+        return 'You Don\'t have permission',200
 
 @app.route(REPEAT_CHECK_API,methods = ['POST','GET'])
 def repeatCheck():

@@ -20,19 +20,23 @@
                 },
                 "ID":{
                     "label":"遊戲 ID",
-                    "placeholder":"輸入你的遊戲 ID"
+                    "placeholder":"輸入你的遊戲 ID",
+                    "Notice":"此ID已被使用"
                 },
                 "Email":{
                     "label":"信箱",
-                    "placeholder":"example@gmail.com"
+                    "placeholder":"example@gmail.com",
+                    "Notice":"此信箱已被使用"
                 },
                 "password":{
                     "label":"密碼",
-                    "placeholder":""
+                    "placeholder":"請輸入密碼",
+                    "Notice":"與原輸入密碼不合"
                 },
                 "passwordagain":{
-                    "label":"再次輸入密碼",
-                    "placeholder":""
+                    "label":"密碼確認",
+                    "placeholder":"請再次輸入密碼",
+                    "Notice":"與原輸入密碼不合"
                 },
                 "identity":{
                     "label":"身份",

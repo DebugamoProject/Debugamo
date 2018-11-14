@@ -123,8 +123,8 @@ function IsnotAvailable(div_id,name,input_id,text){
     console.log(`divid = ${div_id}`)
     $('.'+name+'-'+'warning').remove();
     
-    $(div_id).append(`<small class="${name+'-'+'warning'}"style="color:red;margin-left:10px;" data-i18n="[append]">${text}"</small>`)
-    // $(div_id).i18n();
+    $(div_id).append(`<small class="${name+'-'+'warning'}"style="color:red;margin-left:10px;" data-i18n="[append]${text}"></small>`)
+    $(`.${name+'-'+'warning'}`).localize();
     $(input_id).css('background-color','#FFB6C1')
 }
 
@@ -179,7 +179,7 @@ $('#inputEmail').change(function (e) {
 });
 $('#inputPassword').change(function(e){
     if($('#inputPasswordagain').val() != 0 && $('#inputPasswordagain').val() != this.value){
-        IsnotAvailable('#password-again','password','#inputPasswordagain','this password is not available')
+        IsnotAvailable('#password-again','password','#inputPasswordagain','form.password.Notice')
     }else
         IsAvailable('password','#inputPasswordagain')
 });
@@ -187,7 +187,7 @@ $('#inputPasswordagain').change(function(e){
     var value = $('#inputPassword').val()
     if(value != this.value){
         console.log('false')
-        IsnotAvailable('#password-again','password','#inputPasswordagain','this password is not available')
+        IsnotAvailable('#password-again','password','#inputPasswordagain','form.passwordagain.Notice')
     }else{
         // $('.password-warning').remove()
         // $('#inputPasswordagain').css('background-color','#FFFFFF')
@@ -198,7 +198,7 @@ $('#inputID').change(function(e){
     if(this.value)
     RepeatCheck({
         'gameID':this.value
-    },'#ID','id','#inputID','this id have been used');
+    },'#ID','id','#inputID','form.ID.Notice');
     else{
         $('.id-warning').remove()
         console.log('connot be zero')
