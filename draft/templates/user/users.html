@@ -6,10 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> -->
     <!-- <link rel="stylesheet" href="{{url_for('static',filename='style.js')}}"> -->
-    <link rel="stylesheet" href="../../static/user/style.css">
+    <!-- <link rel="stylesheet" href="../../static/user/style.css"> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/8.1.0/i18next.min.js" ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-i18next/1.2.0/jquery-i18next.min.js" ></script>
-    <!-- <link rel="stylesheet" href="{{url_for('static',filename='./user/style.css')}}"> -->
+    <link rel="stylesheet" href="{{url_for('static',filename='./user/style.css')}}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
     <title>Document</title>
 </head>
@@ -83,69 +83,98 @@
         </div>
       </div>
     </div>
-      <div class="letter">
-        <div id="edit">
-          <div id="edit-title">
-            <span style="font-size: 40px">Edit</span>
-            <div style="border: 1px solid lightgrey"></div>
-          </div>
-          <div id="name-ID" class="item">
-            <div id="name"> 
-              <div style="display: inline">
-                <label for="user-name">Name : </label>
-                <!-- <input type="text"> -->
-                <span id="user-name" class="user-data" style="margin-right:10px;">Yu-Chun</span>
-                <i class="fas fa-pen edit" id="name-edit" style="color:grey"></i>
-              </div>
-              <div id="Name-drop-down" class="edit-dropdown">
-                <label for="edit-name">Name : </label>
-                <input type="text"> <button>submit</button>
-              </div>
+    <div class="letter">
+      <div id="edit">
+        <div id="edit-title">
+          <span style="font-size: 40px">Edit</span>
+          <div style="border: 1px solid lightgrey"></div>
+        </div>
+        <div id="name-ID" class="item">
+          <div id="name"> 
+            <div style="display: inline">
+              <label for="user-name">Name : </label>
+
+              <i class="fas fa-pen edit" id="name-edit" style="color:grey"></i>
             </div>
-            <div id="ID">
-              <div>
-                <label for="edit-id">ID : </label>
-                <span id="user-id" class="user-data">testID</span>
-                <i class="fas fa-pen edit" id="ID-edit" style="color:grey"></i>
-              </div>
-              <div id="ID-drop-down" class="edit-dropdown">
-                <label for="edit-id">ID : </label>
-                <input type="text"> <button>submit</button>
-              </div>
+            <div id="Name-drop-down" class="edit-dropdown">
+              <label for="edit-name">Name : </label>
+              <input type="text" id="edit-name"> <button id="name-button">submit</button>
+              
             </div>
           </div>
-          <div id="edit-email" class="item">
+          <div id="ID">
             <div>
-              <label for="edit-email">Email : </label>
-              <span id="user-email" class="user-data">example@gmail.com</span>
-              <i class="fas fa-pen edit" id="email-edit"style="color:grey"></i>
+              <label for="edit-id">gameID : </label>
+              
+              <i class="fas fa-pen edit" id="ID-edit" style="color:grey"></i>
             </div>
-            <div id="Email-drop-down" class="edit-dropdown" style="width:50%;">
-              <label for="edit-email">Email : </label>
-              <input type="email" style="width:60%;">
-              <button>Submit</button>
-            </div>
-          </div>
-          <div id="edit-password" class="item">
-            <div>
-              <label for="password">Password :</label>
-              <span id="password" class="user-data">********</span>
-              <i class="fas fa-pen edit" style="color:grey"></i>
-            </div>
-            <div id="password-dropdown" class="edit-dropdown" style="display:none;">
-              <div style="width:100%;">
-                <label for="old-password">Old Password</label>
-                <input type="password" style="display:inline;">
-              </div>
-                <label for="new-password">New Password</label>
-              <input type="password">
-              <label for="comfirm">Confirm</label>
-              <input type="password">
-              <button>submit</button>
+            <div id="ID-drop-down" class="edit-dropdown">
+              <label for="edit-id">gameID : </label>
+              <input type="text" id="edit-gameID"> <button id="id-button">submit</button>
+              <!-- <small style="display:inline">adslfk;askljf;alskjf</small> -->
             </div>
           </div>
         </div>
+        <div id="edit-email" class="item">
+          <div>
+            <label for="edit-email">Email : </label>
+            <!-- <span id="user-email" class="user-data">example@gmail.com</span> -->
+            <i class="fas fa-pen edit" id="email-edit"style="color:grey"></i>
+          </div>
+          <div id="Email-drop-down" class="edit-dropdown" style="width:50%;">
+            <label for="edit-email">Email : </label>
+            <input type="email" style="width:60%;">
+            <button>Submit</button>
+          </div>
+        </div>
+        <div id="edit-password" class="item">
+          <div>
+            <label for="password">Password :</label>
+            <span id="password" class="user-data">********</span>
+            <i class="fas fa-pen edit" style="color:grey"></i>
+          </div>
+          <div id="password-dropdown" class="edit-dropdown" style="display:none;">
+            <div style="width:100%;">
+              <label for="old-password">Old Password</label>
+              <input type="password" style="display:inline;">
+            </div>
+            <label for="new-password">New Password</label>
+            <input type="password" style="margin-top:5px;">
+            <label for="comfirm">Confirm</label>
+            <input type="password">
+            <button>submit</button>
+          </div>
+        </div>
+        <div id="edit-birthday" class="item">
+          <div>
+            <label for="user-birthday">Birthday : </label>
+            
+            <i class="fas fa-pen edit" id="birthday-edit"style="color:grey"></i>
+          </div>
+          <div id="Birthday-drop-down" class="edit-dropdown" style="width:50%;">
+            <label for="edit-birthday">Birthday : </label>
+            <select name="year" id="year" class="form-cotrol"></select>
+            <select name="month" id="month"></select>
+            <select name="date" id="date"></select>
+            <button style="margin-left:20px;">Submit</button>
+          </div>
+        </div>
+        <div id="edit-class" class="item">
+          <div>
+            <label for="edit-class">Class : </label>
+            
+            <i class="fas fa-pen edit" id="class-edit"style="color:grey"></i>
+          </div>
+          <div class="edit-dropdown" style="width:30%;">
+            <label for="edit-class">Class : </label>
+            <input type="text" style="width:38%">
+            <button>Submit</button>
+          </div>
+        </div>
+
       </div>
+    
+    </div>
   </div>
   <div class="footer">
     <div id="copyright-div">
@@ -168,8 +197,8 @@
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
   <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-<!-- <script src="{{url_for('static',filename='./user/user.js')}}"></script> -->
-<script src="../../static/user/user.js"></script>
+  <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script> -->
+<script src="{{url_for('static',filename='./user/user.js')}}"></script>
+<!-- <script src="../../static/user/user.js"></script> -->
 </body>
 </html>

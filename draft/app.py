@@ -42,9 +42,9 @@ def register():
     identity = userDetails['identity']
     cursor = mysql.connection.cursor()
     cursor.execute("""
-    INSERT INTO users(name, gameID, password, email,identity,birthday) 
-    VALUES(%s, %s, %s, %s,%s,%s)"""
-    ,(name,ID,password,email,identity,year+'-'+month+'-'+date)
+    INSERT INTO users(name, gameID, password, email,identity,class,birthday) 
+    VALUES(%s, %s, %s, %s,%s,%d,%s)"""
+    ,(name,ID,password,email,identity,0,year+'-'+month+'-'+date)
     )
     mysql.connection.commit()
     cursor.close()
@@ -55,7 +55,7 @@ def test2():
     userDetails = request.form
     email = userDetails['login-email']
     password = userDetails['login-password']
-    loginSQL = "SELECT * FROM users WHERE email = {} and password = {}".format(email,password)
+    loginSQL = "SELECT * FROM users WHERE email = '{}' and password = '{}'".format(email,password)
     cursor = mysql.connection.cursor()
     cursor.execute(loginSQL)
     result = cursor.fetchall()
@@ -70,12 +70,15 @@ def test():
         return redirect('/user')
     else:
         if request.method == 'POST':
-            loginSQL = "SELECT * FROM users WHERE email = '{}' and password = '{}'"
+            loginSQL = "SELECT * FROM users WHERE email = '{}' and password = '{}' "
             userDetails = request.form
             email = userDetails['login-email']
             password = userDetails['login-password']
             cursor = mysql.connection.cursor()
-            cursor.execute(loginSQL.format(email,password))
+            try:
+                cursor.execute(loginSQL.format(email,password))
+            except:
+                print(loginSQL)
             result = cursor.fetchall()
             if len(result) == 1:
                 return 'successful'
@@ -95,10 +98,26 @@ def userData(email):
     if request.cookies.get('login') == 'TRUE' : 
         mycursor = mysql.connection.cursor()
         mycursor.execute("SELECT * FROM users WHERE email = '{}'".format(email))
-        myresult = mycursor.fetchall()
-        return flask.jsonify(myresult[0]),200
+        sqlresult = mycursor.fetchall()
+        userdata = [i for i in sqlresult[0]]
+        userdata[6] = '{}-{}-{}'.format(userdata[6].year,userdata[6].month,userdata[6].day)
+        return flask.jsonify(userdata),200
     else :
         return 'You Don\'t have permission',200
+
+@app.route('/user/<email>/<item>',methods=['PUT'])
+def edit(email,item):
+    if request.cookies.get('login') == 'TRUE' :
+        formdata = request.form
+        # keys = [i for i in formdata]
+        sql_instruction = "UPDATE users SET {} = '{}' where email = '{}'".format(item,formdata[item],request.cookies.get('user'))
+        print(sql_instruction)
+        mycursor = mysql.connection.cursor()
+        mycursor.execute(sql_instruction)
+        mysql.connection.commit()
+        mycursor.close()
+    return 'successful',200
+
 
 @app.route(REPEAT_CHECK_API,methods = ['POST','GET'])
 def repeatCheck():

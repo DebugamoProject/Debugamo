@@ -231,10 +231,11 @@ button.dropdown-btn{
 .item{
     width: 100%;
     padding: 10px;
+    
 }
 
 #edit label{
-    font-size: 20px;
+    font-size: 16px;
 } 
 
 .item input{
@@ -274,7 +275,10 @@ button.dropdown-btn{
     box-shadow:3px 3px 9px grey;
     height: 50px;
     display: none;
+    padding:10px;
+    padding-left: 0px;
 }
+
 
 button{
     outline: none;
@@ -295,7 +299,6 @@ button:hover{
 
 #name-ID .edit-dropdown{
     width: 80%;
- 
 }
 
 div#password-dropdown.edit-dropdown{
@@ -304,4 +307,10 @@ div#password-dropdown.edit-dropdown{
 }
 #password-dropdown.edit-dropdown input{
     width:18%
+}
+
+#Birthday-drop-down select{
+    width: 60px;
+    height: 30px;
+    font-size: 14px;
 }

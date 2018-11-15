@@ -1,4 +1,5 @@
 let LANGUAGE_API = '/language/user/'
+let UPDATE_API = '/user/'
 var language_package;
 var lang;
 
@@ -54,9 +55,13 @@ function SetUserData(){
     `<p id="ID">ID : <span>${data[1]}</span></p>
     <p id="level" data-18n="[html]level"> Level : <span>${data[7]}</span></p>`
   );
-    // $('#info').localize();
+  $(`<span id="user-name" class="user-data" style="margin-right:10px;">${data[0]}</span>`).insertBefore('#name-edit')
+  $(`<span id="user-id" class="user-data">${data[1]}</span>`).insertBefore('#ID-edit')
+  $(`<span id="user-email" class="user-data">${data[3]}</span>`).insertBefore('#email-edit')
+  $(`<span id="user-class" class="user-data">${data[5]}</span>`).insertBefore('#class-edit')
+  $(`<span id="user-birthday" class="user-data">${data[6]}</span>`).insertBefore('#birthday-edit')
 }
-// SetUserData();
+SetUserData();
 
 //--------------language---------------//
 
@@ -81,6 +86,61 @@ function setLanguage(){
 
 
 //---------EDIT------------------//
+
+var year,month;
+
+function generateYear(){
+  for(var i = 2018; i >= 1911;i--)
+      year += `<option class="year" value="${i}">${i}</option>`
+}
+
+function generateMonth(){
+  for(var i = 1;i < 13;i++)
+      month += `<option class="month" value="${i}">${i}</option>`
+}
+function generateDate() {
+  var Year = $('#year').val()
+  var Month = $('#month').val()
+  $('.date').each(function (index, element) {
+      element.remove();
+  });
+  if(Year != 0 && Month != 0){
+      // $('#DateNotice').remove();
+      var Fab_dates_amount = 0;
+      var dates_amount = 0;
+
+      if ((Year % 4 == 0 && Year % 100 != 0)||(Year % 400 == 0)) Fab_dates_amount = 29;
+      else Fab_dates_amount = 28;
+
+
+
+      if(Month == 2) dates_amount = Fab_dates_amount;
+      else if((Month <= 7 && Month % 2 == 1) || (Month >=8 && Month % 2 == 0))dates_amount = 31;
+      else dates_amount = 30;
+
+      date = '';
+      for(var day = 1;day <= dates_amount;day++)
+          date += `<option class="date" value="${day}">${day}</option>`
+      $('#date').append(date)
+  }
+}
+generateYear()
+generateMonth()
+$('#year').append(year);
+$('#month').append(month);
+generateDate();
+
+$('#year').on('change',function (e) {
+  ChooseYear = $(this).children('option:selected').text();
+  console.log(ChooseYear)
+  generateDate()
+});
+$('#month').on('change',function(e){
+  ChooseMonth = $(this).children('option:selected').text();
+  console.log(ChooseMonth)
+  generateDate()
+})
+
 function Init(){
   $('#name-drop-down').slideUp();
 }
@@ -94,38 +154,79 @@ $('.fas.fa-pen').mouseout(function(e){
   $(this).css('color','grey')
 })
 
-
-// $('#name-edit').click(function (e) {
-//   console.log('click')
-//   $('.edit-dropdown').slideToggle();
-// })
-
 $('.edit').click(function(e){
   console.log('click');
   $(this).parent().parent().children('.edit-dropdown').slideToggle();
 })
 
-// $('#email-edit').click(function(e){
-//   console.log('email.click')
-//   // console.log($(this).parent().parent().children('.edit-dropdown'))
-//   $(this).parent().parent().children('.edit-dropdown').slideToggle();
-//   // $('#Email-drop-down').slideToggle();
-// })
-// setLanguage();
+//----put data----//
 
-// i18next.init({
-//   lng:`${lang}`,
-//   resources:language_package,
-// },function(err,t){
-//   jqueryI18next.init(i18next, $);
-//   console.log(language_package)
-//   $('body').localize();
-// })
+function update_data(data,item) {
+  var url = UPDATE_API + Cookies.get('user') +'/' + item
+  
+  $.ajax({
+    type: "PUT",
+    url: url,
+    data: data,
+    async:false,
+    success: function (response) {
+      console.log(response)
+    }
+  });
+}
 
-// $('select#language-select').on('change',function(e){
-//   lang = $('#language-select').val()
-//   console.log($('#language-select').val())
-//   Cookies.set('lang',lang);
-//   console.log('cookies set again')
-//   window.location.reload(true);
-// })
+function ReloadUserData() {
+  $('.user-data').remove()
+  SetUserData();
+}
+
+//-----button-click-event-listening------///
+$('#name-button').click(function(e) {
+  var data = {
+    "name": $('#edit-name').val()
+  }
+  update_data(data,'name')
+  ReloadUserData();
+  $('#Name-drop-down').slideToggle();
+})
+
+$('#id-button').click(function(e){
+  var data = {
+    "gameID" : $('#edit-gameID').val()
+  }
+  update_data(data,'gameID')
+  ReloadUserData();
+  $('#ID-drop-down').slideToggle();
+})
+
+
+//----Edit Repeat Cheack----//
+function RepeatCheck(data,which_button_id,i18n_text){
+  
+}
+
+$('#edit-gameID').change(function(e){
+  
+})
+
+
+//--------Set Language---------//
+
+setLanguage();
+
+i18next.init({
+  lng:`${lang}`,
+  resources:language_package,
+},function(err,t){
+  jqueryI18next.init(i18next, $);
+  console.log(language_package)
+  $('body').localize();
+})
+
+$('select#language-select').on('change',function(e){
+  lang = $('#language-select').val()
+  console.log($('#language-select').val())
+  Cookies.set('lang',lang);
+  console.log('cookies set again')
+  window.location.reload(true);
+})
