@@ -82,7 +82,10 @@ body{
     cursor: pointer;
     transition: all .3s ease;
     width: 100%;
+    padding: 20px;
 }
+
+
 
 .left-side{
     grid-row-gap: 1px;
@@ -213,4 +216,72 @@ a{
 
 button.dropdown-btn{
     color: white;
+}
+
+/*-------edit part----------*/
+
+#edit{
+    /* display: grid; */
+    width: 100%;
+    padding: 10%;
+    padding-top: 5%;
+    /* grid-template-rows: 80px 80px 80px 80px 80px; */
+}
+
+.item{
+    width: 100%;
+    padding: 10px;
+}
+
+#edit label{
+    font-size: 20px;
+} 
+
+.item input{
+    outline: none;
+    border:none;
+    border-bottom: 1px solid black;
+    border-radius: 5px 5px 0px 0px;
+    width: 20%;
+    height: 30px;
+    font-size: 18px;
+    vertical-align: bottom;
+    margin-right:10px;
+    background-color:transparent;
+}
+
+.item input:focus{
+    transition: 1s;
+    background-color: rgb(255, 222, 180);
+}
+
+#name-ID{
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+#edit span{
+    margin-right:10px;
+}
+
+#name-ID input{
+    width: 50%;
+}
+
+#edit div.edit-dropdown{
+    margin-top: 10px;
+    background-color: antiquewhite;
+    box-shadow:3px 3px 9px grey;
+}
+
+button{
+    outline: none;
+    height: 30px;
+    font-size:14px;
+    border-radius: 3px;
+}
+
+button:hover{
+    transition: 0.5s;
+    background-color: rgb(232, 226, 226);
 }

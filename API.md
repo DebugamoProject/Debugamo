@@ -30,10 +30,11 @@
 ### 登入
 
 * **email & password**
-  * 會直接使用form表單的post
+  * ~~會直接使用form表單的post~~ 使用.ajax
     * `login-email` : email
     * `login-password` : password
     * 框架需要做的事情是從資料庫中判斷他的帳密是否正確
+    * POST 位置：`/login`
     ```python
     loginSQL = "SELECT * FROM students WHERE email = '{}' and password = '{}'"
     ```

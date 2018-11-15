@@ -56,7 +56,7 @@ function SetUserData(){
   );
     // $('#info').localize();
 }
-SetUserData();
+// SetUserData();
 
 //--------------language---------------//
 
@@ -77,21 +77,49 @@ function setLanguage(){
     }
   })
 }
-setLanguage();
 
-i18next.init({
-  lng:`${lang}`,
-  resources:language_package,
-},function(err,t){
-  jqueryI18next.init(i18next, $);
-  console.log(language_package)
-  $('body').localize();
+
+
+//---------EDIT------------------//
+function Init(){
+  $('#name-drop-down').slideUp();
+}
+Init();
+
+$('.fas.fa-pen').hover(function(e){
+  $(this).css('color','black');
+});
+
+$('.fas.fa-pen').mouseout(function(e){
+  $(this).css('color','grey')
 })
 
-$('select#language-select').on('change',function(e){
-  lang = $('#language-select').val()
-  console.log($('#language-select').val())
-  Cookies.set('lang',lang);
-  console.log('cookies set again')
-  window.location.reload(true);
+$('body:not(#name)').click(function (e) {
+  // $('.edit-dropdown').css('display','none');
+  console.log('back')
+  $('.edit-dropdown').slideUp();
 })
+
+
+$('#edit-name').click(function (e) {
+  console.log('click')
+  $('.edit-dropdown').slideToggle();
+})
+// setLanguage();
+
+// i18next.init({
+//   lng:`${lang}`,
+//   resources:language_package,
+// },function(err,t){
+//   jqueryI18next.init(i18next, $);
+//   console.log(language_package)
+//   $('body').localize();
+// })
+
+// $('select#language-select').on('change',function(e){
+//   lang = $('#language-select').val()
+//   console.log($('#language-select').val())
+//   Cookies.set('lang',lang);
+//   console.log('cookies set again')
+//   window.location.reload(true);
+// })
