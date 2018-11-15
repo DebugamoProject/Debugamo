@@ -14,10 +14,10 @@ function setLanguage(){
     if(!cookies){
         Cookies.set('lang','zh',{expires: 7});
         lang = 'zh';
-        console.log('set cookies')
+        // console.log('set cookies')
     }else{
         lang = Cookies.get('lang')
-        console.log('cookies has already set')
+        // console.log('cookies has already set')
     }
     $.ajax({
         method:"GET",

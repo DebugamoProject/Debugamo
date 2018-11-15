@@ -74,11 +74,8 @@ body{
 .letter{
     /* background-color: #00adbc; */
     display: flex;
-    justify-content: center;
-    align-items: center;
-    /* padding: 20px; */
-    /* font-size: 70px; */
-    color: white;
+    /* justify-content: center;
+    align-items: center; */
     line-height: 1;
     font-family: 'hobeaux-rococeaux-background', Helvetica;
     font-weight: 200;
@@ -132,8 +129,6 @@ body{
 }
 
 #options{
-    /* display: grid; */
-    /* grid-row-gap: 20px; */
     width: 100%;
     overflow-y:scroll;
     overflow-x: hidden;

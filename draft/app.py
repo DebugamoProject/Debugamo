@@ -65,19 +65,22 @@ def test2():
 
 @app.route('/login-register',methods=['GET','POST'])
 def test():
-    if request.method == 'POST':
-        loginSQL = "SELECT * FROM users WHERE email = '{}' and password = '{}'"
-        userDetails = request.form
-        email = userDetails['login-email']
-        password = userDetails['login-password']
-        cursor = mysql.connection.cursor()
-        cursor.execute(loginSQL.format(email,password))
-        result = cursor.fetchall()
-        if len(result) == 1:
-            return 'successful'
-        else:
-            return 'failed'
-    return render_template('./login/index.html')
+    if request.cookies.get('login') == 'TRUE':
+        return redirect('/user')
+    else:
+        if request.method == 'POST':
+            loginSQL = "SELECT * FROM users WHERE email = '{}' and password = '{}'"
+            userDetails = request.form
+            email = userDetails['login-email']
+            password = userDetails['login-password']
+            cursor = mysql.connection.cursor()
+            cursor.execute(loginSQL.format(email,password))
+            result = cursor.fetchall()
+            if len(result) == 1:
+                return 'successful'
+            else:
+                return 'failed'
+        return render_template('./login/index.html')
 
 @app.route('/user',methods=['GET'])
 def userpage():
