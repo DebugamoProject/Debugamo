@@ -171,7 +171,7 @@ $('#inputEmail').change(function (e) {
     if(this.value)
         RepeatCheck({
             "email":this.value
-        },'#Email','email','#inputEmail','form.Email.notice')
+        },'#Email','email','#inputEmail','form.Email.Notice')
     else{
         $('.email-warning').remove()
         console.log('connot be zero')

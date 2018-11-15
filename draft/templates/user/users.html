@@ -94,30 +94,56 @@
               <div style="display: inline">
                 <label for="user-name">Name : </label>
                 <!-- <input type="text"> -->
-                <span id="user-name" style="margin-right:10px;">Yu-Chun</span>
-                <i class="fas fa-pen" id="edit-name" style="color:grey"></i>
+                <span id="user-name" class="user-data" style="margin-right:10px;">Yu-Chun</span>
+                <i class="fas fa-pen edit" id="name-edit" style="color:grey"></i>
               </div>
-              <div id="name-drop-down" class="edit-dropdown" style="height:50px;">
+              <div id="Name-drop-down" class="edit-dropdown">
                 <label for="edit-name">Name : </label>
                 <input type="text"> <button>submit</button>
               </div>
+            </div>
+            <div id="ID">
+              <div>
+                <label for="edit-id">ID : </label>
+                <span id="user-id" class="user-data">testID</span>
+                <i class="fas fa-pen edit" id="ID-edit" style="color:grey"></i>
               </div>
-            <div>
-              <label for="edit-id" style="margin-left:5%;">ID : </label>
-              <input type="text">
-              <i class="fas fa-pen" id="edit-name" style="color:grey"></i>
+              <div id="ID-drop-down" class="edit-dropdown">
+                <label for="edit-id">ID : </label>
+                <input type="text"> <button>submit</button>
+              </div>
             </div>
           </div>
           <div id="edit-email" class="item">
+            <div>
               <label for="edit-email">Email : </label>
-              <input type="text" style="width:50%">
-              <i class="fas fa-pen" id="edit-name" style="color:grey"></i>
-          </div>
-            <div id="edit-password" class="item">
-              <label for="old-password">Password :</label>
-              <input type="text" value="**************">
-              <i class="fas fa-pen" id="edit-name" style="color:grey"></i>
+              <span id="user-email" class="user-data">example@gmail.com</span>
+              <i class="fas fa-pen edit" id="email-edit"style="color:grey"></i>
             </div>
+            <div id="Email-drop-down" class="edit-dropdown" style="width:50%;">
+              <label for="edit-email">Email : </label>
+              <input type="email" style="width:60%;">
+              <button>Submit</button>
+            </div>
+          </div>
+          <div id="edit-password" class="item">
+            <div>
+              <label for="password">Password :</label>
+              <span id="password" class="user-data">********</span>
+              <i class="fas fa-pen edit" style="color:grey"></i>
+            </div>
+            <div id="password-dropdown" class="edit-dropdown" style="display:none;">
+              <div style="width:100%;">
+                <label for="old-password">Old Password</label>
+                <input type="password" style="display:inline;">
+              </div>
+                <label for="new-password">New Password</label>
+              <input type="password">
+              <label for="comfirm">Confirm</label>
+              <input type="password">
+              <button>submit</button>
+            </div>
+          </div>
         </div>
       </div>
   </div>

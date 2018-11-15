@@ -272,6 +272,8 @@ button.dropdown-btn{
     margin-top: 10px;
     background-color: antiquewhite;
     box-shadow:3px 3px 9px grey;
+    height: 50px;
+    display: none;
 }
 
 button{
@@ -284,4 +286,22 @@ button{
 button:hover{
     transition: 0.5s;
     background-color: rgb(232, 226, 226);
+}
+
+.user-data{
+    margin-right:10px;
+}
+
+
+#name-ID .edit-dropdown{
+    width: 80%;
+ 
+}
+
+div#password-dropdown.edit-dropdown{
+    font-size: 12px;
+    height: 80px;
+}
+#password-dropdown.edit-dropdown input{
+    width:18%
 }

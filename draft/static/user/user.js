@@ -94,17 +94,23 @@ $('.fas.fa-pen').mouseout(function(e){
   $(this).css('color','grey')
 })
 
-$('body:not(#name)').click(function (e) {
-  // $('.edit-dropdown').css('display','none');
-  console.log('back')
-  $('.edit-dropdown').slideUp();
+
+// $('#name-edit').click(function (e) {
+//   console.log('click')
+//   $('.edit-dropdown').slideToggle();
+// })
+
+$('.edit').click(function(e){
+  console.log('click');
+  $(this).parent().parent().children('.edit-dropdown').slideToggle();
 })
 
-
-$('#edit-name').click(function (e) {
-  console.log('click')
-  $('.edit-dropdown').slideToggle();
-})
+// $('#email-edit').click(function(e){
+//   console.log('email.click')
+//   // console.log($(this).parent().parent().children('.edit-dropdown'))
+//   $(this).parent().parent().children('.edit-dropdown').slideToggle();
+//   // $('#Email-drop-down').slideToggle();
+// })
 // setLanguage();
 
 // i18next.init({

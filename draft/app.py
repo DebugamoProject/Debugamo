@@ -3,6 +3,7 @@ import yaml
 import json
 from flask import Flask,render_template,request,redirect,url_for
 from flask_mysqldb import MySQL
+import mysql
 
 import school
 
@@ -51,12 +52,12 @@ def register():
 
 @app.route('/login',methods=['POST'])
 def test2():
-    loginSQL = "SELECT * FROM users WHERE email = '{}' and password = '{}'"
     userDetails = request.form
     email = userDetails['login-email']
     password = userDetails['login-password']
+    loginSQL = "SELECT * FROM users WHERE email = {} and password = {}".format(email,password)
     cursor = mysql.connection.cursor()
-    cursor.execute(loginSQL.format(email,password))
+    cursor.execute(loginSQL)
     result = cursor.fetchall()
     if len(result) == 1:
         return 'successful'
@@ -107,7 +108,7 @@ def repeatCheck():
     cursor = mysql.connection.cursor()
     cursor.execute(repeatCheckfomula.format(keys[0],data[keys[0]]))
     result = cursor.fetchall()
-    if len(result) == 0:
+    if len(result) == 0: # no repeat
         return '{}'.format(True) # means this email is available
     else:
         return '{}'.format(False) # means this email isn't available

@@ -44,18 +44,18 @@
 * **inputID**
   * ID 會用event listener 的方式跟資料庫確認ID是否重複
   * API :
-    * `REPEAT_CHEACK_API`
+    * `/register`
     * method: **POST**
-    * JavaScript最上面有定為`/record`
-    * 請完成後端時將`/record`換掉或是沿用都可以喔喔～
+    * JavaScript最上面有定為`/register`
+    * 請完成後端時將`/register`換掉或是沿用都可以喔喔～
 
 * **inputEmail**
   * email 一樣用event listener的方式跟資料庫確認email是否已註冊過
   * API :
-    * `REPEAT_CHEACK_API`
+    * `/register`
     * method: **POST**
-    * JavaScript最上面有定為`/record`
-    * 請完成後端時將`/record`換掉或是沿用都可以喔喔～
+    * JavaScript最上面有定為`/register`
+    * 請完成後端時將`/register`換掉或是沿用都可以喔喔～
 
 * **Grade**
   * grade是年級，分為elementary,junior,senior_high三種
@@ -81,7 +81,7 @@
     * `City`+`School`: 是使用者的學校的名稱
 
 * **多國語言**
-  * 這部分在javaScript使用的method是**GET** 
+  * 這部分在javaScript使用的method是**GET**
   * API:
     * `LANGUAGE_API`
     * method: **GET**

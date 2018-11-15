@@ -9,18 +9,23 @@ mydb = mysql.connector.connect(
 
 mycursor = mydb.cursor()
 
-mycursor.execute(
-"""
-CREATE TABLE users (
-    name VARCHAR(20),
-    gameID VARCHAR(20),
-    password VARCHAR(50),
-    email VARCHAR(100),
-    class INTEGER,
-    identity INTEGER,
-    birthday DATE
-    )
-"""
-)
+# mycursor.execute(
+# """
+# CREATE TABLE users (
+#     name VARCHAR(20),
+#     gameID VARCHAR(20),
+#     password VARCHAR(50),
+#     email VARCHAR(100),
+#     class INTEGER,
+#     identity INTEGER,
+#     birthday DATE
+#     )
+# """
+# )
 
-# mycursor.execute("SHOW TABLES")
+
+
+mycursor.execute("SELECT * FROM users WHERE email = 105 OR 1=1 and password = 105 OR 1=1")
+result = mycursor.fetchall()
+
+print(result)
