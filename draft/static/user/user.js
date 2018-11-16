@@ -230,7 +230,22 @@ $('#password-button').click(function (e){
   }
 })
 
-$('')
+$('#birthday-button').click(function (e) {
+  var data =  $('#year').val()+'-'+$('#month').val()+'-'+$('#date').val()
+  update_data({
+    "birthday":data
+  },'birthday');
+  ReloadUserData();
+  $('#Birthday-drop-down').slideToggle();
+})
+
+$('#class-button').click(function (e){
+  update_data({
+    "class":$('#class-input').val()
+  },'class')
+  ReloadUserData();
+  $('#class-dropdown').slideToggle();
+})
 
 
 //----Edit Repeat Cheack----//
