@@ -81,7 +81,7 @@ float: right;
 <div id="mid"></div>
 <div id="right-side">
     <a class="normal "href="/" data-i18n="header.home"></a>
-    <a class="normal" href="/" data-i18n="header.mydemo"></a>
+    <a class="normal" href="/user" data-i18n="header.mydemo"></a>
     <a class="normal"href="/login-register" data-i18n="header.lg-re"></a>
     <!--
     <div id="setting-dropdown-div">

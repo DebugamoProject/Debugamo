@@ -83,6 +83,7 @@ body{
     transition: all .3s ease;
     width: 100%;
     padding: 20px;
+    box-sizing: border-box;
 }
 
 
@@ -222,9 +223,10 @@ button.dropdown-btn{
 
 #edit{
     /* display: grid; */
-    width: 100%;
-    padding: 10%;
+    width: 90%;
+    padding: 5%;
     padding-top: 5%;
+    box-sizing: border-box;
     /* grid-template-rows: 80px 80px 80px 80px 80px; */
 }
 
@@ -273,10 +275,11 @@ button.dropdown-btn{
     margin-top: 10px;
     background-color: antiquewhite;
     box-shadow:3px 3px 9px grey;
-    height: 50px;
+    /* height: 50px; */
     display: none;
     padding:10px;
     padding-left: 0px;
+    height: 5%;
 }
 
 

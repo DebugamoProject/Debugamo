@@ -25,7 +25,7 @@ mycursor = mydb.cursor()
 
 
 
-mycursor.execute("SELECT * FROM users WHERE email = 105 OR 1=1 and password = 105 OR 1=1")
+mycursor.execute("")
 result = mycursor.fetchall()
 
 print(result)

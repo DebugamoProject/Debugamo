@@ -42,9 +42,9 @@ def register():
     identity = userDetails['identity']
     cursor = mysql.connection.cursor()
     cursor.execute("""
-    INSERT INTO users(name, gameID, password, email,identity,class,birthday) 
-    VALUES(%s, %s, %s, %s,%s,%d,%s)"""
-    ,(name,ID,password,email,identity,0,year+'-'+month+'-'+date)
+    INSERT INTO users(name, gameID, password, email,identity,class,birthday,level) 
+    VALUES(%s, %s, %s, %s,%s, %s ,%s,%s)"""
+    ,(name,ID,password,email,identity ,0 , year+'-'+month+'-'+date,0)
     )
     mysql.connection.commit()
     cursor.close()

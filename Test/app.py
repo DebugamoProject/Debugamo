@@ -26,26 +26,26 @@ LANGUAGE_API = '/language/'
 
 @app.route('/',methods=['GET','POST'])
 def index():
-    if request.method == 'POST':
-        userDetails = request.form
-        name = userDetails['name']
-        ID = userDetails['ID']
-        email = userDetails['email']
-        password = userDetails['password']
-        year = userDetails['Year']
-        month = userDetails['Month']
-        date = userDetails['Date']
-        grade = userDetails['Grade']
-        city = userDetails['City']
-        school = userDetails['School']
+    # if request.method == 'POST':
+    #     userDetails = request.form
+    #     name = userDetails['name']
+    #     ID = userDetails['ID']
+    #     email = userDetails['email']
+    #     password = userDetails['password']
+    #     year = userDetails['Year']
+    #     month = userDetails['Month']
+    #     date = userDetails['Date']
+    #     grade = userDetails['Grade']
+    #     city = userDetails['City']
+    #     school = userDetails['School']
 
-        cursor = mysql.connection.cursor()
-        # cursor.execute("SELECT * FROM students WHERE email = '{}'".format(email))
-        # email = cursor.checkout()
-        cursor.execute('INSERT INTO students(name, ID, password, email, school, birthday) VALUES(%s, %s, %s, %s, %s, %s)',(name,ID,password,email,city+school,year+'-'+month+'-'+date))
-        mysql.connection.commit()
-        cursor.close()
-        return 'successful'
+    #     cursor = mysql.connection.cursor()
+    #     # cursor.execute("SELECT * FROM students WHERE email = '{}'".format(email))
+    #     # email = cursor.checkout()
+    #     cursor.execute('INSERT INTO students(name, ID, password, email, school, birthday) VALUES(%s, %s, %s, %s, %s, %s)',(name,ID,password,email,city+school,year+'-'+month+'-'+date))
+    #     mysql.connection.commit()
+    #     cursor.close()
+    #     return 'successful'
     return render_template('./index.html')
 
 @app.route('/user',methods=['GET','POST'])

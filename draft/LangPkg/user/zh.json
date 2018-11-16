@@ -25,6 +25,35 @@
                     "friend":"朋友",
                     "edit":"個人資料修改"
                 }
+            },
+            "edit":{
+                "title":{
+                    "edit":"個人資料修改"
+                },
+                "nameid":{
+                    "name":{
+                        "name":"名字 : "
+                    },
+                    "id":{
+                        "gameid":"遊戲ID : "
+                    }
+                },
+                "email":{
+                    "email":"電子信箱 : "
+                },
+                "password":{
+                    "password":"密碼 : ",
+                    "old-password":"舊的密碼 : ",
+                    "new-password":"新的密碼 : ",
+                    "confirm":"確認"
+                },
+                "birthday":"生日 : ",
+                "class":"課程代碼 : ",
+                "button":"送出"
+            },
+            "footer":{
+                "report":"問題回報",
+                "us":"關於我們"
             }
         }
     }
