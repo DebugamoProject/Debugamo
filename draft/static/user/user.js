@@ -1,5 +1,7 @@
 let LANGUAGE_API = '/language/user/'
 let UPDATE_API = '/user/'
+let REPEAT_CHEACK_API = '/record'
+
 var language_package;
 var lang;
 
@@ -191,24 +193,113 @@ $('#name-button').click(function(e) {
 })
 
 $('#id-button').click(function(e){
-  var data = {
-    "gameID" : $('#edit-gameID').val()
+  if(!$('#id-notice').length){
+    var data = {
+      "gameID" : $('#edit-gameID').val()
+    }
+    update_data(data,'gameID')
+    ReloadUserData();
+    $('#ID-drop-down').slideToggle();
   }
-  update_data(data,'gameID')
-  ReloadUserData();
-  $('#ID-drop-down').slideToggle();
 })
+
+$('#email-button').click(function (e) {  
+  if(!$('#email-notice').length){
+    var data = {
+      "email" : $('#edit-email-input').val()
+    }
+    update_data(data,'email')
+    Cookies.set('user',data['email'])
+    ReloadUserData();
+    $('#Email-drop-down').slideToggle();
+  }
+})
+
+$('#password-button').click(function (e){
+  if(!$('#confirm-notice').length){
+    RepeatCheck({
+      "password":$('#old-password').val()
+    },'#old-password','Password isn\'t correct!','old-password-notice','True');
+    if(!$('#old-password-notice').length){
+      update_data({
+        'password':$('#newpassword').val()
+      },'password');
+      ReloadUserData();
+      $('#password-dropdown').slideToggle();
+    }
+  }
+})
+
+$('')
 
 
 //----Edit Repeat Cheack----//
-function RepeatCheck(data,which_button_id,i18n_text){
-  
+function RepeatCheck(data,which_button_id,i18n_text,notice_id,judge){
+  $.ajax({
+    type: "POST",
+    url: REPEAT_CHEACK_API,
+    data: data,
+    async:false,
+    success: function (response) {
+      console.log(response)
+      if(response == judge)
+        IsNotAvailable(which_button_id,i18n_text,notice_id)
+      else IsAvailable(notice_id)
+    }
+  });
+}
+
+function IsNotAvailable(which_button_id,i18n_text,notice_id){
+  console.log('is-not')
+  $('#'+notice_id).remove();
+  $(`<small id="${notice_id}" style="display:inline;color:red;">${i18n_text}</small>`).insertAfter(which_button_id)
+  // $(which_button_id).append();
+}
+
+function IsAvailable(notice_id){
+  $('#'+notice_id).remove();
 }
 
 $('#edit-gameID').change(function(e){
-  
+  // var text = $('#edit-gameID').val();
+  var text = this.value;
+  console.log(text);
+  RepeatCheck({
+    'gameID' : text
+  },'#id-input','This gameID is registered','id-notice','False')
 })
 
+$('#edit-email-input').change(function(e){
+  // var text = $('#edit-email-input').val();
+  var text = this.value;
+  console.log(text);
+  console.log('email register')
+  RepeatCheck({
+    'email':text
+  },'#email-input-div','This email has been registered','email-notice','False')
+})
+
+$('#old-password').change(function (e){
+  $('#old-password-notice').remove();
+})
+
+//--------two passwords are same?----//
+
+$('#newpassword').change(function(e){
+  if(this.value == $('#confirm').val()){
+    IsAvailable('confirm-notice')
+  }
+})
+
+$('#confirm').change(function (e){
+  var text = this.value;
+  console.log(text)
+  if(text != $('#newpassword').val()){
+    IsNotAvailable('#password-confirm','Those passwords are not the same','confirm-notice')
+  }else{
+    IsAvailable('confirm-notice')
+  }
+})
 
 //--------Set Language---------//
 

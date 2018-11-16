@@ -123,9 +123,10 @@ def edit(email,item):
 def repeatCheck():
     data = request.form
     keys = [i for i in data]
-    repeatCheckfomula = "SELECT * FROM users WHERE {} = '{}'"
+    repeatCheckfomula = "SELECT * FROM users WHERE {} = '{}'".format(keys[0],data[keys[0]])
+    print(repeatCheckfomula)
     cursor = mysql.connection.cursor()
-    cursor.execute(repeatCheckfomula.format(keys[0],data[keys[0]]))
+    cursor.execute(repeatCheckfomula)
     result = cursor.fetchall()
     if len(result) == 0: # no repeat
         return '{}'.format(True) # means this email is available

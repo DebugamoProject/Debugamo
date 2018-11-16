@@ -109,8 +109,10 @@
               <i class="fas fa-pen edit" id="ID-edit" style="color:grey"></i>
             </div>
             <div id="ID-drop-down" class="edit-dropdown">
-              <label for="edit-id">gameID : </label>
-              <input type="text" id="edit-gameID"> <button id="id-button">submit</button>
+              <div style="width:100%" id="id-input">
+                <label for="edit-id">gameID : </label>
+                <input type="text" id="edit-gameID"> <button id="id-button">submit</button>
+              </div>
               <!-- <small style="display:inline">adslfk;askljf;alskjf</small> -->
             </div>
           </div>
@@ -122,33 +124,35 @@
             <i class="fas fa-pen edit" id="email-edit"style="color:grey"></i>
           </div>
           <div id="Email-drop-down" class="edit-dropdown" style="width:50%;">
-            <label for="edit-email">Email : </label>
-            <input type="email" style="width:60%;">
-            <button>Submit</button>
+            <div id="email-input-div" style="width:100%;">
+              <label for="edit-email">Email : </label>
+              <input type="email" style="width:60%;" id="edit-email-input"> <button id="email-button">Submit</button>
+            </div>
           </div>
         </div>
         <div id="edit-password" class="item">
           <div>
             <label for="password">Password :</label>
-            <span id="password" class="user-data">********</span>
+            <span id="password">********</span>
             <i class="fas fa-pen edit" style="color:grey"></i>
           </div>
           <div id="password-dropdown" class="edit-dropdown" style="display:none;">
             <div style="width:100%;">
               <label for="old-password">Old Password</label>
-              <input type="password" style="display:inline;">
+              <input type="password" style="display:inline;" id="old-password">
             </div>
-            <label for="new-password">New Password</label>
-            <input type="password" style="margin-top:5px;">
-            <label for="comfirm">Confirm</label>
-            <input type="password">
-            <button>submit</button>
+            <div id="password-confirm">
+              <label for="new-password">New Password</label>
+              <input type="password" style="margin-top:5px;" id='newpassword'>
+              <label for="comfirm">Confirm</label>
+              <input type="password" id='confirm'>
+              <button id="password-button">submit</button>
+            </div>
           </div>
         </div>
         <div id="edit-birthday" class="item">
           <div>
             <label for="user-birthday">Birthday : </label>
-            
             <i class="fas fa-pen edit" id="birthday-edit"style="color:grey"></i>
           </div>
           <div id="Birthday-drop-down" class="edit-dropdown" style="width:50%;">
@@ -156,7 +160,7 @@
             <select name="year" id="year" class="form-cotrol"></select>
             <select name="month" id="month"></select>
             <select name="date" id="date"></select>
-            <button style="margin-left:20px;">Submit</button>
+            <button style="margin-left:20px;" id="birthday-button">Submit</button>
           </div>
         </div>
         <div id="edit-class" class="item">
