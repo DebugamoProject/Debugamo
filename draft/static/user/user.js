@@ -267,7 +267,8 @@ function RepeatCheck(data,which_button_id,i18n_text,notice_id,judge){
 function IsNotAvailable(which_button_id,i18n_text,notice_id){
   console.log('is-not')
   $('#'+notice_id).remove();
-  $(`<small id="${notice_id}" style="display:inline;color:red;">${i18n_text}</small>`).insertAfter(which_button_id)
+  $(`<small id="${notice_id}" style="display:inline;color:red;" data-i18n="[html]${i18n_text}">${i18n_text}</small>`).insertAfter(which_button_id)
+  $('#'+notice_id).localize();
   // $(which_button_id).append();
 }
 
@@ -281,7 +282,7 @@ $('#edit-gameID').change(function(e){
   console.log(text);
   RepeatCheck({
     'gameID' : text
-  },'#id-input','This gameID is registered','id-notice','False')
+  },'#id-input','This ID has been registered','id-notice','False')
 })
 
 $('#edit-email-input').change(function(e){
@@ -310,7 +311,7 @@ $('#confirm').change(function (e){
   var text = this.value;
   console.log(text)
   if(text != $('#newpassword').val()){
-    IsNotAvailable('#password-confirm','Those passwords are not the same','confirm-notice')
+    IsNotAvailable('#password-confirm','Those passwords are not the same.','confirm-notice')
   }else{
     IsAvailable('confirm-notice')
   }

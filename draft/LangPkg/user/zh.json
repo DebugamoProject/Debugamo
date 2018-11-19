@@ -15,10 +15,10 @@
             "options":{
                 "game":{
                     "helpdemo":"幫幫迪摩",
-                    "practice" : "練習",
+                    "practice" : "練習場",
                     "solo":"個人賽",
                     "multiplayer":"多人混戰",
-                    "record":"對戰紀錄"
+                    "record":"過關紀錄"
                 },
                 "community":{
                     "story":"社群",

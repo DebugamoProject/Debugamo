@@ -25,6 +25,35 @@
                     "friend":"Friend",
                     "edit":"Personal Profile Edit"
                 }
+            },
+            "edit":{
+                "title":{
+                    "edit":"Personal Profile Edit"
+                },
+                "nameid":{
+                    "name":{
+                        "name":"Name : "
+                    },
+                    "id":{
+                        "gameid":"GameID : "
+                    }
+                },
+                "email":{
+                    "email":"Email : "
+                },
+                "password":{
+                    "password":"Password : ",
+                    "old-password":"Old Password : ",
+                    "new-password":"New Password : ",
+                    "confirm":"Confirm :" 
+                },
+                "birthday":"Birthday : ",
+                "class":"Class : ",
+                "button":"Submit"
+            },
+            "footer":{
+                "report":"Report",
+                "us":"About US"
             }
         }
     }
