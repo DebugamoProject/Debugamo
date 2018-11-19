@@ -220,14 +220,14 @@ button.dropdown-btn{
 }
 
 /*-------edit part----------*/
-/* 
-#edit{
 
+#edit{
+    /* display: grid; */
     width: 90%;
     padding: 5%;
     padding-top: 5%;
     box-sizing: border-box;
-
+    /* grid-template-rows: 80px 80px 80px 80px 80px; */
 }
 
 .item{
@@ -275,6 +275,7 @@ button.dropdown-btn{
     margin-top: 10px;
     background-color: antiquewhite;
     box-shadow:3px 3px 9px grey;
+    /* height: 50px; */
     display: none;
     padding:10px;
     padding-left: 0px;
@@ -315,4 +316,4 @@ div#password-dropdown.edit-dropdown{
     width: 60px;
     height: 30px;
     font-size: 14px;
-} */
+}
