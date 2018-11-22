@@ -1,0 +1,51 @@
+{
+    "zh":{
+        "translation":{
+            "header":{
+                "title":"Debugamo : 幫幫迪摩",
+                "login":{
+                    "email":"信箱",
+                    "password":"密碼",
+                    "button":"登入"
+                }
+            },
+            "footer":{
+                "report":"問題回報",
+                "aboutus":"關於我們"
+            },
+            "form":{
+                "name":{
+                    "label":"姓名",
+                    "placeholder":"輸入你的名字"
+                },
+                "ID":{
+                    "label":"遊戲 ID",
+                    "placeholder":"輸入你的遊戲 ID"
+                },
+                "Email":{
+                    "label":"信箱",
+                    "placeholder":"example@gmail.com"
+                },
+                "password":{
+                    "label":"密碼",
+                    "placeholder":""
+                },
+                "passwordagain":{
+                    "label":"再次輸入密碼",
+                    "placeholder":""
+                },
+                "identity":{
+                    "label":"身份",
+                    "select":{
+                        "notice":"選擇你的身份",
+                        "student":"學生",
+                        "teacher":"老師",
+                        "parent":"家長"
+                    }
+                },
+                "birthday":"生日",
+                "button":"註冊"
+            }
+        }
+    }
+}

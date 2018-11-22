@@ -1,0 +1,29 @@
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:
+- url: /.*
+  script: main.app
+
+- url: /home
+  static_files: index.html
+  upload: index\.html
+  secure: always
+- url: /home/
+  static_dir: static
+  secure: always
+
+
+libraries:
+
+- name: jinja2
+  version: latest
+
+
+  # [START env_variables]
+env_variables:
+    CLOUDSQL_CONNECTION_NAME: my-sql-instance
+    CLOUDSQL_USER: root
+    CLOUDSQL_PASSWORD: ''
+# [END env_variables]

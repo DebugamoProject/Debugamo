@@ -1,0 +1,16 @@
+{
+    "en":{
+        "translation":{
+            "header":{
+                "title":"Debugamo : Help Demo",
+                "home":"Home",
+                "mydemo":"My Demo",
+                "lg-re":"Login and Register"
+            },
+            "footer":{
+                "report":"Report",
+                "aboutus":"About Us"
+            }
+        }
+    }
+}
