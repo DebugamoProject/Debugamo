@@ -1,0 +1,55 @@
+{
+    "en":{
+        "translation":{
+            "header":{
+                "title":"Debugamo : Help Demo",
+                "login":{
+                    "email":"Enter Email",
+                    "password":"Password",
+                    "button":"Login"
+                }
+            },
+            "footer":{
+                "report":"Report",
+                "aboutus":"About Us"
+            },
+            "form":{
+                "name":{
+                    "label":"Name",
+                    "placeholder":"Enter Your Name"
+                },
+                "ID":{
+                    "label":"Game ID",
+                    "placeholder":"Enter Your ID",
+                    "Notice":"This ID is registered."
+                },
+                "Email":{
+                    "label":"Email",
+                    "placeholder":"example@gmail.com",
+                    "Notice":"This email is registered."
+                },
+                "password":{
+                    "label":"Password",
+                    "placeholder":"Enter Your Password",
+                    "Notice":"Those passwords didn't match. Try again"
+                },
+                "passwordagain":{
+                    "label":"Comfirm",
+                    "placeholder":"Enter Your Password Again",
+                    "Notice":"Those passwords didn't match. Try again"
+                },
+                "identity":{
+                    "label":"Identity",
+                    "select":{
+                        "notice":"Choose Your Identity",
+                        "student":"Student",
+                        "teacher":"Teacher",
+                        "parent":"Parent"
+                    }
+                },
+                "birthday":"Birthday",
+                "button":"Submit"
+            }
+        }
+    }
+}

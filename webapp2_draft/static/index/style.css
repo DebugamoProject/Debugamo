@@ -1,0 +1,32 @@
+html{
+    height: 120%;
+    /* overflow: scroll; */
+}
+a{
+    color: white;
+    text-decoration: none;
+}
+body{
+    height: 100%;
+    margin: 0px;
+    display: grid;
+    overflow: scroll;
+    grid-template-rows: 70px 76% auto;
+}
+#main-img{
+    height: 100%;
+    background-color: white;
+    z-index: -1;
+    /* overflow: hidden; */
+}
+.footer{
+    height: 100%;
+    background: #00adbc;
+    display: grid;
+    grid-template-columns: 6fr 3fr;
+}
+
+#copyright-div{
+    width: auto;
+    display: inline-block;
+}
