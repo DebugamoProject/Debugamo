@@ -10,7 +10,7 @@ body{
     height: 100%;
     margin: 0px;
     display: grid;
-    grid-template-rows: 70px 76% auto;
+    grid-template-rows: 70px 5% 71% auto;
 }
 
 .header{
