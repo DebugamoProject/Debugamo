@@ -217,10 +217,11 @@ a{
 
 button.dropdown-btn{
     color: white;
+    outline: none;
 }
 
 /*-------edit part----------*/
-/* 
+
 #edit{
 
     width: 90%;
@@ -315,4 +316,5 @@ div#password-dropdown.edit-dropdown{
     width: 60px;
     height: 30px;
     font-size: 14px;
-} */
+}
+

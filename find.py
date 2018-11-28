@@ -19,12 +19,15 @@ def main(pattern:str):
                 # os.system('pause')
 
 def open_file(file_name):
-    with open(file_name,"r") as f:
-        try:
-            text = f.read()
-            return text
-        except UnicodeDecodeError as e:
-            pass
+    try:
+        with open(file_name,"r") as f:
+            try:
+                text = f.read()
+                return text
+            except UnicodeDecodeError as e:
+                pass
+    except:
+        pass
     
 def search(pattern:str,text:str):
     pat = re.compile(pattern)

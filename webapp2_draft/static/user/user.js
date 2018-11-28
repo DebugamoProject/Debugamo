@@ -22,10 +22,11 @@ for (i = 0; i < dropdown.length; i++) {
 
 
 function IsLogin(){
-  if(!('TRUE' == Cookies.get('login'))){
-    alert('You have\'t login');
-    window.location.replace('/login-register');
-  }
+  // if(!('TRUE' == Cookies.get('login'))){
+  //   alert('You have\'t login');
+  //   window.location.replace('/login-register');
+  // }
+  return ;
 }
 
 $('#log-out').click(function(e){
@@ -90,9 +91,17 @@ function setLanguage(){
 
 $('#information').on('click',function(e){
   console.log('edit')
-  $('#main-container').append(edit);
-  $('body').localize();
+  // $('#main-container').append(edit);
+  // $('body').localize();
+  var edit = $('#edit')
+  if(edit.css('display')=='block'){
+    edit.css('display','none')
+  }else{
+    console.log('none')
+    edit.css('display','block');
+  }
   ReloadUserData();
+  
 })
 
 var year,month;
@@ -346,202 +355,3 @@ $('select#language-select').on('change',function(e){
   window.location.reload(true);
 })
 
-let edit = `
-<style>
-
-/*-------edit part----------*/
-
-#edit{
-    /* display: grid; */
-    width: 90%;
-    padding: 5%;
-    padding-top: 5%;
-    box-sizing: border-box;
-    /* grid-template-rows: 80px 80px 80px 80px 80px; */
-}
-
-.item{
-    width: 100%;
-    padding: 10px;
-    
-}
-
-#edit label{
-    font-size: 16px;
-} 
-
-.item input{
-    outline: none;
-    border:none;
-    border-bottom: 1px solid black;
-    border-radius: 5px 5px 0px 0px;
-    width: 20%;
-    height: 30px;
-    font-size: 18px;
-    vertical-align: bottom;
-    margin-right:10px;
-    background-color:transparent;
-}
-
-.item input:focus{
-    transition: 1s;
-    background-color: rgb(255, 222, 180);
-}
-
-#name-ID{
-    display: grid;
-    grid-template-columns: 50% 50%;
-}
-
-#edit span{
-    margin-right:10px;
-}
-
-#name-ID input{
-    width: 50%;
-}
-
-#edit div.edit-dropdown{
-    margin-top: 10px;
-    background-color: antiquewhite;
-    box-shadow:3px 3px 9px grey;
-    /* height: 50px; */
-    display: none;
-    padding:10px;
-    padding-left: 0px;
-    height: 5%;
-}
-
-
-button{
-    outline: none;
-    height: 30px;
-    font-size:14px;
-    border-radius: 3px;
-}
-
-button:hover{
-    transition: 0.5s;
-    background-color: rgb(232, 226, 226);
-}
-
-.user-data{
-    margin-right:10px;
-}
-
-
-#name-ID .edit-dropdown{
-    width: 80%;
-}
-
-div#password-dropdown.edit-dropdown{
-    font-size: 12px;
-    height: 80px;
-}
-#password-dropdown.edit-dropdown input{
-    width:18%
-}
-
-#Birthday-drop-down select{
-    width: 60px;
-    height: 30px;
-    font-size: 14px;
-}
-
-</style>
-<div id="edit">
-<div id="edit-title">
-  <span style="font-size: 40px" data-i18n="[append]edit.title.edit">Edit</span>
-  <div style="border: 1px solid lightgrey"></div>
-</div>
-<div id="name-ID" class="item">
-  <div id="name"> 
-    <div style="display: inline">
-      <label for="user-name" data-i18n="[append]edit.nameid.name.name">Name : </label>
-
-      <i class="fas fa-pen edit" id="name-edit" style="color:grey"></i>
-    </div>
-    <div id="Name-drop-down" class="edit-dropdown">
-      <label for="edit-name" data-i18n="[append]edit.nameid.name.name">Name : </label>
-      <input type="text" id="edit-name"> <button id="name-button" data-i18n="[append]edit.button">submit</button>
-      
-    </div>
-  </div>
-  <div id="ID">
-    <div>
-      <label for="edit-id" data-i18n="[append]edit.nameid.id.gameid">gameID : </label>
-      
-      <i class="fas fa-pen edit" id="ID-edit" style="color:grey"></i>
-    </div>
-    <div id="ID-drop-down" class="edit-dropdown">
-      <div style="width:100%" id="id-input">
-        <label for="edit-id" data-i18n="[append]edit.nameid.id.gameid">gameID : </label>
-        <input type="text" id="edit-gameID"> <button id="id-button" data-i18n="[append]edit.button">submit</button>
-      </div>
-      <!-- <small style="display:inline">adslfk;askljf;alskjf</small> -->
-    </div>
-  </div>
-</div>
-<div id="edit-email" class="item">
-  <div>
-    <label for="edit-email" data-i18n="[append]edit.email.email">Email : </label>
-    <!-- <span id="user-email" class="user-data">example@gmail.com</span> -->
-    <i class="fas fa-pen edit" id="email-edit"style="color:grey"></i>
-  </div>
-  <div id="Email-drop-down" class="edit-dropdown" style="width:50%;">
-    <div id="email-input-div" style="width:100%;">
-      <label for="edit-email" data-i18n="[append]edit.email.email">Email : </label>
-      <input type="email" style="width:60%;" id="edit-email-input"> <button id="email-button" data-i18n="[append]edit.button">Submit</button>
-    </div>
-  </div>
-</div>
-<div id="edit-password" class="item">
-  <div>
-    <label for="password" data-i18n="[append]edit.password.password">Password :</label>
-    <span id="password">********</span>
-    <i class="fas fa-pen edit" style="color:grey"></i>
-  </div>
-  <div id="password-dropdown" class="edit-dropdown" style="display:none;width:90%;">
-    <div >
-      <label for="old-password" data-i18n="[append]edit.password.old-password">Old Password</label>
-      <input type="password" style="display:inline;" id="old-password">
-    </div>
-    <div id="password-confirm">
-      <label for="new-password" data-i18n="[append]edit.password.new-password">New Password</label>
-      <input type="password" style="margin-top:5px;" id='newpassword'>
-      <label for="comfirm" data-i18n="[append]edit.password.confirm">Confirm</label>
-      <input type="password" id='confirm'>
-      <button id="password-button" data-i18n="[append]edit.button">submit</button>
-    </div>
-  </div>
-</div>
-<div id="edit-birthday" class="item">
-  <div>
-    <label for="user-birthday" data-i18n="[append]edit.birthday">Birthday : </label>
-    <i class="fas fa-pen edit" id="birthday-edit"style="color:grey"></i>
-  </div>
-  <div id="Birthday-drop-down" class="edit-dropdown" style="width:50%;">
-    <label for="edit-birthday">Birthday : </label>
-    <select name="year" id="year" class="form-cotrol"></select>
-    <select name="month" id="month"></select>
-    <select name="date" id="date"></select>
-    <button style="margin-left:20px;" id="birthday-button" data-i18n="[append]edit.button">Submit</button>
-  </div>
-</div>
-<div id="edit-class" class="item">
-  <div>
-    <label for="edit-class" data-i18n="[append]edit.class">Class : </label>
-    
-    <i class="fas fa-pen edit" id="class-edit"style="color:grey"></i>
-  </div>
-  <div id="class-dropdown" class="edit-dropdown" style="width:30%;">
-    <label for="edit-class" data-i18n="[append]edit.class">Class : </label>
-    <input type="text" style="width:38%" id="class-input">
-    <button id="class-button" data-i18n="[append]edit.button">Submit</button>
-  </div>
-</div>
-</div>
-<script>
-
-</script>
-`

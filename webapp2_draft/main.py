@@ -13,6 +13,7 @@ CLOUDSQL_USER = os.environ.get('CLOUDSQL_USER')
 CLOUDSQL_PASSWORD = os.environ.get('CLOUDSQL_PASSWORD')
 CLOUDSQL_DATABASE = os.environ.get('CLOUDSQL_DATABASE')
 
+
 # Jinja environment
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
@@ -87,7 +88,8 @@ class LangPage(webapp2.RequestHandler):
 class Login_Register(webapp2.RequestHandler):
     def get(self):
         if self.request.cookies.get('login'):
-            return self.redirect('/user')
+            # return self.redirect('/user')
+            return webapp2.redirect('/user')
         else:
             path = 'templates/login/index.html'
             template_values = ''
@@ -108,7 +110,7 @@ class UserPage(webapp2.RequestHandler):
             template_values = ''
             return self.response.write(template.render(path, template_values))
         else:
-            return self.redirect('/login-register')
+            return webapp2.redirect('/login-register')
 
 class Email(webapp2.RequestHandler):
     def get(self, email):
@@ -116,9 +118,11 @@ class Email(webapp2.RequestHandler):
             db = connect_to_cloudsql()
             cursor = db.cursor()
             cursor.execute("SELECT * FROM users WHERE email = '{}'".format(email))
+            print(email)
             sqlresult = cursor.fetchall()
+            print sqlresult
             userdata = [i for i in sqlresult[0]]
-            userdata[5] = '{}-{}-{}'.format(userdata[5].year,userdata[5].month,userdata[5].day)
+            userdata[6] = '{}-{}-{}'.format(userdata[6].year,userdata[6].month,userdata[6].day)
             self.response.headers['Content-Type'] = 'application/json'
             self.response.out.write(json.dumps(userdata))
             return self.response.set_status(200)
@@ -147,11 +151,14 @@ class Register(webapp2.RequestHandler):
         
         db = connect_to_cloudsql()
         cursor = db.cursor()
-        cursor.execute("""
-        INSERT INTO users(name, gameID, password, email,identity,class,birthday,level) 
-        VALUES(%s, %s, %s, %s,%s, %s ,%s,%s)"""
-        ,(name,ID,password,email,identity ,0 , year+'-'+month+'-'+date,0)
-        )
+        try:
+            cursor.execute("""
+            INSERT INTO users(name, gameID, password, email,identity,class,birthday,level) 
+            VALUES(%s, %s, %s, %s,%s, %s ,%s,%s)"""
+            ,(name,ID,password,email,identity ,0 , year+'-'+month+'-'+date,0)
+            )
+        except UnicodeEncodeError as e:
+            print('name is ',name)
         db.commit()
         db.close()
         return self.response.write('successful')

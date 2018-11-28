@@ -658,6 +658,7 @@ Scope.execute = function() {
     }
 
     var code = Blockly.JavaScript.workspaceToCode(BlocklyGames.workspace);
+    console.log(code)
     code = Scope.mergeCodeWithListInit(code, Object.keys(Game.things));
 
     ///////////////////// TODO: this is hard code for level 13, fix this into somewhere better ////////////////
