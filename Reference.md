@@ -20,6 +20,7 @@
 
 * [Python with MySQL](https://www.youtube.com/watch?v=x7SwgcpACng&list=PLB5jA40tNf3tRMbTpBA0N7lfDZNLZAa9G)
 * [Python flask with MySQL](https://youtu.be/6L3HNyXEais)
+* [Programming Google App Engine with Python](https://books.google.com.tw/books?id=uxIDCgAAQBAJ&printsec=frontcover#v=onepage&q&f=false)
 
 ---
 

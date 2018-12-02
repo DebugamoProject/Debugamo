@@ -66,6 +66,9 @@ class MainPage(webapp2.RequestHandler):
         # template_values = ''
         # template = JINJA_ENVIRONMENT.get_template('templates/index/index.html')
         # return self.response.write(template.render(template_values))
+        print("IP = ",self.request.environ.get('HTTP_X_REAL_IP',self.request.remote_addr))
+        raise "not exactly correct IP address"
+        print(json.dumps(self.request.environ.__repr__(),indent=4))
         path = 'templates/index/index.html'
         template_values = ''
         return self.response.out.write(template.render(path, template_values))
@@ -87,9 +90,8 @@ class LangPage(webapp2.RequestHandler):
 
 class Login_Register(webapp2.RequestHandler):
     def get(self):
-        if self.request.cookies.get('login'):
-            # return self.redirect('/user')
-            return webapp2.redirect('/user')
+        if self.request.cookies.get('login') == 'TRUE': # bug is hear 
+            return self.redirect('/user')
         else:
             path = 'templates/login/index.html'
             template_values = ''
@@ -140,6 +142,7 @@ class Email_Item(webapp2.RequestHandler):
 class Register(webapp2.RequestHandler):
     def post(self):
         request = self.request
+        print(request.GET)
         name = request.get('name')
         ID = request.get('gameID')
         email = request.get('email')
@@ -151,14 +154,11 @@ class Register(webapp2.RequestHandler):
         
         db = connect_to_cloudsql()
         cursor = db.cursor()
-        try:
-            cursor.execute("""
-            INSERT INTO users(name, gameID, password, email,identity,class,birthday,level) 
-            VALUES(%s, %s, %s, %s,%s, %s ,%s,%s)"""
-            ,(name,ID,password,email,identity ,0 , year+'-'+month+'-'+date,0)
-            )
-        except UnicodeEncodeError as e:
-            print('name is ',name)
+        cursor.execute("""
+        INSERT INTO users(name, gameID, password, email,identity,class,birthday,level) 
+        VALUES(%s, %s, %s, %s,%s, %s ,%s,%s)"""
+        ,(name,ID,password,email,identity ,0 , year+'-'+month+'-'+date,0)
+        )
         db.commit()
         db.close()
         return self.response.write('successful')

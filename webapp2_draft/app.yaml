@@ -15,6 +15,7 @@ handlers:
 
 - url: /.*
   script: main.app
+  secure: always
 # [END handlers]
 
 # [START libraries]
@@ -31,6 +32,6 @@ libraries:
 env_variables:
     CLOUDSQL_CONNECTION_NAME: Test\ Connection
     CLOUDSQL_USER: root
-    CLOUDSQL_PASSWORD: 
+    CLOUDSQL_PASSWORD: password
     CLOUDSQL_DATABASE: testdb
 # [END env_variables]
