@@ -67,7 +67,7 @@ class MainPage(webapp2.RequestHandler):
         # template = JINJA_ENVIRONMENT.get_template('templates/index/index.html')
         # return self.response.write(template.render(template_values))
         print("IP = ",self.request.environ.get('HTTP_X_REAL_IP',self.request.remote_addr))
-        raise "not exactly correct IP address"
+        # raise "not exactly correct IP address"
         print(json.dumps(self.request.environ.__repr__(),indent=4))
         path = 'templates/index/index.html'
         template_values = ''
@@ -124,7 +124,7 @@ class Email(webapp2.RequestHandler):
             sqlresult = cursor.fetchall()
             print sqlresult
             userdata = [i for i in sqlresult[0]]
-            userdata[6] = '{}-{}-{}'.format(userdata[6].year,userdata[6].month,userdata[6].day)
+            userdata[5] = '{}-{}-{}'.format(userdata[5].year,userdata[5].month,userdata[5].day)
             self.response.headers['Content-Type'] = 'application/json'
             self.response.out.write(json.dumps(userdata))
             return self.response.set_status(200)
@@ -133,11 +133,17 @@ class Email(webapp2.RequestHandler):
             self.response.set_status(200)
 
 class Email_Item(webapp2.RequestHandler):
-    def put(self, email):
+    def put(self, email, item):
         if self.request.cookies.get('login') == 'TRUE':
-
-            sql_instruction = "UPDATE users SET {} = '{}' where email = '{}'".format(item,formdata[item],request.cookies.get('user'))
+            request = self.request
+            sql_instruction = "UPDATE users SET {} = '{}' where email = '{}'".format(item, request.get(item), request.cookies.get('user'))
             
+            db = connect_to_cloudsql()
+            cursor = db.cursor()
+            cursor.execute(sql_instruction)
+            db.commit()
+            db.close()
+            return self.response.write('successful')
 
 class Register(webapp2.RequestHandler):
     def post(self):
