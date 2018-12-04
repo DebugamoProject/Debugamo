@@ -73,7 +73,6 @@ class TestPage(webapp2.RequestHandler):
         for r in cursor.fetchall():
             self.response.write('{}\n'.format(r))
                 
-
 class MainPage(webapp2.RequestHandler):
 
     def get(self):
@@ -136,9 +135,8 @@ class Email(webapp2.RequestHandler):
             cursor.execute("SELECT * FROM users WHERE email = '{}'".format(email))
             print(email)
             sqlresult = cursor.fetchall()
-            print sqlresult
             userdata = [i for i in sqlresult[0]]
-            userdata[5] = '{}-{}-{}'.format(userdata[6].year,userdata[6].month,userdata[6].day)
+            userdata[6] = '{}-{}-{}'.format(userdata[6].year,userdata[6].month,userdata[6].day)
             self.response.headers['Content-Type'] = 'application/json'
             self.response.out.write(json.dumps(userdata))
             return self.response.set_status(200)

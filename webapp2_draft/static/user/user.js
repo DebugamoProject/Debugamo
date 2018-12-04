@@ -45,8 +45,10 @@ function getUserData(){
     async:false,
     success: function (response) {
        data = response;
+       
     }
   });
+  console.log(data)
   return data;
 }
 // getUserData();

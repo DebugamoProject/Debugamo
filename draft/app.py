@@ -3,18 +3,25 @@ import yaml
 import json
 from flask import Flask,render_template,request,redirect,url_for
 from flask_mysqldb import MySQL
-import mysql
+# import mysql
 
 import school
 
 app = Flask(__name__)
 db = yaml.load(open('yuchundb.yaml'))
 
+# app.config['JSON_AS_ASCII'] = False
+# app.config['MYSQL_HOST'] = db['mysql_host']
+# app.config['MYSQL_USER'] = db['mysql_user']
+# app.config['MYSQL_PASSWORD'] = db['mysql_password']
+# app.config['MYSQL_DB'] = db['mysql_db']
+
 app.config['JSON_AS_ASCII'] = False
-app.config['MYSQL_HOST'] = db['mysql_host']
-app.config['MYSQL_USER'] = db['mysql_user']
-app.config['MYSQL_PASSWORD'] = db['mysql_password']
-app.config['MYSQL_DB'] = db['mysql_db']
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = 'Iammy310075'
+app.config['MYSQL_DB'] = 'testdb'
+
 
 
 mysql = MySQL(app)
@@ -56,13 +63,14 @@ def test2():
     email = userDetails['login-email']
     password = userDetails['login-password']
     loginSQL = "SELECT * FROM users WHERE email = '{}' and password = '{}'".format(email,password)
-    cursor = mysql.connection.cursor()
-    cursor.execute(loginSQL)
-    result = cursor.fetchall()
-    if len(result) == 1:
-        return 'successful'
-    else:
-        return 'failed'
+    # cursor = mysql.connection.cursor()
+    # cursor.execute(loginSQL)
+    # result = cursor.fetchall()
+    # if len(result) == 1:
+    #     return 'successful'
+    # else:
+    #     return 'failed'
+    return 'successful'
 
 @app.route('/login-register',methods=['GET','POST'])
 def test():
