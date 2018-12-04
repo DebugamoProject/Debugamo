@@ -5,6 +5,7 @@ import MySQLdb
 import webapp2
 import jinja2
 import json
+import random
 from google.appengine.ext.webapp import template
 
 # These environment variables are configured in app.yaml.
@@ -19,6 +20,19 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
+
+__pool = '1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+def random_generate_key():
+    
+    key_array = random.sample(__pool,16)
+    key = ''
+    for i in key_array:
+        key += i
+    return key
+
+# def key_check()
+    
 
 
 def connect_to_cloudsql():
@@ -67,7 +81,6 @@ class MainPage(webapp2.RequestHandler):
         # template = JINJA_ENVIRONMENT.get_template('templates/index/index.html')
         # return self.response.write(template.render(template_values))
         print("IP = ",self.request.environ.get('HTTP_X_REAL_IP',self.request.remote_addr))
-        raise "not exactly correct IP address"
         print(json.dumps(self.request.environ.__repr__(),indent=4))
         path = 'templates/index/index.html'
         template_values = ''
@@ -142,8 +155,7 @@ class Email_Item(webapp2.RequestHandler):
 class Register(webapp2.RequestHandler):
     def post(self):
         request = self.request
-        print(request.GET)
-        name = request.get('name')
+        name = request.get('name').encode('utf-8')
         ID = request.get('gameID')
         email = request.get('email')
         password = request.get('password')
@@ -151,7 +163,6 @@ class Register(webapp2.RequestHandler):
         month = request.get('Month')
         date = request.get('Date')
         identity = request.get('identity')
-        
         db = connect_to_cloudsql()
         cursor = db.cursor()
         cursor.execute("""
@@ -169,7 +180,6 @@ class Login(webapp2.RequestHandler):
         email = request.get('login-email')
         password = request.get('login-password')
         loginSQL = "SELECT * FROM users WHERE email = '{}' and password = '{}'".format(email,password)
-        
         db = connect_to_cloudsql()
         cursor = db.cursor()
         cursor.execute(loginSQL)
@@ -181,7 +191,17 @@ class Login(webapp2.RequestHandler):
 
 class RepeatCheck(webapp2.RequestHandler):
     def post(self):
-        pass
+        request = self.request
+        arguments = request.arguments()
+        repeatCheckfomula = "SELECT * FROM users WHERE {} = '{}'".format(arguments[0],request.get(arguments[0]))
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        cursor.execute(repeatCheckfomula)
+        result = cursor.fetchall()
+        if len(result) == 0:
+            return self.response.write('{}'.format(True))
+        else:
+            return self.response.write('{}'.format(False))
 
 
 LANGUAGE_API = '/language/'
