@@ -138,7 +138,7 @@ class Email(webapp2.RequestHandler):
             sqlresult = cursor.fetchall()
             print sqlresult
             userdata = [i for i in sqlresult[0]]
-            userdata[5] = '{}-{}-{}'.format(userdata[5].year,userdata[5].month,userdata[5].day)
+            userdata[5] = '{}-{}-{}'.format(userdata[6].year,userdata[6].month,userdata[6].day)
             self.response.headers['Content-Type'] = 'application/json'
             self.response.out.write(json.dumps(userdata))
             return self.response.set_status(200)
