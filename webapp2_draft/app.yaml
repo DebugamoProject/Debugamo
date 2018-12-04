@@ -30,8 +30,8 @@ libraries:
 
 # [START env_variables]
 env_variables:
-    CLOUDSQL_CONNECTION_NAME: Test\ Connection
-    CLOUDSQL_USER: root
-    CLOUDSQL_PASSWORD: password
-    CLOUDSQL_DATABASE: testdb
+    CLOUDSQL_CONNECTION_NAME: 
+    CLOUDSQL_USER: 
+    CLOUDSQL_PASSWORD: 
+    CLOUDSQL_DATABASE: 
 # [END env_variables]
