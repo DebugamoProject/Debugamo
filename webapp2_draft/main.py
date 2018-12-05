@@ -6,6 +6,7 @@ import webapp2
 import jinja2
 import json
 from google.appengine.ext.webapp import template
+from google.appengine.ext import db
 
 # These environment variables are configured in app.yaml.
 CLOUDSQL_CONNECTION_NAME = os.environ.get('CLOUDSQL_CONNECTION_NAME')
@@ -47,6 +48,39 @@ def connect_to_cloudsql():
             host='127.0.0.1', user=CLOUDSQL_USER, passwd=CLOUDSQL_PASSWORD, db=CLOUDSQL_DATABASE)
     return db
 
+class Log(db.Model):
+    access_time = db.DateTimeProperty(auto_now_add=True)
+    ip_address = db.StringProperty()
+
+class IPtest(webapp2.RequestHandler):
+    def get(self):
+        # obtain ip address
+        ip = self.request.remote_addr
+
+        # create a new Log record
+        log = Log()
+
+        # assign ip address to the ip_address field
+        log.ip_address = ip
+
+        # no need to set access_time because 
+        # of the auto_now_add=True setting defined in the Log model
+
+        # save to the datastore
+        log.put()
+
+        # output 
+        self.response.headers['Content-Type'] = 'text/plain'
+        self.response.out.write('Logged your visit from ip address %s\n' % ip)
+
+class LogPage(webapp2.RequestHandler):
+    def get(self):
+        logs = Log.all()
+
+        self.response.headers['Content-Type'] = 'text/plain'
+        self.response.out.write('Ip addresses: ')
+        for log in logs:
+            self.response.out.write(log.ip_address + ',')
 
 class TestPage(webapp2.RequestHandler):
     def get(self):
@@ -96,15 +130,7 @@ class Login_Register(webapp2.RequestHandler):
             path = 'templates/login/index.html'
             template_values = ''
             return self.response.out.write(template.render(path, template_values))
-    def post(self):
-        # cookie unfinish
-        loginSQL = "SELECT * FROM users WHERE email = '{}' and password = '{}' "
-        info = self.request.get()
-        print(info)
-        print('-' * 10)
-        # userDetails = 
-        # email = 
-
+            
 class UserPage(webapp2.RequestHandler):
     def get(self):
         if self.request.cookies.get('login') == 'TRUE':
@@ -175,7 +201,7 @@ class Login(webapp2.RequestHandler):
         email = request.get('login-email')
         password = request.get('login-password')
         loginSQL = "SELECT * FROM users WHERE email = '{}' and password = '{}'".format(email,password)
-        
+
         db = connect_to_cloudsql()
         cursor = db.cursor()
         cursor.execute(loginSQL)
@@ -187,7 +213,21 @@ class Login(webapp2.RequestHandler):
 
 class RepeatCheck(webapp2.RequestHandler):
     def post(self):
-        pass
+        request = self.request
+        
+        # get request body (format: 'item=content')
+        item = request.body.split('=')[0] # specify which item to check
+        content = request.get(item)
+        repeatCheckfomula = "SELECT * FROM users WHERE {} = '{}'".format(item, content)
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        cursor.execute(repeatCheckfomula)
+        result = cursor.fetchall()
+        if len(result) == 0: # no repeat
+            return self.response.write('True') # means this email is available
+        else:
+            return self.response.write('False') # means this email is not available
+
 
 
 LANGUAGE_API = '/language/'
@@ -204,6 +244,8 @@ app = webapp2.WSGIApplication([
     webapp2.Route(r'/login', handler=Login, name='login'),
     webapp2.Route(r'/t/<a1>/<a2>', handler=UrlTest, name='t'),
     webapp2.Route(r'/record', handler=RepeatCheck, name='repeatcheck'),
+    webapp2.Route(r'/ip', handler=IPtest, name='iptest'),
+    webapp2.Route(r'/log', handler=LogPage, name='log'),
 ], debug=True)
 
 # [END all]

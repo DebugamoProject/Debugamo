@@ -32,6 +32,6 @@ libraries:
 env_variables:
     CLOUDSQL_CONNECTION_NAME: 
     CLOUDSQL_USER: 
-    CLOUDSQL_PASSWORD: 
+    CLOUDSQL_PASSWORD:
     CLOUDSQL_DATABASE: 
 # [END env_variables]
