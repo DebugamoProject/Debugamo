@@ -119,12 +119,13 @@
       {msg meaning="Debugging.NewPlayerGuide5" desc="New Players Guide"}Unfortunately, there was an accident while transporting DemO to the disaster site and his logic chip is malfunctioning. It is up to you to figure out how to help DemO by{/msg}
       <span style="font-weight: 600;">{msg meaning="Debugging.NewPlayerGuide6" desc="New Players Guide"} fixing its logic chip,{/msg}</span>
       {msg meaning="Debugging.NewPlayerGuide7" desc="New Players Guide"} and complete the mission!{/msg}<br>
-      <p style="text-align: center; font-weight: 500; color: #0f1a94;">{msg meaning="Debugging.NewPlayerGuide8" desc="New Players Guide"}Choose your player avatar:{/msg}</p>
+      /*<p style="text-align: center; font-weight: 500; color: #0f1a94;">{msg meaning="Debugging.NewPlayerGuide8" desc="New Players Guide"}Choose your player avatar:{/msg}</p>
       <div id="avatar-choose-box">
         <img onclick="Debugging.UI.setAvatar('male.default.png')" src="debugging/public/img/male.default.png"></img>
         <img onclick="Debugging.UI.setAvatar('female.default.png')" src="debugging/public/img/female.default.png"></img>
         <img onclick="Debugging.UI.setAvatar('experimental.default.png')" src="debugging/public/img/experimental.default.png"></img>
       </div>
+      */
       <div id="newPlayerForm">
         <form class="uk-text-center">
           輸入玩家資訊：
@@ -170,7 +171,13 @@
     <div class="farSide" style="padding: 0 3ex; display: none;">
       <button class="primary"><a  href="https://goo.gl/forms/FgR3iYZw6hh6Co8W2" target="_blank" style="color:white !important;">先填寫問卷</a></button>
     </div>
-    {call BlocklyGames.soy.startGame /}
+    /*{call BlocklyGames.soy.startGame /}*/
+    <div class="farSide" style="padding: 0 3ex">
+    <button class="primary" id="startGameBtn" onclick="Debugging.startGame();Debugging.UI.setAvatar('experimental.default.png');">
+      {{msg meaning="Games.dialogStartGame" desc="start game"}}選完頭像開始任務{{/msg}}
+    </button>
+    <a style="display:block;" href="https://github.com/YoEugene/DebugamO" target="_blank"><img style="width: 50px;" src="debugging/public/img/github.png"></img></a>
+  </div>
   </div>
   <div id="developing" class="dialogHiddenContent">
     <div id="begin-box">

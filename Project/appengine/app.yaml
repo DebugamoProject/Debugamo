@@ -8,61 +8,61 @@ default_expiration: "5m"
 
 handlers:
 # Storage API.
-- url: /storage
-  script: storage.py
-  secure: always
-- url: /storage\.js
-  static_files: storage.js
-  upload: storage\.js
-  secure: always
+# - url: /storage
+#   script: storage.py
+#   secure: always
+# - url: /storage\.js
+#   static_files: storage.js
+#   upload: storage\.js
+#   secure: always
 
-# Index page.
-- url: /
-  static_files: index.html
-  upload: index\.html
-  secure: always
-- url: /index/
-  static_dir: index
-  secure: always
+# # Index page.
+# - url: /
+#   static_files: index.html
+#   upload: index\.html
+#   secure: always
+# - url: /index/
+#   static_dir: index
+#   secure: always
 
-# Courses page.
-- url: /courses
-  static_files: courses.html
-  upload: courses\.html
-  secure: always
-- url: /courses/
-  static_dir: courses
-  secure: always
+# # Courses page.
+# - url: /courses
+#   static_files: courses.html
+#   upload: courses\.html
+#   secure: always
+# - url: /courses/
+#   static_dir: courses
+#   secure: always
 
-# Mazealg app.
-- url: /mazealg
-  static_files: mazealg.html
-  upload: mazealg\.html
-  secure: always
-- url: /mazealg/
-  static_dir: mazealg
-  secure: always
+# # Mazealg app.
+# - url: /mazealg
+#   static_files: mazealg.html
+#   upload: mazealg\.html
+#   secure: always
+# - url: /mazealg/
+#   static_dir: mazealg
+#   secure: always
 
-# Test app.
-- url: /test
-  static_files: test.html
-  upload: test\.html
-  secure: always
-- url: /test/
-  static_dir: test
-  secure: always
+# # Test app.
+# - url: /test
+#   static_files: test.html
+#   upload: test\.html
+#   secure: always
+# - url: /test/
+#   static_dir: test
+#   secure: always
 
-# shop game.
-- url: /shop
-  static_files: shop/public/shop.html
-  upload: shop\.html
-  secure: always
-- url: /shop/public/
-  static_dir: shop/public
-  secure: always
-- url: /shop/js/
-  static_dir: shop/js
-  secure: always
+# # shop game.
+# - url: /shop
+#   static_files: shop/public/shop.html
+#   upload: shop\.html
+#   secure: always
+# - url: /shop/public/
+#   static_dir: shop/public
+#   secure: always
+# - url: /shop/js/
+#   static_dir: shop/js
+#   secure: always
 
 # debugging game.
 - url: /debugging
@@ -77,90 +77,90 @@ handlers:
   secure: always
 
 
-# About page.
-- url: /about
-  static_files: about.html
-  upload: about\.html
-  secure: always
+# # About page.
+# - url: /about
+#   static_files: about.html
+#   upload: about\.html
+#   secure: always
 
-# Debug page.
-- url: /debug
-  static_files: debug.html
-  upload: debug\.html
-  secure: always
+# # Debug page.
+# - url: /debug
+#   static_files: debug.html
+#   upload: debug\.html
+#   secure: always
 
-# Bird app.
-- url: /bird
-  static_files: bird.html
-  upload: bird\.html
-  secure: always
-- url: /bird/
-  static_dir: bird
-  secure: always
+# # Bird app.
+# - url: /bird
+#   static_files: bird.html
+#   upload: bird\.html
+#   secure: always
+# - url: /bird/
+#   static_dir: bird
+#   secure: always
 
-# Maze app.
-- url: /maze
-  static_files: maze.html
-  upload: maze\.html
-  secure: always
-- url: /maze/
-  static_dir: maze
-  secure: always
+# # Maze app.
+# - url: /maze
+#   static_files: maze.html
+#   upload: maze\.html
+#   secure: always
+# - url: /maze/
+#   static_dir: maze
+#   secure: always
 
-# Movie app.
-- url: /movie
-  static_files: movie.html
-  upload: movie\.html
-  secure: always
-- url: /movie/
-  static_dir: movie
-  secure: always
-- url: /movie-reddit
-  script: reddit.py
-  secure: always
+# # Movie app.
+# - url: /movie
+#   static_files: movie.html
+#   upload: movie\.html
+#   secure: always
+# - url: /movie/
+#   static_dir: movie
+#   secure: always
+# - url: /movie-reddit
+#   script: reddit.py
+#   secure: always
 
-# Puzzle app.
-- url: /puzzle
-  static_files: puzzle.html
-  upload: puzzle\.html
-  secure: always
-- url: /puzzle/
-  static_dir: puzzle
-  secure: always
+# # Puzzle app.
+# - url: /puzzle
+#   static_files: puzzle.html
+#   upload: puzzle\.html
+#   secure: always
+# - url: /puzzle/
+#   static_dir: puzzle
+#   secure: always
 
-# Turtle app.
-- url: /turtle
-  static_files: turtle.html
-  upload: turtle\.html
-  secure: always
-- url: /turtle/
-  static_dir: turtle
-  secure: always
-- url: /turtle-reddit
-  script: reddit.py
-  secure: always
+# # Turtle app.
+# - url: /turtle
+#   static_files: turtle.html
+#   upload: turtle\.html
+#   secure: always
+# - url: /turtle/
+#   static_dir: turtle
+#   secure: always
+# - url: /turtle-reddit
+#   script: reddit.py
+#   secure: always
 
-# Pond apps.
-- url: /pond-tutor
-  static_files: pond-tutor.html
-  upload: pond-tutor\.html
-  secure: always
-- url: /pond-duck
-  static_files: pond-duck.html
-  upload: pond-duck\.html
-  secure: always
-- url: /pond/
-  static_dir: pond
-  secure: always
+# # Pond apps.
+# - url: /pond-tutor
+#   static_files: pond-tutor.html
+#   upload: pond-tutor\.html
+#   secure: always
+# - url: /pond-duck
+#   static_files: pond-duck.html
+#   upload: pond-duck\.html
+#   secure: always
+# - url: /pond/
+#   static_dir: pond
+#   secure: always
 
-# Genetics app.
-- url: /genetics
-  static_files: genetics.html
-  upload: genetics\.html
-  secure: always
-- url: /genetics/
-  static_dir: genetics
-  secure: always
+# # Genetics app.
+# - url: /genetics
+#   static_files: genetics.html
+#   upload: genetics\.html
+#   secure: always
+# - url: /genetics/
+#   static_dir: genetics
+#   secure: always
 
 # Shared files.
 - url: /common
