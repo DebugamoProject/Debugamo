@@ -1,7 +1,7 @@
 {
 	"@metadata": {
 		"author": "Neil Fraser <fraser@google.com>",
-		"lastupdated": "2018-12-13 21:50:56.445042",
+		"lastupdated": "2018-11-27 23:30:15.973229",
 		"locale": "en",
 		"messagedocumentation" : "qqq"
 	},
@@ -71,6 +71,7 @@
 	"Debugging.NewPlayerGuide5": "Unfortunately, there was an accident while transporting DemO to the disaster site and his logic chip is malfunctioning. It is up to you to figure out how to help DemO by",
 	"Debugging.NewPlayerGuide6": " fixing its logic chip,",
 	"Debugging.NewPlayerGuide7": " and complete the mission!",
+	"Debugging.NewPlayerGuide8": "Choose your player avatar:",
 	"Debugging_hello": "Hello master~ I'm robot DemO. :D",
 	"Debugging_when_run": "when run",
 	"Debugging_msg_levelFailed1": "Level Failed...",
