@@ -46,6 +46,7 @@ test: test-en test-zh
 extract-msgs:
 	$(SOY_EXTRACTOR) --outputFile extracted_msgs.xlf --srcs $(ALL_TEMPLATES)
 	i18n/xliff_to_json.py --xlf extracted_msgs.xlf --templates $(ALL_TEMPLATES)
+	pause
 
 shop-en: common-en
 	mkdir -p appengine/$(APP)/public/generated
@@ -91,7 +92,7 @@ debugging-en: common-en
 
 debugging-zh: common-zh
 	mkdir -p appengine/$(APP)/public/generated
-	$(SOY_COMPILER) --outputPathFormat appengine/debugging/public/generated/zh/soy.js --srcs appengine/debugging/template.soy
+	$(SOY_COMPILER) --outputPathFormat appengine/debugging/public/generated/zh-hant/soy.js --srcs appengine/debugging/template.soy
 	python build-app-public.py debugging zh-hant
 
 

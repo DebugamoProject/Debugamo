@@ -263,14 +263,62 @@ html[dir="RTL"] button.primary {
 }
 
 .header .rightSide {
-    display: inline-block;
+    /* display: grid; */
     float: right;
+    height: 100%;
+    /* grid-template-columns: 2fr 2fr 2fr; */
+    padding-top: 5px;
+    padding-bottom: 5px;
     /*display: none;*/
 }
 
+button:active{
+    border: 1px solid #888;
+    outline: none;
+}
+
+.header .rightSide a,.header .rightSide button{
+    outline: none;
+    text-decoration: none;
+    text-align: center;
+    margin-left:7px;
+    margin-right: 7px;
+    transition: all .3s ease;
+    vertical-align: middle;
+    border: 0px;
+    box-shadow: none;
+}
+
+.header .rightSide a{
+    transition: all .3s ease;
+    color: white;
+}
+
+.header .rightSide button{
+    background-color: #00adbc;
+    color: white;
+}
+
+.header .rightSide button:active{
+    border: none;
+}
+
+i{
+    float: right;
+}
+
+.header .rightSide a:hover{
+    color: lightgrey;
+}
+
+.header .rightSide button:hover{
+    color: lightgrey;
+}
+
+/* 
 .header .rightSide button {
     margin: 7px 0 0 10px;
-}
+} */
 
 pre#containerCode {
     max-height: 310px;
@@ -814,14 +862,14 @@ pre#containerCode {
 }
 
 button {
-    padding: 7px;
-    -webkit-user-select: none;
+    
+    /* -webkit-user-select: none; */
     /* Chrome all / Safari all */
-    -moz-user-select: none;
+    /* -moz-user-select: none; */
     /* Firefox all */
-    -ms-user-select: none;
+    /* -ms-user-select: none; */
     /* IE 10+ */
-    user-select: none;
+    /* user-select: none; */
 }
 
 .hint-img {

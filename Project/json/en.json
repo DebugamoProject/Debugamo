@@ -1,7 +1,7 @@
 {
 	"@metadata": {
 		"author": "Neil Fraser <fraser@google.com>",
-		"lastupdated": "2018-11-27 23:30:15.973229",
+		"lastupdated": "2018-12-17 00:12:20.849780",
 		"locale": "en",
 		"messagedocumentation" : "qqq"
 	},
@@ -112,9 +112,6 @@
 	"Debugging_msg_errGotoCannotGotoAList": "DemO doesn't know where to go.",
 	"Debugging_msg_errSayTextNotDefined": "The variable in the DemO_Say block is not defined yet.",
 	"Games.debugging": "Debugging Mission",
-	"Debugging.clear": "Clear",
-	"Debugging.hint": "Hint",
-	"Debugging.guide": "Guide",
 	"Debugging_runTooltip": "Makes the robot do what the blocks say.",
 	"Debugging_resetTooltip": "Undo what the robot has done.",
 	"Debugging_stepTooltip": "Makes the robot do what one blocks say.",

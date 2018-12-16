@@ -169,17 +169,17 @@ Scope.init = function() {
     BlocklyGames.bindClick('runButton', Scope.runButtonClick);
     BlocklyGames.bindClick('stepButton', Scope.stepButtonClick);
     BlocklyGames.bindClick('resetButton', Scope.resetButtonClick);
-    BlocklyGames.bindClick('clearLocalStorageButton', Scope.clearLocalStorageButton);
-    BlocklyGames.bindClick('restartGameButton', Scope.restartGameButtonClick);
-    BlocklyGames.bindClick('helpButton', Scope.showHelp);
+    // BlocklyGames.bindClick('clearLocalStorageButton', Scope.clearLocalStorageButton);
+    // BlocklyGames.bindClick('restartGameButton', Scope.restartGameButtonClick);
+    // BlocklyGames.bindClick('helpButton', Scope.showHelp);
     BlocklyGames.bindClick('guidePreviousButton', UI.showPreviousGuide);
     BlocklyGames.bindClick('guideNextButton', UI.showNextGuide);
-    BlocklyGames.bindClick('restoreBlockHeader', Scope.restoreBlock);
-    BlocklyGames.bindClick('showCodeHeader', Scope.showCode);
-    BlocklyGames.bindClick('guideButton', Scope.startIntro);
-    BlocklyGames.bindClick('loadSolutionButton', Scope.loadSolution);
-    BlocklyGames.bindClick('bigQueryTest', Scope.bigQueryLogSend);
-    BlocklyGames.bindClick('musicOnOff', Scope.musicOnOff);
+    // BlocklyGames.bindClick('restoreBlockHeader', Scope.restoreBlock);
+    // BlocklyGames.bindClick('showCodeHeader', Scope.showCode);
+    // BlocklyGames.bindClick('guideButton', Scope.startIntro);
+    // BlocklyGames.bindClick('loadSolutionButton', Scope.loadSolution);
+    // BlocklyGames.bindClick('bigQueryTest', Scope.bigQueryLogSend);
+    // BlocklyGames.bindClick('musicOnOff', Scope.musicOnOff);
 
     // Lazy-load the JavaScript interpreter.
     setTimeout(BlocklyInterface.importInterpreter, 1);

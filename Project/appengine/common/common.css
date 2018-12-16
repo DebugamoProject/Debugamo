@@ -113,7 +113,7 @@ button:hover:not(:disabled)>img {
   opacity: 1;
 }
 button:active:not(:disabled) {
-  border: 1px solid #888 !important;
+  border: 1px solid #888;
 }
 button:hover:not(:disabled) {
   box-shadow: 2px 2px 5px #888;
