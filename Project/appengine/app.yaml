@@ -45,7 +45,7 @@ handlers:
 
 # Test app.
 - url: /test
-  static_files: test.html
+  static_files: test/test.html
   upload: test\.html
   secure: always
 - url: /test/
@@ -174,6 +174,9 @@ handlers:
   secure: always
 - url: /third-party/
   static_dir: third-party
+  secure: always
+- url: /closure/
+  static_dir: closure
   secure: always
 - url: /favicon\.ico
   static_files: favicon.ico

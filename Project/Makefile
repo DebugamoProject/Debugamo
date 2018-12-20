@@ -10,6 +10,9 @@ ALL_JSON = {./,index,maze,debugging}
 ALL_TEMPLATES = appengine/template.soy,appengine/index/template.soy,appengine/debugging/template.soy
 
 APP_ENGINE_THIRD_PARTY = appengine/third-party
+
+CLOSUREBUILDER = third-party/build/closurebuilder.py
+
 SOY_COMPILER = java -jar third-party/SoyToJsSrcCompiler.jar --shouldProvideRequireSoyNamespaces --isUsingIjData
 SOY_EXTRACTOR = java -jar third-party/SoyMsgExtractor.jar
 
@@ -36,7 +39,10 @@ test-zh: common-zh
 	$(SOY_COMPILER) --outputPathFormat appengine/test/generated/zh-hant/soy.js --srcs appengine/test/template.soy
 	python build-app.py test zh-hant
 
-test: test-en test-zh
+# test: test-en test-zh
+test:
+	$(SOY_COMPILER) --outputPathFormat appengine/test/soy.js --srcs appengine/test/template.soy
+	$(CLOSUREBUILDER) --root=
 
 # shop-zh: common-zh
 # 	$(eval TEMPLATE := appengine/shop/template.soy)
@@ -46,7 +52,6 @@ test: test-en test-zh
 extract-msgs:
 	$(SOY_EXTRACTOR) --outputFile extracted_msgs.xlf --srcs $(ALL_TEMPLATES)
 	i18n/xliff_to_json.py --xlf extracted_msgs.xlf --templates $(ALL_TEMPLATES)
-	pause
 
 shop-en: common-en
 	mkdir -p appengine/$(APP)/public/generated

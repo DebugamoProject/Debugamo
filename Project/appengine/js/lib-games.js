@@ -351,6 +351,8 @@ BlocklyGames.getMsgOrNull = function(key) {
  */
 BlocklyGames.bindClick = function(el, func) {
   if (typeof el == 'string') {
+    console.log('bindClick')
+    console.log(el)
     el = document.getElementById(el);
   }
   el.addEventListener('click', func, true);

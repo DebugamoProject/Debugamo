@@ -16,6 +16,7 @@ goog.require('Debugging.Game');
 goog.require('Debugging.UI');
 goog.require('Levels');
 goog.require('Debugging.soy');
+goog.require('NewUI');
 
 BlocklyGames.NAME = 'debugging';
 
@@ -49,6 +50,9 @@ Scope.init = function() {
     });
 
     BlocklyInterface.init();
+
+    newUI.css();
+    newUI.rightbar(goog.dom.getElement('rightBar'));
 
     var rtl = BlocklyGames.isRtl(); // right to left?
     var blocklyDiv = document.getElementById('blockly');
@@ -169,17 +173,20 @@ Scope.init = function() {
     BlocklyGames.bindClick('runButton', Scope.runButtonClick);
     BlocklyGames.bindClick('stepButton', Scope.stepButtonClick);
     BlocklyGames.bindClick('resetButton', Scope.resetButtonClick);
-    // BlocklyGames.bindClick('clearLocalStorageButton', Scope.clearLocalStorageButton);
-    // BlocklyGames.bindClick('restartGameButton', Scope.restartGameButtonClick);
-    // BlocklyGames.bindClick('helpButton', Scope.showHelp);
+    BlocklyGames.bindClick('Option',Scope);
+    // BlocklyGames.bindClick('Clear', Scope.clearLocalStorageButton);
+    BlocklyGames.bindClick('Option',Scope.setOptionItemEventListener);
+    // BlocklyGames.bindClick('Restart', Scope.restartGameButtonClick);
+    // BlocklyGames.bindClick('Help', Scope.showHelp);
     BlocklyGames.bindClick('guidePreviousButton', UI.showPreviousGuide);
     BlocklyGames.bindClick('guideNextButton', UI.showNextGuide);
+    // BlocklyGames.bindClick('setting',Scope.Setting);
     // BlocklyGames.bindClick('restoreBlockHeader', Scope.restoreBlock);
     // BlocklyGames.bindClick('showCodeHeader', Scope.showCode);
-    // BlocklyGames.bindClick('guideButton', Scope.startIntro);
-    // BlocklyGames.bindClick('loadSolutionButton', Scope.loadSolution);
+    // BlocklyGames.bindClick('Guide', Scope.startIntro);
+    // BlocklyGames.bindClick('Solution', Scope.loadSolution);
     // BlocklyGames.bindClick('bigQueryTest', Scope.bigQueryLogSend);
-    // BlocklyGames.bindClick('musicOnOff', Scope.musicOnOff);
+    // BlocklyGames.bindClick('Music', Scope.musicOnOff);
 
     // Lazy-load the JavaScript interpreter.
     setTimeout(BlocklyInterface.importInterpreter, 1);
@@ -215,11 +222,11 @@ Scope.init = function() {
     // enable developer mode
     if (window.location.origin == "http://localhost:8080") {
         console.log('[Game] Enable developer mode.');
-        // localStorage.setItem('done', '[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]');
-        // localStorage.setItem('maxDoneLevel', '18');
-        $('#debugModeBox').show();
-        $('#loadSolutionButton').show();
-        $('#clearLocalStorageButton').show();
+        localStorage.setItem('done', '[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]');
+        localStorage.setItem('maxDoneLevel', '18');
+        // $('#debugModeBox').show();
+        // $('#loadSolutionButton').show();
+        // $('#clearLocalStorageButton').show();
     }
 
     Scope.getAuthToken();
@@ -248,7 +255,20 @@ Scope.init = function() {
     setTimeout(function(){
         $('#loadSolutionButton').show();
     },300000)
+
+    
 };
+
+Scope.Setting = function(){
+    console.log('Hello is Clicked');
+    var settingDropdown = new goog.ui.MenuButtonRenderer.MenuButtonRenderer()
+    
+}
+
+Scope.setOptionItemEventListener = function(){
+    console.log('setOptionItemEventListener')
+    BlocklyGames.bindClick('Clear',Scope.clearLocalStorageButton)
+}
 
 /**
  * add log into localStorage
@@ -925,9 +945,11 @@ Scope.checkCurrentLevelComplete = function() {
  * Clear LocalStorage
  */
 Scope.clearLocalStorageButton = function() {
+    console.log('Clear is clicked')
     localStorage.clear();
     localStorage.setItem('debug', "1");
     localStorage.setItem('newPlayer', "1");
+    location.reload();
 }
 
 /**
