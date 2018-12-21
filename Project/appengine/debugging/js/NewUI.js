@@ -37,7 +37,7 @@ newUI.rightbar = function(rootNode){
 
     var menubar = goog.ui.menuBar.create();
     var menu_item = {
-        'Option' : ['Restart','Help','Clear','Solution','Hint','Guide'],
+        'Option' : ['Restart','Help','Clear','Solution','Guide'],
         'Setting' : ['Music']
     }
     var home_btn = new goog.ui.Button('Home');

@@ -176,17 +176,15 @@ Scope.init = function() {
     BlocklyGames.bindClick('Option',Scope);
     // BlocklyGames.bindClick('Clear', Scope.clearLocalStorageButton);
     BlocklyGames.bindClick('Option',Scope.setOptionItemEventListener);
-    // BlocklyGames.bindClick('Restart', Scope.restartGameButtonClick);
-    // BlocklyGames.bindClick('Help', Scope.showHelp);
+    
     BlocklyGames.bindClick('guidePreviousButton', UI.showPreviousGuide);
     BlocklyGames.bindClick('guideNextButton', UI.showNextGuide);
-    // BlocklyGames.bindClick('setting',Scope.Setting);
-    // BlocklyGames.bindClick('restoreBlockHeader', Scope.restoreBlock);
-    // BlocklyGames.bindClick('showCodeHeader', Scope.showCode);
-    // BlocklyGames.bindClick('Guide', Scope.startIntro);
-    // BlocklyGames.bindClick('Solution', Scope.loadSolution);
+    BlocklyGames.bindClick('Setting',Scope.setSettingEventListener);
+    BlocklyGames.bindClick('restoreBlockHeader', Scope.restoreBlock);
+    BlocklyGames.bindClick('showCodeHeader', Scope.showCode);
+ 
     // BlocklyGames.bindClick('bigQueryTest', Scope.bigQueryLogSend);
-    // BlocklyGames.bindClick('Music', Scope.musicOnOff);
+    
 
     // Lazy-load the JavaScript interpreter.
     setTimeout(BlocklyInterface.importInterpreter, 1);
@@ -259,15 +257,17 @@ Scope.init = function() {
     
 };
 
-Scope.Setting = function(){
-    console.log('Hello is Clicked');
-    var settingDropdown = new goog.ui.MenuButtonRenderer.MenuButtonRenderer()
-    
+Scope.setSettingEventListener = function(){
+   BlocklyGames.bindClick('Music', Scope.musicOnOff);
 }
 
 Scope.setOptionItemEventListener = function(){
     console.log('setOptionItemEventListener')
     BlocklyGames.bindClick('Clear',Scope.clearLocalStorageButton)
+    BlocklyGames.bindClick('Restart', Scope.restartGameButtonClick);
+    BlocklyGames.bindClick('Help', Scope.showHelp);
+    BlocklyGames.bindClick('Guide', Scope.startIntro);
+    BlocklyGames.bindClick('Solution', Scope.loadSolution);
 }
 
 /**
