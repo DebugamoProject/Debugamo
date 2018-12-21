@@ -309,6 +309,7 @@ Scope.addVer = function(version_xml_string) {
     var blockVersionStr = JSON.stringify(blockVersion);
     localStorage.blockVersion = blockVersionStr;
     // console.log(localStorage.blockVersion);
+    console.log(blockVersionStr);
     console.log('versions added into localStorage log!');
 };
 
@@ -578,6 +579,7 @@ Scope.runButtonClick = function(e) {
 
     // start animation after start sound played
     setTimeout(function() { Scope.execute(); }, 600)
+    alert('final of ')
 };
 
 /**
@@ -678,6 +680,7 @@ Scope.execute = function() {
     }
 
     var code = Blockly.JavaScript.workspaceToCode(BlocklyGames.workspace);
+    console.log('Blockly.JavaScript.workspaceToCode')
     console.log(code)
     code = Scope.mergeCodeWithListInit(code, Object.keys(Game.things));
 
@@ -692,7 +695,7 @@ Scope.execute = function() {
     // }
 
     var interpreter = new Interpreter(code, Scope.initInterpreter);
-
+    console.log('In execute and interpreter')
     Scope.interpretCode(interpreter, 0);
 };
 
