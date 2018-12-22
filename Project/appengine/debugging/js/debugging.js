@@ -220,7 +220,7 @@ Scope.init = function() {
     // enable developer mode
     if (window.location.origin == "http://localhost:8080") {
         console.log('[Game] Enable developer mode.');
-        localStorage.setItem('done', '[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]');
+        localStorage.setItem('done', '[1,2,3,4,5,6,7,8,9,11,12,13,14,15,16,17,18]');
         localStorage.setItem('maxDoneLevel', '18');
         // $('#debugModeBox').show();
         // $('#loadSolutionButton').show();
