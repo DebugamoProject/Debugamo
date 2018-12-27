@@ -1,0 +1,43 @@
+var counter = 0;
+var rock, human, kitten;
+
+
+highlightBlock('When_Run');
+stepAnchor('When_Run');
+highlightBlock('controls_whileUntil');
+while (stillHaveRocks()) {
+  highlightBlock('Robot_Goto');
+  robotGoto('rockTarget');
+  stepAnchor('Robot_Goto');
+  highlightBlock('Robot_Say');
+  robotSay('我在石頭的位置！');
+  stepAnchor('Robot_Say');
+  highlightBlock('Robot_Remove_Rock');
+  counter = counter + 1;
+  removeRock();
+  stepAnchor('Robot_Remove_Rock');
+  highlightBlock('controls_whileUntil');
+  stepAnchor('controls_whileUntil');
+}
+stepAnchor('controls_whileUntil');
+highlightBlock('Sh;fRj]0Oj3fQwA^*)7t');
+robotGoto('human');
+stepAnchor('Sh;fRj]0Oj3fQwA^*)7t');
+highlightBlock('Robot_Grab');
+robotGrab('human');
+stepAnchor('Robot_Grab');
+highlightBlock('](p*PSlD5TPDLycy4KQk');
+moveRobot('Left', 4);
+stepAnchor('](p*PSlD5TPDLycy4KQk');
+
+
+function stillHaveRocks() {
+	changeRock();
+	if (counter < 13) {
+		robotSay('迪摩偵測到地圖中還有石頭')
+		return true;
+	} else {
+		robotSay('迪摩偵測到場中已經沒有石頭！清除完畢！')
+		return false;
+	}
+}

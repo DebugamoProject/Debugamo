@@ -53,6 +53,7 @@ Scope.init = function() {
 
     newUI.css();
     newUI.rightbar(goog.dom.getElement('rightBar'));
+    newUI.target();
 
     var rtl = BlocklyGames.isRtl(); // right to left?
     var blocklyDiv = document.getElementById('blockly');
@@ -173,7 +174,7 @@ Scope.init = function() {
     BlocklyGames.bindClick('runButton', Scope.runButtonClick);
     BlocklyGames.bindClick('stepButton', Scope.stepButtonClick);
     BlocklyGames.bindClick('resetButton', Scope.resetButtonClick);
-    BlocklyGames.bindClick('Option',Scope);
+    // BlocklyGames.bindClick('Option',Scope);
     // BlocklyGames.bindClick('Clear', Scope.clearLocalStorageButton);
     BlocklyGames.bindClick('Option',Scope.setOptionItemEventListener);
     
@@ -182,7 +183,7 @@ Scope.init = function() {
     BlocklyGames.bindClick('Setting',Scope.setSettingEventListener);
     BlocklyGames.bindClick('restoreBlockHeader', Scope.restoreBlock);
     BlocklyGames.bindClick('showCodeHeader', Scope.showCode);
- 
+    BlocklyGames.bindClick('target_btn',Scope.showTarget)
     // BlocklyGames.bindClick('bigQueryTest', Scope.bigQueryLogSend);
     
 
@@ -220,7 +221,7 @@ Scope.init = function() {
     // enable developer mode
     if (window.location.origin == "http://localhost:8080") {
         console.log('[Game] Enable developer mode.');
-        localStorage.setItem('done', '[1,2,3,4,5,6,7,8,9,11,12,13,14,15,16,17,18]');
+        localStorage.setItem('done', '[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]');
         localStorage.setItem('maxDoneLevel', '18');
         // $('#debugModeBox').show();
         // $('#loadSolutionButton').show();
@@ -256,6 +257,28 @@ Scope.init = function() {
 
     
 };
+
+Scope.showTarget = function(){
+    Game.reset()
+    var code = level.solutionCodes;
+    console.log('This is showTarget')
+    console.log(code);
+    var interpretCode = new Interpreter(code, Scope.initInterpreter);
+    Scope.showTargetAnimation(interpretCode);
+    var runButton = document.getElementById('runButton');
+    var stepButton = document.getElementById('stepButton');
+    var resetButton = document.getElementById('resetButton');
+    var targetButton = document.getElementById('target_btn');
+    if (!resetButton.style.minWidth) {
+        resetButton.style.minWidth = runButton.offsetWidth + 'px';
+    }
+    runButton.style.display = 'none';
+    stepButton.style.display = 'none';
+    resetButton.style.display = 'inline';
+    targetButton.disabled = true;
+}
+
+
 
 Scope.setSettingEventListener = function(){
    BlocklyGames.bindClick('Music', Scope.musicOnOff);
@@ -488,6 +511,8 @@ Scope.startIntro = function() {
  */
 Scope.loadSolution = function() {
     Scope.addLog('loadSolution')
+    console.log('loadSolution')
+    console.log(level.solutionBlocks)
     BlocklyInterface.saveToLocalStorage(level.solutionBlocks);
     BlocklyInterface.loadBlocks(level.solutionBlocks, false);
 }
@@ -532,9 +557,9 @@ Scope.mergeCodeWithListInit = function(code, thingsName) {
                 tmp.push(nm);
             }
         }
-        tmp = tmp.join('", "');
-        tmp = '"' + tmp + '"';
-        prependCode += tmp + '];\n';
+        tmp = tmp.join("', '");
+        tmp = "'" + tmp + "'";
+        prependCode += tmp + "];\n";
         code = prependCode + code;
     }
 
@@ -579,7 +604,6 @@ Scope.runButtonClick = function(e) {
 
     // start animation after start sound played
     setTimeout(function() { Scope.execute(); }, 600)
-    alert('final of ')
 };
 
 /**
@@ -643,7 +667,7 @@ Scope.resetButtonClick = function(e) {
     document.getElementById('stepButton').style.display = 'inline-block';
     document.getElementById('resetButton').style.display = 'none';
     document.getElementById('game-buttons').style.textAlign = 'left';
-
+    document.getElementById('target_btn').disabled = false;
     Game.reset();
 
     // enable animation after short of period
@@ -659,10 +683,12 @@ Scope.resetButtonClick = function(e) {
  * @param {!Interpreter} interpreter The JS interpreter.
  */
 Scope.initInterpreter = function(interpreter, scope) {
+    console.log('in initInterpreter')
     var commandNames = Object.keys(Game.commands);
     commandNames.map(function(commandName) {
         interpreter.setProperty(scope, commandName, interpreter.createNativeFunction(Game.commands[commandName]));
     });
+    console.log(commandNames);
 };
 
 /**
@@ -680,8 +706,7 @@ Scope.execute = function() {
     }
 
     var code = Blockly.JavaScript.workspaceToCode(BlocklyGames.workspace);
-    console.log('Blockly.JavaScript.workspaceToCode')
-    console.log(code)
+
     code = Scope.mergeCodeWithListInit(code, Object.keys(Game.things));
 
     ///////////////////// TODO: this is hard code for level 13, fix this into somewhere better ////////////////
@@ -693,9 +718,9 @@ Scope.execute = function() {
     // } catch (e) {
     // alert(e);
     // }
-
+    console.log('Solution Code')
+    console.log(code)
     var interpreter = new Interpreter(code, Scope.initInterpreter);
-    console.log('In execute and interpreter')
     Scope.interpretCode(interpreter, 0);
 };
 
@@ -809,6 +834,18 @@ Scope.executeStep = function(pass_in_interpreter) {
 }
 
 /**
+ * The target animation:
+ */
+Scope.showTargetAnimation = function (interpreter) {
+    BlocklyInterface.highlight(null)
+    if(interpreter.step()){
+        setTimeout(function(){
+            Scope.showTargetAnimation(interpreter)
+        },Scope.STEP_SPEED);
+    }
+}
+
+/**
  * Interpret Workspace Code
  */
 Scope.interpretCode = function(interpreter, stepCount) {
@@ -819,6 +856,7 @@ Scope.interpretCode = function(interpreter, stepCount) {
         }
         // next step
         if (!Game.stopProgram && interpreter.step()) {
+            // console.log(stepCount)
             setTimeout(function() {
                 Scope.interpretCode(interpreter, stepCount + 1);
             }, Scope.STEP_SPEED);

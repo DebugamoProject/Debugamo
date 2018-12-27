@@ -69,16 +69,15 @@ newUI.rightbar = function(rootNode){
         console.log(e);
         console.log(rootNode)
     }
-    // newUI.niniagibra(MENU,rootNode);
-    // console.log(MENU);
-    // newUI.niniagibra(menubar,rootNode);
 }
 
-newUI.niniagibra = function (object,parentElement,opt_beforeNode) {
-    if(object.inDocument_)
-        throw new Error(goog.ui.Component.Error.ALREADY_RENDERED)
-    object.createDom();
-    
-    parentElement.insertBefore(object.element_ , opt_beforeNode||null);
-    if(!object.parent_ || object.parent_.isDocument()) object.enterDocument();
+
+newUI.target = function(){
+    var target = new goog.ui.Button('Target');
+    // target.setId('target_btn');
+    target.createDom();
+    var goal_right_box = document.getElementById('goal-right-box')
+    target = target.getElement()
+    target.setAttribute('id','target_btn')
+    goal_right_box.appendChild(target);
 }
