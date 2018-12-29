@@ -263,6 +263,9 @@ app = webapp2.WSGIApplication([
     webapp2.Route(r'/record', handler=RepeatCheck, name='repeatcheck'),
     webapp2.Route(r'/ip', handler=IPtest, name='iptest'),
     webapp2.Route(r'/log', handler=LogPage, name='log'),
+    # webapp2.Route(r'/debugging/public', handler=DebugPublic, name='debuuging_punlic'),
+    # webapp2.Route(r'/debugging/js', handler=LogPage, name='log'),
+
 ], debug=True)
 
 # [END all]
