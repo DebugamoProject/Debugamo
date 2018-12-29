@@ -480,6 +480,11 @@ Scope.startIntro = function() {
                 position: 'auto',
             },
             {
+                element:'#goal-right-box',
+                intro:"<b>【提示】</b><br><br>按這裡會出現<b>關卡的提示</b>，它會告訴你這個關卡要達成的目的喔！。",
+                "position":"auto",
+            },
+            {
                 intro: '<b>【開始探索】</b><br><br>大致上就是這樣，剩下的讓你自由探索。現在就讓我們開始第一關吧！',
             }
         ],

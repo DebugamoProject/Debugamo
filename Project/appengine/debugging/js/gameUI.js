@@ -288,11 +288,12 @@ UI.checkAllNewPlayerInfoIsFilled = function() {
     $('#playerName').val('anonymous');
     var name = $('#playerName').val();
 
-    if (school != null && grade != null && classNum != null && num != "" && name != "" && localStorage.avatar != undefined) {
-        $('#startGameBtn').attr('disabled', false);
-    } else {
-        $('#startGameBtn').attr('disabled', true);
-    }
+    // if (school != null && grade != null && classNum != null && num != "" && name != "" && localStorage.avatar != undefined) {
+    //     $('#startGameBtn').attr('disabled', false);
+    // } else {
+    //     $('#startGameBtn').attr('disabled', true);
+    // }
+    $('#startGameBtn').attr('disabled', false);
 }
 
 UI.drawGrid = function(cvs, isAnimation) {
