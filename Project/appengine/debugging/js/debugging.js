@@ -991,7 +991,7 @@ Scope.checkCurrentLevelComplete = function() {
  * Clear LocalStorage
  */
 Scope.clearLocalStorageButton = function() {
-    console.log('Clear is clicked')
+    // console.log('Clear is clicked')
     localStorage.clear();
     localStorage.setItem('debug', "1");
     localStorage.setItem('newPlayer', "1");
