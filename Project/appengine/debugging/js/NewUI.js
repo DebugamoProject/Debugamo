@@ -73,7 +73,7 @@ newUI.rightbar = function(rootNode){
 
 
 newUI.target = function(){
-    var target = new goog.ui.Button('Target');
+    var target = new goog.ui.Button();
     // target.setId('target_btn');
     target.createDom();
     var goal_right_box = document.getElementById('goal-right-box')

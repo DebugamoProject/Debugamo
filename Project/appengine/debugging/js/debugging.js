@@ -480,7 +480,7 @@ Scope.startIntro = function() {
                 position: 'auto',
             },
             {
-                element:'#goal-right-box',
+                element:'#target_btn',
                 intro:"<b>【提示】</b><br><br>按這裡會出現<b>關卡的提示</b>，它會告訴你這個關卡要達成的目的喔！。",
                 "position":"auto",
             },

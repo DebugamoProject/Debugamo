@@ -26,28 +26,6 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
-__pool = '1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-
-def random_generate_key():
-    # key_list = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
-    key_list = 'This is key'
-    key = ''
-    # for i in key_list : 
-    key = bytes(bytearray(key_list))
-    print(''.join('{:02x}'.format(ord(i)) for i in key))
-    iv = 'This is an IV456'
-    print(iv)
-    try:
-        cipher = AES.new(key , AES.MODE_CBC , 'This is an IV456')
-        print(iv)
-        result = cipher.encrypt('AES ENCODING0000')
-        # return result
-        result = ''.join('{:02x}'.format(ord(i)) for i in result)
-        return result
-    except ValueError as e:
-        return '\n' + str(e)  + 'key legth is ' + str(len(key))+ '\n' + str(key)
-
-
 def connect_to_cloudsql():
     # When deployed to App Engine, the `SERVER_SOFTWARE` environment variable
     # will be set to 'Google App Engine/version'.
@@ -76,23 +54,23 @@ def connect_to_cloudsql():
 
 class Encryption():
     def __init__(self,key=None,iv=None,cipher=None):
-        self.__pool__ = '0123456789abcdefghijklmnopqrstuvwxyz- \0'
+        self.__pool__ = '0123456789abcdefghijklmnopqrstuvwxyz-:. \0'
         try:
             with open('./LangPkg/token.json','r') as f:
                 self.__pkg = json.loads(f.read())
                 f.close()
         except:  
-            pool = random.sample(range(0,100),39)
+            pool = random.sample(range(0,100),41)
             self.__pkg = {}
             k = 0
             for i in self.__pool__ : 
                 self.__pkg[i] = pool[k]
                 k += 1
             with open('./LangPkg/token.json','w') as f:
-                json.dump(self.__pkg,f)
+                f.write(json.dumps(self.__pkg,indent=4))
                 f.close()
         self.__key = key
-        self.__iv = self.__messageMultipleNProcess(iv)
+        self.__iv = iv
         self.__cipher = cipher
         if self.__key is not None and self.__iv is not None and self.__cipher is None:
             self.__cipher = self.GenerateCipher(self.__key, self.__iv)
@@ -101,8 +79,8 @@ class Encryption():
         """
         Generate a cipher
         parameter:
-        key : an iterable object (only support list of integer or string)
-        iv : an iterable object (only support list of integer or string)
+            key : an iterable object (only support list of integer or string)
+            iv : an iterable object (only support list of integer or string)
         """
         if type(key) == type(str()):
             key = self.GenerateKeyList(self.__messageMultipleNProcess(key).lower())
@@ -124,7 +102,7 @@ class Encryption():
         Return a list of numbers.
 
         Parameter: 
-        key_message: an iterable object.
+            key_message: an iterable object.
         """
         key_list = [] # The number exist in the key_list is select by self.__pkg
         for i in key_message:
@@ -168,8 +146,8 @@ class Encryption():
         the function will only reset the cipher object.
 
         Parameter:
-        key : cipher's key
-        iv : cipher's iv
+            key : cipher's key
+            iv : cipher's iv
         """
         if key is not None and iv is not None:
             self.__key = self.__messageMultipleNProcess(key,32)
@@ -184,9 +162,9 @@ class Encryption():
         If key and iv are both specified, the cipher will be reset.
         
         Parameter:
-        message : a string object.
-        key : a key which is selected to encrypt the message.
-        iv : the initial vector of AES CBC algorithm.
+            message : a string object.
+            key : a key which is selected to encrypt the message.
+            iv : the initial vector of AES CBC algorithm.
         """
         if self.__cipher is None and (key is None or iv is None):
             raise Exception("The Encryption object lacks of key or iv. Please give enough parameters to encrypt message")
@@ -203,9 +181,9 @@ class Encryption():
         If key and iv are both specified, the cipher will be reset.
         
         Parameter:
-        message : a string object.
-        key : a key which is selected to decrypt the message.
-        iv : the initial vector of AES CBC algorithm.
+            message : a string object.
+            key : a key which is selected to decrypt the message.
+            iv : the initial vector of AES CBC algorithm.
         """
         if self.__cipher is None and (key is None or iv is None):
             raise Exception("The Encryption object lacks of key or iv. Please give enough parameters to encrypt message")
@@ -219,71 +197,19 @@ class Encryption():
 
 
 class dataEncryption(webapp2.RequestHandler):
-
-    def __userAgentProcess(self):
-        token = os.environ['HTTP_USER_AGENT']
-        key = ''
-        if len(token) < 16:
-            return token + '-' * (16 - len(token) % 16)
-        key = token_list = token.split('/')
-        if len(token_list) >= 4 : 
-            key = token_list[1].split(('('))[1].split(')')[0]
-        newkey = ''
-        for i in key:
-            newkey += i
-        if len(newkey) < 32 :
-            newkey += '-' * (16 - len(key) % 16)
-        return newkey[:32]
-
-    def __userIPProcess(self):
-        ip = self.request.remote_addr
-        if re.search(':',ip) is not None:
-            iplist = ip.split(':')
-        else:
-            iplist = ip.split('.')
-        ip = ''
-        for i in iplist:
-            ip += i
-        if len(ip) < 16:
-            ip += '-'* (16 - len(ip) % 16)
-        
-        return ip[:16]
-
-    def __generateKey(self,message):
-        key = bytes(bytearray([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]))
-        iv = bytes(bytearray([21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34,35, 36 ]))
-        print(str(key))
-        result = self.__encrypt(key,message,iv)
-        return result
-
-    def __encrypt(self,key,message,iv):
-        cipher = AES.new(key , AES.MODE_CBC, iv)
-        result = cipher.encrypt(message)
-        result = ''.join('{:02x}'.format(ord(i)) for i in result)
-        return result
-
-    def __decrypt(self,key, message,iv):
-        cipher = AES.new(key, AES.MODE_CBC, iv)
-        result = cipher.decrypt(message.decode('hex'))
-        return result
-
-    
-
     def get(self):
-        try:
-            # print(self.request.remote_addr)
-            with open('./LangPkg/token.json','r') as f:
-                self.pkg = json.loads(f.read())
-                self.response.headers['Content-Type'] = 'application/json'
-                return self.response.out.write(json.dumps(self.pkg))
-        except :
-            return self.response.set_status(404)
-    
+        ip = self.request.remote_addr
+        userAgent = os.environ['HTTP_USER_AGENT']
+        userAgent = userAgent.split('/')
+        encrypter = Encryption(key=ip,iv=userAgent[1])
+        result = encrypter.Encrypt(ip)
+        result = ''.join('{:02x}'.format(ord(i)) for i in result)
+        return self.response.write(result)
+
     def post(self):
-        userkey = self.__generateKey(self.__userAgentProcess())
-        useriv = self.__generateKey(self.__userIPProcess())
-        return self.response.write(self.request.remote_addr)
-        # return self.response.write('%s' % userkey)
+        encrypter = Encryption()
+        self.response.headers['Content-Type'] = 'application/json'
+        return self.response.out.write(json.dumps(encrypter.Token()))
 
 
 class Log(db.Model):
@@ -361,7 +287,7 @@ class LangPage(webapp2.RequestHandler):
 
 class Login_Register(webapp2.RequestHandler):
     def get(self):
-        if self.request.cookies.get('login') == 'TRUE': # bug is hear 
+        if self.request.cookies.get('login') == 'TRUE':
             return self.redirect('/user')
         else:
             path = 'templates/login/index.html'

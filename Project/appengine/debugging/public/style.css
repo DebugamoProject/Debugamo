@@ -985,3 +985,17 @@ img.showCodeRobot {
 .slider.round:before {
     border-radius: 50%;
 }
+
+#target_btn{
+    float: right;
+    width: 68px;
+    height: 68px;
+    background-image: url("./img/hint.jpg");
+    background-repeat: no-repeat;
+    transition: .3s;
+}
+
+#target_btn:hover{
+    /* background: lightgrey; */
+    background-image: url("./img/hint2.jpg");
+}
