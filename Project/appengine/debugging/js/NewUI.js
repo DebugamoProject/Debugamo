@@ -76,7 +76,7 @@ newUI.target = function(){
     var target = new goog.ui.Button();
     // target.setId('target_btn');
     target.createDom();
-    var goal_right_box = document.getElementById('goal-right-box')
+    var goal_right_box = document.getElementById('player-avatar-box')
     target = target.getElement()
     target.setAttribute('id','target_btn')
     goal_right_box.appendChild(target);

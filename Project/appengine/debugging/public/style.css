@@ -451,10 +451,12 @@ pre#containerCode {
     position: absolute;
     left: 10px;
     top: 38px;
+    width: 50px;
 }
 
 #player-avatar {
-    width: 45px;
+    width: 50px;
+    display: inline;
 }
 
 #goal-arrow {
@@ -987,7 +989,8 @@ img.showCodeRobot {
 }
 
 #target_btn{
-    float: right;
+    /* float: right; */
+    display: inline-block;
     width: 68px;
     height: 68px;
     background-image: url("./img/hint.jpg");
