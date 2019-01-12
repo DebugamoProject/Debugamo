@@ -113,7 +113,7 @@ if (goog.DEBUG) {
 
 
 BlocklyGames.soy.startGame = function(opt_data, opt_ignored, opt_ijData) {
-  return '<div class="farSide" style="padding: 0 3ex"><button class="primary" id="startGameBtn" onclick="Debugging.UI.setAvatar(\'male.default.png\');Debugging.startGame();">\u9078\u64C7\u982D\u50CF\u958B\u59CB\u4EFB\u52D9</button><a style="display:block;" href="https://github.com/DebugamoProject/Debugamo" target="_blank"><img style="width: 50px;" src="debugging/public/img/github.png"></img></a></div>';
+  return '<div class="farSide" style="padding: 0 3ex"><button class="primary" id="startGameBtn" onclick="Debugging.UI.setAvatar(\'male.default.png\');Debugging.startGame();">\u958B\u59CB\u4EFB\u52D9</button><a style="display:block;" href="https://github.com/DebugamoProject/Debugamo" target="_blank"><img style="width: 50px;" src="debugging/public/img/github.png"></img></a></div>';
 };
 if (goog.DEBUG) {
   BlocklyGames.soy.startGame.soyTemplateName = 'BlocklyGames.soy.startGame';

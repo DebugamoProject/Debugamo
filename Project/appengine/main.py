@@ -323,7 +323,7 @@ class Email_Item(webapp2.RequestHandler):
     def put(self, email, item):
         if self.request.cookies.get('login') == 'TRUE':
             request = self.request
-            sql_instruction = "UPDATE users SET {} = '{}' where email = '{}'".format(item, request.get(item), request.cookies.get('user'))
+            sql_instruction = "UPDATE users SET {} = '{}' where email = '{}'".format(item, request.get(item).encode('utf'), request.cookies.get('user'))
             
             db = connect_to_cloudsql()
             cursor = db.cursor()
@@ -335,7 +335,7 @@ class Email_Item(webapp2.RequestHandler):
 class Register(webapp2.RequestHandler):
     def post(self):
         request = self.request
-        name = request.get('name').encode('utf-8')
+        name = request.get('name').encode('utf')
         ID = request.get('gameID')
         email = request.get('email')
         password = request.get('password')
@@ -397,7 +397,21 @@ class RepeatCheck(webapp2.RequestHandler):
             return self.response.write('{}'.format(False))
 
 
+class GameData(webapp2.RequestHandler):
+    def get(self,user):
+        
+        return self.response.out.write('user is %s' % user)
 
+    def post(self):
+        request = self.request
+
+        arguments = request.arguments()
+        print(arguments)
+
+class CreateClass(webapp2.RequestHandler):
+    def post(self):
+        request = self.request
+        
 LANGUAGE_API = '/language/'
 
 app = webapp2.WSGIApplication([
@@ -414,7 +428,9 @@ app = webapp2.WSGIApplication([
     webapp2.Route(r'/record', handler=RepeatCheck, name='repeatcheck'),
     webapp2.Route(r'/ip', handler=IPtest, name='iptest'),
     webapp2.Route(r'/log', handler=LogPage, name='log'),
-    webapp2.Route(r'/token',handler=dataEncryption,name='encryptopn')
+    webapp2.Route(r'/token',handler=dataEncryption,name='encryptopn'),
+    webapp2.Route(r'/GameRecord',handler=GameData,name='gameRecord'),
+    webapp2.Route(r'/GameRecord/<user>',handler=GameData,name='gameRecord')
     # webapp2.Route(r'/debugging/public', handler=DebugPublic, name='debuuging_punlic'),
     # webapp2.Route(r'/debugging/js', handler=LogPage, name='log'),
 
