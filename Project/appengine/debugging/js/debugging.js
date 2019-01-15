@@ -17,6 +17,7 @@ goog.require('Debugging.UI');
 goog.require('Levels');
 goog.require('Debugging.soy');
 goog.require('NewUI');
+goog.require('Blockly.db');
 
 BlocklyGames.NAME = 'debugging';
 
@@ -54,8 +55,12 @@ Scope.init = function() {
     newUI.css();
     newUI.rightbar(goog.dom.getElement('rightBar'));
     newUI.target();
-
-    var rtl = BlocklyGames.isRtl(); // right to left?
+    try{
+        db.init('/GameRecord/','1123123');
+    }catch(e){
+        console.log(e)
+    }
+        var rtl = BlocklyGames.isRtl(); // right to left?
     var blocklyDiv = document.getElementById('blockly');
 
     /* Init Blockly */
@@ -140,10 +145,10 @@ Scope.init = function() {
 
     // if there is no saved xml(which means level just started, or empty xml, load the defaultBlocks from levels.js)
     var savedXml = BlocklyGames.loadFromLocalStorage('debugging', BlocklyGames.LEVEL);
-    if (!done || Levels[BlocklyGames.LEVEL].isEvaluation) {
+    // if (!done || Levels[BlocklyGames.LEVEL].isEvaluation) {
         console.log('[Game] Load default blocks.');
         BlocklyInterface.saveToLocalStorage(Levels[BlocklyGames.LEVEL].defaultBlocks);
-    }
+    // }
 
     // load defualt blocks or load stored blocks from Local Storage / Session Storage / DB
     var savedXml = localStorage.savedBlocks;
@@ -386,9 +391,9 @@ Scope.getAuthToken = function() {
             assertion: sJWS
         }
 
-        $.post("https://www.googleapis.com/oauth2/v4/token", payload, function(response) {
-            localStorage.token = response.access_token;
-        });
+        // $.post("https://www.googleapis.com/oauth2/v4/token", payload, function(response) {
+        //     localStorage.token = response.access_token;
+        // });
     }
 }
 

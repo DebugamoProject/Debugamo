@@ -6,8 +6,8 @@ var lang;
 function setLanguage(){
     var cookies = Cookies.get('lang')
     if(!cookies){
-        Cookies.set('lang','zh',{expires: 7});
-        lang = 'zh';
+        Cookies.set('lang','zh-hant',{expires: 7});
+        lang = 'zh-hant';
         console.log('set cookies')
     }else{
         lang = Cookies.get('lang')

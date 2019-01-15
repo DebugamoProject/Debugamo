@@ -215,6 +215,7 @@
       "debugging/public/generated/zh-hant/msg.js",
       "js/lib-interface.js",
       "js/lib-dialogs.js",
+      "debugging/js/db.js",
       "third-party/goog/useragent/product.js",
       "third-party/goog/useragent/platform.js",
       "third-party/goog/useragent/product_isversion.js",

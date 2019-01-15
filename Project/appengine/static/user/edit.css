@@ -1,0 +1,98 @@
+/*-------edit part----------*/
+
+#edit{
+
+    width: 90%;
+    padding: 5%;
+    padding-top: 5%;
+    box-sizing: border-box;
+
+}
+
+.item{
+    width: 100%;
+    padding: 10px;
+    
+}
+
+#edit label{
+    font-size: 16px;
+} 
+
+.item input{
+    outline: none;
+    border:none;
+    border-bottom: 1px solid black;
+    border-radius: 5px 5px 0px 0px;
+    width: 20%;
+    height: 30px;
+    font-size: 18px;
+    vertical-align: bottom;
+    margin-right:10px;
+    background-color:transparent;
+}
+
+.item input:focus{
+    transition: 1s;
+    background-color: rgb(255, 222, 180);
+}
+
+#name-ID{
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+#edit span{
+    margin-right:10px;
+}
+
+#name-ID input{
+    width: 50%;
+}
+
+#edit div.edit-dropdown{
+    margin-top: 10px;
+    background-color: antiquewhite;
+    box-shadow:3px 3px 9px grey;
+    display: none;
+    padding:10px;
+    padding-left: 0px;
+    height: 5%;
+}
+
+
+button{
+    outline: none;
+    height: 30px;
+    font-size:14px;
+    border-radius: 3px;
+}
+
+button:hover{
+    transition: 0.5s;
+    background-color: rgb(232, 226, 226);
+}
+
+.user-data{
+    margin-right:10px;
+}
+
+
+#name-ID .edit-dropdown{
+    width: 80%;
+}
+
+div#password-dropdown.edit-dropdown{
+    font-size: 12px;
+    height: 80px;
+}
+#password-dropdown.edit-dropdown input{
+    width:18%
+}
+
+#Birthday-drop-down select{
+    width: 60px;
+    height: 30px;
+    font-size: 14px;
+}
+

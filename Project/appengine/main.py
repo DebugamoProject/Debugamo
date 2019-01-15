@@ -211,7 +211,6 @@ class dataEncryption(webapp2.RequestHandler):
         self.response.headers['Content-Type'] = 'application/json'
         return self.response.out.write(json.dumps(encrypter.Token()))
 
-
 class Log(db.Model):
     access_time = db.DateTimeProperty(auto_now_add=True)
     ip_address = db.StringProperty()
@@ -297,7 +296,12 @@ class Login_Register(webapp2.RequestHandler):
 class UserPage(webapp2.RequestHandler):
     def get(self):
         if self.request.cookies.get('login') == 'TRUE':
-            path = 'templates/user/users.html'
+            
+            path = 'templates/user/{}.html'
+            if(self.request.cookies.get('identity') == 'teacher'):
+                path = path.format('teacher')
+            else:
+                path = path.format('users')
             template_values = ''
             return self.response.write(template.render(path, template_values))
         else:
@@ -323,7 +327,7 @@ class Email_Item(webapp2.RequestHandler):
     def put(self, email, item):
         if self.request.cookies.get('login') == 'TRUE':
             request = self.request
-            sql_instruction = "UPDATE users SET {} = '{}' where email = '{}'".format(item, request.get(item), request.cookies.get('user'))
+            sql_instruction = "UPDATE users SET {} = '{}' where email = '{}'".format(item, request.get(item).encode('utf'), request.cookies.get('user'))
             
             db = connect_to_cloudsql()
             cursor = db.cursor()
@@ -335,7 +339,7 @@ class Email_Item(webapp2.RequestHandler):
 class Register(webapp2.RequestHandler):
     def post(self):
         request = self.request
-        name = request.get('name').encode('utf-8')
+        name = request.get('name').encode('utf')
         ID = request.get('gameID')
         email = request.get('email')
         password = request.get('password')
@@ -365,6 +369,11 @@ class Login(webapp2.RequestHandler):
         cursor = db.cursor()
         cursor.execute(loginSQL)
         result = cursor.fetchall()
+        print(result)
+        # if(result[4] == 'teacher'):
+        
+        self.response.set_cookie('identity',result[0][4])
+
         if len(result) == 1:
             return self.response.write('successful')
         else:
@@ -396,6 +405,123 @@ class RepeatCheck(webapp2.RequestHandler):
         else:
             return self.response.write('{}'.format(False))
 
+class GameData(webapp2.RequestHandler):
+    def get(self,user):
+        
+        return self.response.out.write('user is %s' % user)
+
+    def post(self):
+        request = self.request
+
+        arguments = request.arguments()
+        print(arguments)
+
+class Class(webapp2.RequestHandler):
+
+    def __getLevelContent(self,gamesData):
+        keys = gamesData.keys()
+        sqlinstruction = []
+        for i in keys:
+            sqlinstruction.append("name = '{}'".format(i))
+        sqlinstruction = 'or'.join(sqlinstruction)
+        sqlinstruction = "SELECT levels FROM classTB WHERE " + sqlinstruction
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        cursor.execute(sqlinstruction)
+        levelsResult = cursor.fetchall()
+        
+        
+
+        newGameData = {}
+        for i in levelsResult[0]:
+            
+            game = json.loads(i.encode('utf')) # type dict
+            # print(json.dumps(game,indent=4))
+            keys = game.keys()
+            for j in keys:
+                newGameData[j] = {}
+                selectedGameChapter = gamesData[j].keys() 
+                selectedGameChapter = [int(sgc) for sgc in selectedGameChapter]
+                for k in selectedGameChapter:
+                    newGameData[j][k] = {}
+                    try:
+                        newGameData[j]
+                        selectedGameLevels = gamesData[j][k]
+                        for l in selectedGameLevels:
+                            newGameData[j][k][l] = game[j][unicode(k)][unicode(l)]
+                    except:
+                        raise UnicodeError("""
+                        Congratulation!!! You meet the unicode Error.
+                        Please Check The Cloud SQL Encoding!!!
+                        I have ever been exhausted to find out the exact problem of this bug.
+                        The "level" data is stored in sql in JSON type.
+                        The data you fetch all above may be unicode encoding or other type encoding
+                        based on the setting while you created the db.
+                        So, Please Check Cloud SQL Encoding and Change the Code Above.
+                        """)
+
+        return newGameData
+    
+    def __ClassProcess(self,data):
+        games = data["games"].split(',')
+        games = [i for i in games if len(i) > 0 ]
+        newGames = {}
+        for i in games:
+            token = data[i].split(',')
+            token = [j for j in token if len(j) > 0]
+            newGames[i.encode('utf-8')] = {}
+            for j in token:
+                level = j.split('-')
+                level = [int(k) for k in level]
+                if level[0] not in newGames[i].keys():
+                    newGames[i][level[0]] = []
+                newGames[i][level[0]].append(level[1])
+        return newGames
+    
+    def post(self):
+        request = self.request
+        arguments = request.arguments()
+        data = {}
+        for i in arguments:
+            data[i] = request.get(i)
+        
+        # print(json.dumps(data,ensure_ascii=False,indent=4))
+        gamesData = self.__ClassProcess(data)
+        chapterLevelData = self.__getLevelContent(gamesData)
+
+        print('chapterLevelData',json.dumps(chapterLevelData))
+        print('post data is',data)
+
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        cursor.execute(
+            """INSERT INTO classTB(name, levels, developer, description, public) 
+            VALUES(%s, %s, %s, %s, %s)
+            """,(data[u'name'],json.dumps(chapterLevelData),self.request.cookies.get('user'),data[u'description'],data[u'mode'])
+        )
+        db.commit()
+        db.close()
+        
+    def get(self):
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        cursor.execute("""
+        SELECT *  FROM classTB WHERE public=1;
+        """)
+        result = cursor.fetchall()
+        print(result)
+        self.response.headers['Content-Type'] = 'application/json'
+        return self.response.out.write(json.dumps(result,indent=4))
+
+class GameHandler(webapp2.RequestHandler):
+    def get(self):
+        # try:
+        #     return self.response.out.write(template.render('debugging/public/debugging.html', ''))
+        # except Exception() as e:
+        #     print(e)
+        #     print(os.listdir('./static'))
+
+        return self.response.set_status(404)
 
 
 LANGUAGE_API = '/language/'
@@ -414,7 +540,11 @@ app = webapp2.WSGIApplication([
     webapp2.Route(r'/record', handler=RepeatCheck, name='repeatcheck'),
     webapp2.Route(r'/ip', handler=IPtest, name='iptest'),
     webapp2.Route(r'/log', handler=LogPage, name='log'),
-    webapp2.Route(r'/token',handler=dataEncryption,name='encryptopn')
+    webapp2.Route(r'/token',handler=dataEncryption,name='encryptopn'),
+    webapp2.Route(r'/GameRecord',handler=GameData,name='gameRecord'),
+    webapp2.Route(r'/GameRecord/<user>',handler=GameData,name='gameRecord'),
+    webapp2.Route(r'/debugging',handler=GameHandler,name='Game'),
+    webapp2.Route(r'/class',handler=Class,name='Class')
     # webapp2.Route(r'/debugging/public', handler=DebugPublic, name='debuuging_punlic'),
     # webapp2.Route(r'/debugging/js', handler=LogPage, name='log'),
 
