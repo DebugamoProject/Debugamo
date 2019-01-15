@@ -24,6 +24,11 @@
                     "story":"Story",
                     "friend":"Friend",
                     "edit":"Personal Profile Edit"
+                },
+                "class":{
+                    "task": "Task",
+                    "add" : "Add",
+                    "backend":"Backend"
                 }
             }
         }

@@ -24,6 +24,11 @@
                     "story":"社群",
                     "friend":"朋友",
                     "edit":"個人資料修改"
+                },
+                "class":{
+                    "task":"任務",
+                    "add" : "新增",
+                    "backend":"後台"
                 }
             },
             "edit":{

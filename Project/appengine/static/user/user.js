@@ -65,15 +65,15 @@ function SetUserData(){
   $(`<span id="user-class" class="user-data">${data[4]}</span>`).insertBefore('#class-edit')
   $(`<span id="user-birthday" class="user-data">${data[5]}</span>`).insertBefore('#birthday-edit')
 }
-SetUserData();
+// SetUserData();
 
 //--------------language---------------//
 
 function setLanguage(){
   var cookies = Cookies.get('lang')
   if(!cookies){
-    Cookies.set('lang','zh',{expires: 7});
-    lang = 'zh';
+    Cookies.set('lang','zh-hant',{expires: 7});
+    lang = 'zh-hant';
   }else{
     lang = Cookies.get('lang')
   }
