@@ -266,5 +266,16 @@
   
   <!-- <script src="../../static/user/user.js"></script> -->
 </body>
-
+<script>
+var init = function () {
+    var courses = courseProcess('/class')
+    courses = coursesSetup(courses);
+    var test = document.getElementById('publicClass');
+    for(var i of courses){
+        test.append(i);
+    }
+}
+init();
+</script>
+<script src="../../static/user/classEventListener.js"></script>
 </html>

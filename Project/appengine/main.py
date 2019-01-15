@@ -423,7 +423,7 @@ class Class(webapp2.RequestHandler):
         sqlinstruction = []
         for i in keys:
             sqlinstruction.append("name = '{}'".format(i))
-        sqlinstruction = 'or'.join(sqlinstruction)
+        sqlinstruction = ' or '.join(sqlinstruction)
         sqlinstruction = "SELECT levels FROM classTB WHERE " + sqlinstruction
         db = connect_to_cloudsql()
         cursor = db.cursor()
@@ -513,15 +513,49 @@ class Class(webapp2.RequestHandler):
         self.response.headers['Content-Type'] = 'application/json'
         return self.response.out.write(json.dumps(result,indent=4))
 
-class GameHandler(webapp2.RequestHandler):
-    def get(self):
-        # try:
-        #     return self.response.out.write(template.render('debugging/public/debugging.html', ''))
-        # except Exception() as e:
-        #     print(e)
-        #     print(os.listdir('./static'))
+class GameBackendHandler(webapp2.RequestHandler):
+    def get(self,**kwargs):
+        """
+        /backend/<user>/<request>
+        Needs login check!!!!
+        """
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        user = kwargs['user']
+        sql = """
+        SELECT identity FROM users WHERE email='%s'
+        """ % (user)
+        try:
+            cursor.execute(sql)
+        except:
+            raise TypeError(sql)
+        result = cursor.fetchall()
 
-        return self.response.set_status(404)
+        if(len(result) > 0 and result[0][0] == 'teacher'):
+            print('I am a teacher')
+        else:
+            return self.response.set_status(404)
+
+        if kwargs.has_key('request'):
+            cursor.execute("""
+            SELECT * FROM classTB WHERE developer = "%s"
+            """ % (kwargs['user']))
+            result = cursor.fetchall()
+            self.response.headers['Content-Type'] = 'application/json'
+            return self.response.out.write(json.dumps(result,indent=4))
+        # for key,item in kwargs.iteritems():
+        #     print('key is %s item is %s' % (key,item))
+        else:
+
+            db.commit()
+            db.close()
+
+            return self.response.out.write(template.render('templates/backend/teacher.html',''))
+
+    def post(self):
+
+        pass
+
 
 
 LANGUAGE_API = '/language/'
@@ -543,7 +577,8 @@ app = webapp2.WSGIApplication([
     webapp2.Route(r'/token',handler=dataEncryption,name='encryptopn'),
     webapp2.Route(r'/GameRecord',handler=GameData,name='gameRecord'),
     webapp2.Route(r'/GameRecord/<user>',handler=GameData,name='gameRecord'),
-    webapp2.Route(r'/debugging',handler=GameHandler,name='Game'),
+    webapp2.Route(r'/backend/<user>',handler=GameBackendHandler,name='Game'),
+    webapp2.Route(r'/backend/<user>/<request>',handler=GameBackendHandler,name='GameCourses'),
     webapp2.Route(r'/class',handler=Class,name='Class')
     # webapp2.Route(r'/debugging/public', handler=DebugPublic, name='debuuging_punlic'),
     # webapp2.Route(r'/debugging/js', handler=LogPage, name='log'),

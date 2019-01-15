@@ -1,8 +1,8 @@
-function getPublicClass() {
+function getPublicClass(URL) {
     var courses;
     $.ajax({
         type: "GET",
-        url: "/class",
+        url: URL,
         async: false,
         success: function (response) {
             console.log('Post successful')
@@ -14,13 +14,9 @@ function getPublicClass() {
     return courses;
 }
 
-var init = function () {
-    var courses = courseProcess()
-    coursesSetup(courses);
-}
 
-var courseProcess = function () {
-    var courses = getPublicClass();
+var courseProcess = function (URL) {
+    var courses = getPublicClass(URL);
     // console.log(course)
     for (var i of courses) {
         i[1] = JSON.parse(i[1])
@@ -75,15 +71,18 @@ var coursesSetup = function (courses) {
         $(up).append('<i class="fas fa-angle-up"></i>');
         $(up).append('<div style="border: 1px solid grey"></div>');
         levels.append(up);
+
         for(var j in i[1]){
+            // console.log(Object.keys(i[1]))
             for(var k in i[1][j]){
-                // console.log(k);
+                
                 for(var l in i[1][j][k]){
                     var level = document.createElement('div');
-                    level.className = 'level';
+                    level.className = `level`;
                     level.id = `level${k}-${l}`;
                     $(level).append(`<span class="levelNum">${k} - ${l}</span>`);
-                    $(level).append(`<span class="levelDiscription">${i[1][j][k][l]}</span>`);
+                    $(level).append(`<span class="levelDiscription" style="margin-left:50px;">${i[1][j][k][l]}</span>`);
+                    $(level).append(`<sapn class='gameParent' style="display:none;">${j}</span>`)
                     levels.append(level);
                 }
             }
@@ -92,34 +91,5 @@ var coursesSetup = function (courses) {
         Class.append(levels);
         classes.push(Class);
     }
-    var test = document.getElementById('publicClass');
-    for(var i of classes){
-        test.append(i);
-    }
-    
+    return classes
 }
-
-init();
-
-
-
-$('.dropdownBar').on('click', function (e) {
-    e.preventDefault();
-    console.log(this)
-    $(this).parent().parent().children('.levels').slideToggle();
-})
-
-$('.up').on('click', function (e) {
-    e.preventDefault();
-    $(this).parent().parent().children('.levels').slideToggle();
-});
-
-$('.level').click(function (e) {
-    e.preventDefault();
-    var shadow = $(this).css('box-shadow')
-    if (shadow != 'rgb(128, 128, 128) 3px 3px 3px 0px')
-        $(this).css('box-shadow', 'rgb(128, 128, 128) 3px 3px 3px 0px');
-    else
-        $(this).css('box-shadow', 'none');
-})
-

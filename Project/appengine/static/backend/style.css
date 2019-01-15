@@ -1,0 +1,129 @@
+body{
+    margin: 0px;
+}
+
+#main{
+    height: 100%;
+    /* padding-left: 250px; */
+}
+
+a{
+    text-decoration: none;
+    color: white;
+}
+
+#open{
+    background: none;
+    width: 50px;
+    height: 40px;
+    border: 0px;
+    outline: none;
+    cursor: pointer;
+    margin-right: 250px;
+}
+
+#header{
+    height: 40px;
+    padding:20px;
+    padding-left: 50px;
+    background: #00adbc;
+    color: white;
+}
+
+#header div{
+    display: inline-block;
+}
+
+#left-side{
+    display: inline-block;
+}
+
+#mid{
+    margin-left: 30px;
+}
+
+#right-side{
+    display: inline-block;
+    /* float: right; */
+
+    margin-left: 380px;
+    color: white;
+}
+
+#right-side a{
+    margin-right: 10px;
+}
+
+.sidenav{
+    height: 100%;
+    width: 0px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background: black;
+    overflow-x: hidden;
+    padding-top: 60px;
+    transition: .5s;
+}
+
+.sidenav a{
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover{
+    color: #f1f1f1;
+}
+
+.sidenav .closebtn{
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+
+#content{
+    padding-left: 270px;
+    padding-right: 270px;
+    padding-top: 50px;
+}
+
+.classItem{
+    display:inline-block;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.classItem a{
+    color: black;
+}
+
+#courses{
+    /* margin-right: 250px; */
+    border: 1px solid black;
+}
+
+.dropdownContent{
+    position: absolute;
+    display: none;
+    background-color: #f1f1f1;
+    /* min-width: 160px; */
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdownContent a{
+    text-decoration: none;
+    width: 70px;
+    padding: 12px 16px;
+    color: black;
+    display: block;
+}
+
