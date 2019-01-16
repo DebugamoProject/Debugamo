@@ -476,8 +476,22 @@ class Class(webapp2.RequestHandler):
                 if level[0] not in newGames[i].keys():
                     newGames[i][level[0]] = []
                 newGames[i][level[0]].append(level[1])
-        return newGames
-    
+        return newGames,games
+
+    def __newTableProcess(self,data,games):
+        print(json.dumps(data,indent=4))
+        tableColumns = """CREATE TABLE %s (ID CHARACTER(30) , """ % (re.sub(r' ','_',data['name']))
+        for game in games:
+            token = data[game].split(',')
+            token = [game + re.sub(r' - ',r'_',i) + ' JSON ' for i in token if len(i) > 0]
+            token = ' , '.join(token)
+            tableColumns += token
+        tableColumns += ')'
+        print(tableColumns)
+        
+        
+        return tableColumns
+
     def post(self):
         request = self.request
         arguments = request.arguments()
@@ -486,22 +500,33 @@ class Class(webapp2.RequestHandler):
             data[i] = request.get(i)
         
         # print(json.dumps(data,ensure_ascii=False,indent=4))
-        gamesData = self.__ClassProcess(data)
+        gamesData,games = self.__ClassProcess(data)
         chapterLevelData = self.__getLevelContent(gamesData)
 
         print('chapterLevelData',json.dumps(chapterLevelData))
-        print('post data is',data)
+        # games = data['games'].split(',')
+        print('games is ',games)
 
         db = connect_to_cloudsql()
         cursor = db.cursor()
         cursor.execute(
             """INSERT INTO classTB(name, levels, developer, description, public) 
             VALUES(%s, %s, %s, %s, %s)
-            """,(data[u'name'],json.dumps(chapterLevelData),self.request.cookies.get('user'),data[u'description'],data[u'mode'])
+            """,(re.sub(r' ','_',data['name']),json.dumps(chapterLevelData),self.request.cookies.get('user'),data[u'description'],data[u'mode'])
         )
         db.commit()
+        newTableInstruction = self.__newTableProcess(data,games)
+        cursor.execute(newTableInstruction)
+        db.commit()
         db.close()
+        # levelNums = 0
+        # for i in gamesData.keys():
+        #     chapters = gamesData[i].keys()
+        #     for chapter in chapters:
+        #         levelNums += len(gamesData[i][chapter])
         
+        # print()  
+          
     def get(self):
         db = connect_to_cloudsql()
         cursor = db.cursor()
