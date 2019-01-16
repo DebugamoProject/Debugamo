@@ -561,7 +561,7 @@ class GameBackendHandler(webapp2.RequestHandler):
         else:
             return self.response.set_status(404)
 
-        if kwargs.has_key('request'):
+        if kwargs.has_key('request') and kwargs['request'] == 'courses':
             cursor.execute("""
             SELECT * FROM classTB WHERE developer = "%s"
             """ % (kwargs['user']))
@@ -571,7 +571,6 @@ class GameBackendHandler(webapp2.RequestHandler):
         # for key,item in kwargs.iteritems():
         #     print('key is %s item is %s' % (key,item))
         else:
-
             db.commit()
             db.close()
 

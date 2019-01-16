@@ -1,7 +1,7 @@
 function getCourse(){
     var url = window.location.href
     console.log(url)
-    var courses = courseProcess(url + '/mycourses');
+    var courses = courseProcess(url + '/courses');
     courses = coursesSetup(courses);
     var coursesBar = new Array;
     for(var c of courses){
@@ -41,6 +41,7 @@ function getMembers() {
 }
 
 var courses = getCourse();
+// var courses = new Object;
 
 $('.courseManage').on('click',function(){
     $('#task').children('div').remove();

@@ -23,11 +23,12 @@ a{
 }
 
 #header{
-    height: 40px;
-    padding:20px;
+    height: 60px;
+    padding: 0px;
     padding-left: 50px;
     background: #00adbc;
     color: white;
+    box-sizing: border-box;
 }
 
 #header div{
@@ -133,4 +134,57 @@ a{
     height: 15%;
     text-align: center;
     cursor: pointer;
+}
+
+.membersOverview{
+    height: 300px;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 10px;
+}
+
+.statistics{
+    height: 80%;
+}
+
+.members{
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: 1px solid grey;
+    border-radius: 3px;
+}
+
+.member{
+    height: 40px;
+    width: 100%;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-radius: 3px;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+.member div{
+    display: inline-block;
+}
+
+
+.methods{
+    height: 30px;
+    padding-top: 7px;
+    padding-right: 15px;
+    box-sizing: border-box;
+}
+
+.fas.fa-ellipsis-h{
+    float : right;
+}
+
+.methods a{
+    color: black;
+    float: right;
+    margin-right: 10px;
 }
