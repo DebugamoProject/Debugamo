@@ -8,8 +8,20 @@ goog.require('goog.ui.MenuButton');
 goog.require('goog.ui.ContainerRenderer');
 goog.require('goog.ui.menuBar');
 goog.require('goog.ui.Component');
+goog.require('BlocklyGames');
 
 var newUI = NewUI;
+
+newUI.init = function(){
+    newUI.css();
+    newUI.rightbar(goog.dom.getElement('rightBar'));
+    newUI.target();
+}
+
+newUI.levelBarModification = function(){
+    
+}
+
 
 // append css file at the end of head element
 newUI.css = function(){

@@ -184,18 +184,54 @@ BlocklyGames.NAME;
 /**
  * Maximum number of levels.  Common to all apps.
  */
-BlocklyGames.MAX_LEVEL = 10;
+BlocklyGames.MAX_LEVEL = 18;
 
 /**
  * User's level (e.g. 5).
  */
-BlocklyGames.LEVEL =
-    Math.min((parseInt(window.localStorage.maxDoneLevel) + 1), BlocklyGames.getNumberParamFromUrl('level', 1, BlocklyGames.MAX_LEVEL));
+BlocklyGames.LEVEL = BlocklyGames.getStringParamFromUrl('level','1')
+    // Math.min((parseInt(window.localStorage.maxDoneLevel) + 1), BlocklyGames.getNumberParamFromUrl('level', 1, BlocklyGames.MAX_LEVEL));
+
+/**
+ * Blockly's Game Task
+ * 
+ */
+BlocklyGames.TASK = BlocklyGames.getStringParamFromUrl('task','debugging');
+
+/**
+ * Blockly's Game USER
+ */
+BlocklyGames.USER = BlocklyGames.getStringParamFromUrl('user','debugging');
+
+
+
+BlocklyGames.getTaskData = function (){
+  var xhr = new XMLHttpRequest();
+  var taskData  = {
+    "user":BlocklyGames.USER,
+    "task":BlocklyGames.TASK
+  }
+  var nextLevel;
+  xhr.open("POST","/GameRecord",true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onreadystatechange = function(){
+    if(this.readyState == 4 && this.status === 200 ){
+      console.log('response is');
+      var data = JSON.parse(this.responseText)
+      nextLevel = data["nextLevel"];
+      console.log(nextLevel)
+      localStorage.nextLevel = JSON.stringify(nextLevel)
+    }
+  }
+  xhr.send(JSON.stringify(taskData));
+ 
+}
 
 /**
  * Common startup tasks for all apps.
  */
 BlocklyGames.init = function() {
+  BlocklyGames.getTaskData();
   // change url if level param is changed
   if (BlocklyGames.NAME == "debugging") {
     var search = window.location.search;
@@ -204,6 +240,7 @@ BlocklyGames.init = function() {
       search = "?level=" + BlocklyGames.LEVEL
     history.replaceState({}, "", "debugging" + search);
   }
+  
   
 
   // Set the page title with the content of the H1 title.
