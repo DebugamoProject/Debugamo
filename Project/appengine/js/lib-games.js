@@ -216,7 +216,7 @@ BlocklyGames.getTaskData = function (){
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onreadystatechange = function(){
     if(this.readyState == 4 && this.status === 200 ){
-      console.log('response is');
+      // console.log('response is');
       var data = JSON.parse(this.responseText)
       nextLevel = data["nextLevel"];
       console.log(nextLevel)

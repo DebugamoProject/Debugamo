@@ -1,0 +1,29 @@
+#joinTask{
+    width: 100%;
+    padding-top: 100px;
+    padding-left: 50px;
+}
+.courseItem{
+    height: 200px;
+    width: 200px;
+    border: 1px solid black;
+    border-radius: 5px;
+    display: inline-block;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    padding: 3px;
+}
+
+.row{
+    padding: 10px;
+}
+
+.addCourseBtn{
+    outline: none;
+    cursor: pointer;
+}
+
+.addCourseBtn:active{
+    outline: none;
+}

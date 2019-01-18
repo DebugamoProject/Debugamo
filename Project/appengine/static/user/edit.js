@@ -1,20 +1,15 @@
 
 //---------EDIT------------------//
-
-$('#information').on('click', function (e) {
-    console.log('edit')
-    // $('#main-container').append(edit);
-    // $('body').localize();
-    var edit = $('#edit')
-    if (edit.css('display') == 'block') {
-        edit.css('display', 'none')
-    } else {
-        console.log('none')
-        edit.css('display', 'block');
-    }
-    ReloadUserData();
-
-})
+// function editContent() {
+//     var edit = $('#edit')
+//     if (edit.css('display') == 'block') {
+//         edit.css('display', 'none')
+//     } else {
+//         console.log('none')
+//         edit.css('display', 'block');
+//     }
+//     ReloadUserData();
+// }
 
 var year, month;
 

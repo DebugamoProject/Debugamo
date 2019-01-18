@@ -14,9 +14,9 @@
             "level" : "Level",
             "options":{
                 "game":{
-                    "helpdemo":"Help Demo",
-                    "practice":"Practice",
-                    "solo":"Solo",
+                    "task":"Task",
+                    "opentask":"Tasks",
+                    "yourtask":"Your Task",
                     "multiplayer":"Multiplayer",
                     "record":"Battle Record"
                 },

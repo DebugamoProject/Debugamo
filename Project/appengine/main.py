@@ -542,45 +542,116 @@ class Class(webapp2.RequestHandler):
         
         return tableColumns
 
-    def post(self):
+    def post(self,**kwargs):
         request = self.request
         arguments = request.arguments()
-        data = {}
-        for i in arguments:
-            data[i] = request.get(i)
-        
-        # print(json.dumps(data,ensure_ascii=False,indent=4))
-        gamesData,games = self.__ClassProcess(data)
-        chapterLevelData = self.__getLevelContent(gamesData)
-
-        print('chapterLevelData',json.dumps(chapterLevelData))
-        # games = data['games'].split(',')
-        print('games is ',games)
-
         db = connect_to_cloudsql()
         cursor = db.cursor()
-        cursor.execute(
-            """INSERT INTO classTB(name, levels, developer, description, public) 
-            VALUES(%s, %s, %s, %s, %s)
-            """,(re.sub(r' ','_',data['name']),json.dumps(chapterLevelData),self.request.cookies.get('user'),data[u'description'],data[u'mode'])
-        )
-        db.commit()
-        newTableInstruction = self.__newTableProcess(data,games)
-        cursor.execute(newTableInstruction)
-        db.commit()
-        db.close()
-        
-          
-    def get(self):
+        if len(kwargs.keys()) == 0:
+            data = {}
+            for i in arguments:
+                data[i] = request.get(i)
+            
+            # print(json.dumps(data,ensure_ascii=False,indent=4))
+            gamesData,games = self.__ClassProcess(data)
+            chapterLevelData = self.__getLevelContent(gamesData)
+
+            print('chapterLevelData',json.dumps(chapterLevelData))
+            # games = data['games'].split(',')
+            print('games is ',games)
+
+            cursor.execute(
+                """INSERT INTO classTB(name, levels, developer, description, public) 
+                VALUES(%s, %s, %s, %s, %s)
+                """,(re.sub(r' ','_',data['name']),json.dumps(chapterLevelData),self.request.cookies.get('user'),data[u'description'],data[u'mode'])
+            )
+            db.commit()
+            newTableInstruction = self.__newTableProcess(data,games)
+            cursor.execute(newTableInstruction)
+            db.commit()
+            db.close()
+        else:
+            print("request.get('user')",request.get('user'))
+            cursor.execute(
+                """
+                SELECT courses,gameID FROM users WHERE email='%s'
+                """ % request.get('user')
+            )
+            data = cursor.fetchall()
+            GameID = data[0][1]
+            result = list(json.loads(data[0][0]))
+            result.append(request.get('course'))
+            print(result)
+            cursor.execute(
+                """
+                UPDATE users SET courses='%s' WHERE email='%s'
+                """ % (json.dumps(result),request.get('user'))
+            )
+            
+            cursor.execute(
+                """
+                INSERT INTO %s(ID) VALUES(%s)
+                """
+                % (request.get('course'), GameID)
+            )
+            db.commit()
+            db.close()
+            return self.response.out.write('successful')
+                 
+    def get(self,**kwargs):
         db = connect_to_cloudsql()
         cursor = db.cursor()
-        cursor.execute("""
-        SELECT *  FROM classTB WHERE public=1;
-        """)
-        result = cursor.fetchall()
-        print(result)
-        self.response.headers['Content-Type'] = 'application/json'
-        return self.response.out.write(json.dumps(result,indent=4))
+        if(len(kwargs.keys()) == 0):
+            """
+            if kwargs has no keys, the request is send query to server for public course
+            """
+            cursor.execute("""
+            SELECT *  FROM classTB WHERE public=1;
+            """)
+            result = cursor.fetchall()
+            print(result)
+            self.response.headers['Content-Type'] = 'application/json'
+            return self.response.out.write(json.dumps(result,indent=4))
+
+        else:
+            user = kwargs['user']
+            cursor.execute(
+                """
+                SELECT courses FROM users WHERE email='%s'
+                """ % user
+            )
+            result = cursor.fetchall()
+            userCourse = json.loads(result[0][0])
+            print(userCourse)
+            # return self.response.out.write('%s' % result)
+            if kwargs['request'] == 'search':
+                """
+                means that searching the course user didn't participate in
+                """
+                cursor.execute(
+                    """
+                    SELECT name, description FROM classTB WHERE public=1;
+                    """
+                )
+                Courseresult = cursor.fetchall()
+                
+                
+                returnData = []
+                for i in Courseresult:
+                    if not i[0] in userCourse:
+                        returnData.append({
+                            "name": i[0],
+                            "description":i[1]
+                        })
+                # print(json.dumps(returnData,indent=4))
+                self.response.headers['Content-Type'] = 'application/json'
+                return self.response.out.write(json.dumps(returnData,indent=4))
+
+            else:
+                pass
+                
+                
+
 
 class GameBackendHandler(webapp2.RequestHandler):
     def get(self,**kwargs):
@@ -647,7 +718,9 @@ app = webapp2.WSGIApplication([
     webapp2.Route(r'/GameRecord/<user>',handler=GameData,name='gameRecord'),
     webapp2.Route(r'/backend/<user>',handler=GameBackendHandler,name='Game'),
     webapp2.Route(r'/backend/<user>/<request>',handler=GameBackendHandler,name='GameCourses'),
-    webapp2.Route(r'/class',handler=Class,name='Class')
+    webapp2.Route(r'/class',handler=Class,name='Class'),
+    webapp2.Route(r'/class/<user>',handler=Class,name='ParticipateCourse'),
+    webapp2.Route(r'/class/<user>/<request>',handler=Class,name='CourseRequest')
     # webapp2.Route(r'/debugging/public', handler=DebugPublic, name='debuuging_punlic'),
     # webapp2.Route(r'/debugging/js', handler=LogPage, name='log'),
 

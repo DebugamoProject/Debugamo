@@ -65,7 +65,7 @@ function SetUserData(){
   $(`<span id="user-class" class="user-data">${data[4]}</span>`).insertBefore('#class-edit')
   $(`<span id="user-birthday" class="user-data">${data[5]}</span>`).insertBefore('#birthday-edit')
 }
-// SetUserData();
+SetUserData();
 
 //--------------language---------------//
 
@@ -107,3 +107,86 @@ $('select#language-select').on('change',function(e){
   console.log('cookies set again')
   window.location.reload(true);
 })
+
+
+//------- participate Class ----------//
+
+/**
+ * load the class Data
+ */
+
+function getClassData(){
+  var user = Cookies.get('user');
+  var data;
+  $.ajax({
+    type: "GET",
+    url: "/class/" + user + '/search',
+    async: false,
+    success: function (response) {
+      data = response;
+    }
+  });
+  return data;
+}
+
+function ClassDataDomCreater(){
+  var data = getClassData();
+  var rowContainer = new Array;
+  var aRow = new Array;
+  for(var i = 0; i < data.length; i++){
+    var courseItem = document.createElement('div');
+    courseItem.className = 'courseItem';
+    courseItem.id = data[i]["name"];
+    $(courseItem).append(`
+
+      <button class="addCourseBtn" id='${data[i]["name"]}Btn' style="float:right;margin:5px;" onclick="addCourse('${data[i]["name"]}')">
+          <i class="fas fa-plus"></i>
+      </button>
+      <div class="courseInformation" style="display: none">
+        <p class="course-name">${data[i]["name"]}</p>
+        <p class="course-description">${data[i]["description"]}</p>
+      </div>
+    
+    `);
+    aRow.push(courseItem);
+    if((i + 1) % 4 === 0){
+      rowContainer.push(aRow)
+      aRow = new Array;
+    }
+  }
+  if(aRow.length != 0)
+    rowContainer.push(aRow);
+  
+  var jointask = $('#joinTask');
+  for(var i = 0 ; i < rowContainer.length; i++){
+    var row = document.createElement('div');
+    row.className = 'row';
+    for(var j = 0; j < rowContainer[i].length; j++){
+      $(row).append(rowContainer[i][j]);
+    }
+    jointask.append(row);
+  }
+}
+
+function addCourse(courseName){
+  var user = Cookies.get('user');
+  $.ajax({
+    type: "POST",
+    url: "/class/" + user,
+    data: {
+      "course" : courseName,
+      "user" : user
+    },
+    success: function (response) {
+      var courseItem = document.getElementById(courseName + 'Btn');
+      courseItem.setAttribute('disabled','true');
+      courseItem.style.cursor = 'not-allowed';
+      $(courseItem).css('background','grey');
+    },
+    error: function () {
+      alert('Server Error Please Report it to us');
+    }
+  });
+}
+
+ClassDataDomCreater();
