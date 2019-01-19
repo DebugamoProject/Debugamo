@@ -617,11 +617,12 @@ class Class(webapp2.RequestHandler):
             user = kwargs['user']
             cursor.execute(
                 """
-                SELECT courses FROM users WHERE email='%s'
+                SELECT courses,gameID FROM users WHERE email='%s'
                 """ % user
             )
             result = cursor.fetchall()
             userCourse = json.loads(result[0][0])
+            userID = result[0][1]
             print(userCourse)
             # return self.response.out.write('%s' % result)
             if kwargs['request'] == 'search':
@@ -647,7 +648,15 @@ class Class(webapp2.RequestHandler):
                 self.response.headers['Content-Type'] = 'application/json'
                 return self.response.out.write(json.dumps(returnData,indent=4))
 
-            else:
+            elif kwargs['request'] == 'userTask':
+                courseData = []
+                for i in userCourse:
+                    courseData.append({
+                        "name" : i,
+                        "url" : "&user=%s&task=%s" %(userID,i)
+                    })
+                self.response.headers['Content-Type'] = 'application/json'
+                self.response.out.write(json.dumps(courseData,indent=4))
                 pass
                 
                 

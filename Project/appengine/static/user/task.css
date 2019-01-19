@@ -27,3 +27,81 @@
 .addCourseBtn:active{
     outline: none;
 }
+
+#myTask{
+    width: 100%;
+    padding-top: 100px;
+    padding-left: 50px;
+}
+
+.task-info-img{
+    height: 200px;
+    width: 80%;
+    border: 1px solid black;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+.taskImg{
+    width: 60%;
+    display: inline-block;
+    margin-right: 10px;
+    height: 80%;
+}
+
+.userInfo{
+    display: inline-block;
+    padding-top: 50px;
+    padding-right: 50px;
+    height: 80%;
+    float: right;
+}
+
+.dropdownBar{
+    text-align: center;
+}
+
+.up{
+    text-align: center;
+}
+
+.members{
+    border: 1px solid black;
+    width: 80%;
+    border-radius: 5px;
+    height: auto;
+}
+
+.methods{
+    height: 20px;
+    padding: 5px;
+    /* text-align: right; */
+}
+
+.member{
+    /* display: inline; */
+    height: 40px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    padding-top: 10px;
+    padding-left: 30px;
+}
+
+.sorting a{
+    /* display: inline; */
+    margin-top: 5px;
+}
+
+.sorting{
+    position: relative;
+    width: 100px;
+    background-color: aliceblue;
+    text-align: center;
+    height: 80px;
+    z-index: 1;
+    display: none;
+}

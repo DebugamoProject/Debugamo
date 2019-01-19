@@ -2,12 +2,12 @@
 $('.dropdownBar').on('click', function (e) {
     e.preventDefault();
     console.log(this)
-    $(this).parent().parent().children('.levels').slideToggle();
+    $(this).parent().parent().children('.dropdownContent').slideToggle();
 })
 
 $('.up').on('click', function (e) {
     e.preventDefault();
-    $(this).parent().parent().children('.levels').slideToggle();
+    $(this).parent().parent().children('.dropdownContent').slideToggle();
 });
 
 $('.level').click(function (e) {

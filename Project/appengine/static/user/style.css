@@ -232,3 +232,8 @@ button.dropdown-btn{
 .courseInformation{
     width: 80%;
 }
+
+#main-container a{
+    color: black;
+    text-decoration: none;
+}

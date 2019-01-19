@@ -168,6 +168,12 @@ function ClassDataDomCreater(){
   }
 }
 
+
+/**
+ * participating a course
+ * this function will be called by "onclick" attribute
+ * @param {*} courseName 
+ */
 function addCourse(courseName){
   var user = Cookies.get('user');
   $.ajax({
@@ -190,3 +196,60 @@ function addCourse(courseName){
 }
 
 ClassDataDomCreater();
+
+
+//--------------user's task----------------//
+
+function getUserTaskData(){
+  var userEmail = Cookies.get('user');
+  var userTaskData;
+  $.ajax({
+    type: "GET",
+    url: "/class/" + userEmail + "/userTask",
+    async: false,
+    success: function (response) {
+      userTaskData = response;
+    }
+  });
+  return userTaskData;
+}
+
+function UserClassDataDomCreater(){
+  var taskItems = new Array;
+  var userTaskData = getUserTaskData();
+  for(var i = 0; i < userTaskData.length; i++){
+    var taskItem = document.createElement('div');
+    taskItem.className = 'taskItem';
+    $(taskItem).append(`
+    <div class="task-info-img">
+    <div class="taskImg">
+      This Is IMG of Task ${userTaskData[i]['name']}
+    </div>
+    <div class="userInfo">
+      <p>任務 :
+        <span> ${userTaskData[i]['name']}</span>
+      </p>
+      <!-- <p>完成度 :
+        <span>5/4</span>
+      </p> -->
+      <button>
+        <a href="/debugging?lang=zh-hant&level=1${userTaskData[i]['url']}" style="color:black">開始遊戲</a>
+      </button>
+    </div>
+    
+    <div style="border-top: 1px solid grey;"></div>
+    <!-- <div class="dropdownBar" >
+        <i class="fas fa-angle-down"></i>
+    </div> -->
+  </div>
+    `)
+    taskItems.push(taskItem);
+  }
+  console.log(taskItems)
+  for(var i = 0; i < taskItems.length; i++){
+    $('#TaskOverview').append(taskItems[i]);
+  }
+}
+
+UserClassDataDomCreater();
+

@@ -14,7 +14,6 @@ function getPublicClass(URL) {
     return courses;
 }
 
-
 var courseProcess = function (URL) {
     var courses = getPublicClass(URL);
     // console.log(course)
@@ -63,7 +62,7 @@ var coursesSetup = function (courses) {
         img_info.append(dropdownicon);
 
         var levels = document.createElement('div');
-        levels.className = 'levels';
+        levels.className = 'levels dropdownContent';
         levels.style = 'display:none';
 
         var up = document.createElement('div');
@@ -93,3 +92,4 @@ var coursesSetup = function (courses) {
     }
     return classes
 }
+
