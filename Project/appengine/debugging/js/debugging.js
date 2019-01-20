@@ -49,8 +49,6 @@ Scope.init = function() {
         html: BlocklyGames.IS_HTML
     });
 
-    alert("Line 52 pass");
-
     BlocklyInterface.init();
 
     

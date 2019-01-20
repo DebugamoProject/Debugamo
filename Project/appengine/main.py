@@ -53,6 +53,7 @@ def connect_to_cloudsql():
     return db
 
 class Encryption():
+
     def __init__(self,key=None,iv=None,cipher=None):
         self.__pool__ = '0123456789abcdefghijklmnopqrstuvwxyz-:. \0'
         try:
@@ -428,43 +429,54 @@ class GameData(webapp2.RequestHandler):
     def post(self):
         """
 
-        """
-        request = self.request
-        data = json.loads(request.body)
-        db = connect_to_cloudsql()
-        cursor = db.cursor()
-        cursor.execute(
             """
-            SELECT levels FROM classTB WHERE name='%s'
-            """ % (data['task'])
-        )
-        result = cursor.fetchall()
-        task = json.loads(result[0][0])
-        print(json.dumps(task,indent=4))
-        games = task.keys()
-        selectedLevels = []
-        for i in games:
-            chapters = task[i].keys()
-            for j in chapters:
-                gamesLevel = task[i][j].keys()
-                for level in gamesLevel:
-                    selectedLevels.append((int(j) - 1) * 3 + int(level))
+            request = self.request
+            data = json.loads(request.body)
+            db = connect_to_cloudsql()
+            cursor = db.cursor()
+            cursor.execute(
+                """
+                SELECT levels FROM classTB WHERE name='%s'
+                """ % (data['task'])
+            )
+            # data['task'] if url isn't specified which task here will raise exception!!
+            # use try-except to handle and redirect to the correct page.
+            result = cursor.fetchall()
+            task = json.loads(result[0][0])
+            print(json.dumps(task,indent=4))
+            games = task.keys()
+            selectedLevels = []
+            for i in games:
+                chapters = task[i].keys()
+                for j in chapters:
+                    gamesLevel = task[i][j].keys()
+                    for level in gamesLevel:
+                        selectedLevels.append((int(j) - 1) * 3 + int(level))
 
-        selectedLevels = sorted(selectedLevels)
+            selectedLevels = sorted(selectedLevels)
+            # in NAMESPACE BlocklyInterface.nextLevel, functon will switch to next level based on this data 
         # in NAMESPACE BlocklyInterface.nextLevel, functon will switch to next level based on this data 
-        nextLevelDict = {}
-        for i in range(len(selectedLevels) - 1):
-            nextLevelDict[selectedLevels[i]] = selectedLevels[i + 1]
-        
-        cursor.execute(
-            """
-            SELECT * FROM %s WHERE ID='%s'
-            """ % (data['task'],data['user'])
+            # in NAMESPACE BlocklyInterface.nextLevel, functon will switch to next level based on this data 
+            nextLevelDict = {}
+            for i in range(len(selectedLevels) - 1):
+                nextLevelDict[selectedLevels[i]] = selectedLevels[i + 1]
+            
+            cursor.execute(
+                """
+                SELECT * FROM %s WHERE ID='%s'
+                """ % (data['task'],data['user'])
+            )  
         )  
-        result = cursor.fetchall()[0]
-        startlevel = self.__getCurrentLevel(result)
+            )  
+            result = cursor.fetchall()[0]
+            startlevel = self.__getCurrentLevel(result)
+            
+            self.response.headers['Content-Type'] = 'application/json' 
         self.response.headers['Content-Type'] = 'application/json' 
-        return self.response.out.write(json.dumps({"nextLevel":nextLevelDict,"startLevel":startlevel})) 
+            self.response.headers['Content-Type'] = 'application/json' 
+            return self.response.out.write(json.dumps({"nextLevel":nextLevelDict,"startLevel":selectedLevels[startlevel]})) 
+
+
 
 class Class(webapp2.RequestHandler):
 
