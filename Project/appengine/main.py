@@ -53,6 +53,7 @@ def connect_to_cloudsql():
     return db
 
 class Encryption():
+
     def __init__(self,key=None,iv=None,cipher=None):
         self.__pool__ = '0123456789abcdefghijklmnopqrstuvwxyz-:. \0'
         try:
@@ -406,15 +407,76 @@ class RepeatCheck(webapp2.RequestHandler):
             return self.response.write('{}'.format(False))
 
 class GameData(webapp2.RequestHandler):
+    def __getCurrentLevel(self,result):
+        flag = False
+        for i in range(1,len(result)):
+            flag = False
+            try:
+                data = json.load(result[i])
+                for j in data["action"]:
+                    if j["action"] == 'checkLevelSuccess':
+                        flag = True
+                        break
+                if not flag:
+                    return i - 1
+            except:
+                return i - 1
+
     def get(self,user):
         
         return self.response.out.write('user is %s' % user)
 
     def post(self):
-        request = self.request
+        """
 
-        arguments = request.arguments()
-        print(arguments)
+            """
+            request = self.request
+            data = json.loads(request.body)
+            db = connect_to_cloudsql()
+            cursor = db.cursor()
+            cursor.execute(
+                """
+                SELECT levels FROM classTB WHERE name='%s'
+                """ % (data['task'])
+            )
+            # data['task'] if url isn't specified which task here will raise exception!!
+            # use try-except to handle and redirect to the correct page.
+            result = cursor.fetchall()
+            task = json.loads(result[0][0])
+            print(json.dumps(task,indent=4))
+            games = task.keys()
+            selectedLevels = []
+            for i in games:
+                chapters = task[i].keys()
+                for j in chapters:
+                    gamesLevel = task[i][j].keys()
+                    for level in gamesLevel:
+                        selectedLevels.append((int(j) - 1) * 3 + int(level))
+
+            selectedLevels = sorted(selectedLevels)
+            # in NAMESPACE BlocklyInterface.nextLevel, functon will switch to next level based on this data 
+        # in NAMESPACE BlocklyInterface.nextLevel, functon will switch to next level based on this data 
+            # in NAMESPACE BlocklyInterface.nextLevel, functon will switch to next level based on this data 
+            nextLevelDict = {}
+            for i in range(len(selectedLevels) - 1):
+                nextLevelDict[selectedLevels[i]] = selectedLevels[i + 1]
+            
+            cursor.execute(
+                """
+                SELECT * FROM %s WHERE ID='%s'
+                """ % (data['task'],data['user'])
+            )  
+        )  
+            )  
+            result = cursor.fetchall()[0]
+            startlevel = self.__getCurrentLevel(result)
+            
+            self.response.headers['Content-Type'] = 'application/json' 
+        self.response.headers['Content-Type'] = 'application/json' 
+            self.response.headers['Content-Type'] = 'application/json' 
+            return self.response.out.write(json.dumps({"nextLevel":nextLevelDict,"startLevel":selectedLevels[startlevel]})) 
+
+
 
 class Class(webapp2.RequestHandler):
 
@@ -476,42 +538,141 @@ class Class(webapp2.RequestHandler):
                 if level[0] not in newGames[i].keys():
                     newGames[i][level[0]] = []
                 newGames[i][level[0]].append(level[1])
-        return newGames
-    
-    def post(self):
+        return newGames,games
+
+    def __newTableProcess(self,data,games):
+        print(json.dumps(data,indent=4))
+        tableColumns = """CREATE TABLE %s (ID CHARACTER(30) , """ % (re.sub(r' ','_',data['name']))
+        for game in games:
+            token = data[game].split(',')
+            token = [game + re.sub(r' - ',r'_',i) + ' JSON ' for i in token if len(i) > 0]
+            token = ' , '.join(token)
+            tableColumns += token
+        tableColumns += ')'
+        print(tableColumns)
+        
+        
+        return tableColumns
+
+    def post(self,**kwargs):
         request = self.request
         arguments = request.arguments()
-        data = {}
-        for i in arguments:
-            data[i] = request.get(i)
-        
-        # print(json.dumps(data,ensure_ascii=False,indent=4))
-        gamesData = self.__ClassProcess(data)
-        chapterLevelData = self.__getLevelContent(gamesData)
-
-        print('chapterLevelData',json.dumps(chapterLevelData))
-        print('post data is',data)
-
         db = connect_to_cloudsql()
         cursor = db.cursor()
-        cursor.execute(
-            """INSERT INTO classTB(name, levels, developer, description, public) 
-            VALUES(%s, %s, %s, %s, %s)
-            """,(data[u'name'],json.dumps(chapterLevelData),self.request.cookies.get('user'),data[u'description'],data[u'mode'])
-        )
-        db.commit()
-        db.close()
-        
-    def get(self):
+        if len(kwargs.keys()) == 0:
+            data = {}
+            for i in arguments:
+                data[i] = request.get(i)
+            
+            # print(json.dumps(data,ensure_ascii=False,indent=4))
+            gamesData,games = self.__ClassProcess(data)
+            chapterLevelData = self.__getLevelContent(gamesData)
+
+            print('chapterLevelData',json.dumps(chapterLevelData))
+            # games = data['games'].split(',')
+            print('games is ',games)
+
+            cursor.execute(
+                """INSERT INTO classTB(name, levels, developer, description, public) 
+                VALUES(%s, %s, %s, %s, %s)
+                """,(re.sub(r' ','_',data['name']),json.dumps(chapterLevelData),self.request.cookies.get('user'),data[u'description'],data[u'mode'])
+            )
+            db.commit()
+            newTableInstruction = self.__newTableProcess(data,games)
+            cursor.execute(newTableInstruction)
+            db.commit()
+            db.close()
+        else:
+            print("request.get('user')",request.get('user'))
+            cursor.execute(
+                """
+                SELECT courses,gameID FROM users WHERE email='%s'
+                """ % request.get('user')
+            )
+            data = cursor.fetchall()
+            GameID = data[0][1]
+            result = list(json.loads(data[0][0]))
+            result.append(request.get('course'))
+            print(result)
+            cursor.execute(
+                """
+                UPDATE users SET courses='%s' WHERE email='%s'
+                """ % (json.dumps(result),request.get('user'))
+            )
+            
+            cursor.execute(
+                """
+                INSERT INTO %s(ID) VALUES(%s)
+                """
+                % (request.get('course'), GameID)
+            )
+            db.commit()
+            db.close()
+            return self.response.out.write('successful')
+                 
+    def get(self,**kwargs):
         db = connect_to_cloudsql()
         cursor = db.cursor()
-        cursor.execute("""
-        SELECT *  FROM classTB WHERE public=1;
-        """)
-        result = cursor.fetchall()
-        print(result)
-        self.response.headers['Content-Type'] = 'application/json'
-        return self.response.out.write(json.dumps(result,indent=4))
+        if(len(kwargs.keys()) == 0):
+            """
+            if kwargs has no keys, the request is send query to server for public course
+            """
+            cursor.execute("""
+            SELECT *  FROM classTB WHERE public=1;
+            """)
+            result = cursor.fetchall()
+            print(result)
+            self.response.headers['Content-Type'] = 'application/json'
+            return self.response.out.write(json.dumps(result,indent=4))
+
+        else:
+            user = kwargs['user']
+            cursor.execute(
+                """
+                SELECT courses,gameID FROM users WHERE email='%s'
+                """ % user
+            )
+            result = cursor.fetchall()
+            userCourse = json.loads(result[0][0])
+            userID = result[0][1]
+            print(userCourse)
+            # return self.response.out.write('%s' % result)
+            if kwargs['request'] == 'search':
+                """
+                means that searching the course user didn't participate in
+                """
+                cursor.execute(
+                    """
+                    SELECT name, description FROM classTB WHERE public=1;
+                    """
+                )
+                Courseresult = cursor.fetchall()
+                
+                
+                returnData = []
+                for i in Courseresult:
+                    if not i[0] in userCourse:
+                        returnData.append({
+                            "name": i[0],
+                            "description":i[1]
+                        })
+                # print(json.dumps(returnData,indent=4))
+                self.response.headers['Content-Type'] = 'application/json'
+                return self.response.out.write(json.dumps(returnData,indent=4))
+
+            elif kwargs['request'] == 'userTask':
+                courseData = []
+                for i in userCourse:
+                    courseData.append({
+                        "name" : i,
+                        "url" : "&user=%s&task=%s" %(userID,i)
+                    })
+                self.response.headers['Content-Type'] = 'application/json'
+                self.response.out.write(json.dumps(courseData,indent=4))
+                pass
+                
+                
+
 
 class GameBackendHandler(webapp2.RequestHandler):
     def get(self,**kwargs):
@@ -536,7 +697,7 @@ class GameBackendHandler(webapp2.RequestHandler):
         else:
             return self.response.set_status(404)
 
-        if kwargs.has_key('request'):
+        if kwargs.has_key('request') and kwargs['request'] == 'courses':
             cursor.execute("""
             SELECT * FROM classTB WHERE developer = "%s"
             """ % (kwargs['user']))
@@ -546,14 +707,13 @@ class GameBackendHandler(webapp2.RequestHandler):
         # for key,item in kwargs.iteritems():
         #     print('key is %s item is %s' % (key,item))
         else:
-
             db.commit()
             db.close()
 
             return self.response.out.write(template.render('templates/backend/teacher.html',''))
 
     def post(self):
-
+        print(self.request)
         pass
 
 
@@ -593,7 +753,9 @@ app = webapp2.WSGIApplication([
     webapp2.Route(r'/GameRecord/<user>',handler=GameData,name='gameRecord'),
     webapp2.Route(r'/backend/<user>',handler=GameBackendHandler,name='Game'),
     webapp2.Route(r'/backend/<user>/<request>',handler=GameBackendHandler,name='GameCourses'),
-    webapp2.Route(r'/class',handler=Class,name='Class')
+    webapp2.Route(r'/class',handler=Class,name='Class'),
+    webapp2.Route(r'/class/<user>',handler=Class,name='ParticipateCourse'),
+    webapp2.Route(r'/class/<user>/<request>',handler=Class,name='CourseRequest')
     # webapp2.Route(r'/debugging/public', handler=DebugPublic, name='debuuging_punlic'),
     # webapp2.Route(r'/debugging/js', handler=LogPage, name='log'),
 

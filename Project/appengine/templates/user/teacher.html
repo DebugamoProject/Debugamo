@@ -15,6 +15,7 @@
   <!-- <script src="/static/user/user.js"></script> -->
   <link rel="stylesheet" href="../../static/user/style.css">
   <link rel="stylesheet" href="../../static/user/teacher.css">
+  <link rel="stylesheet" href="../../static/user/edit.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns"
     crossorigin="anonymous">
   <title>Document</title>
@@ -56,14 +57,15 @@
         <div id="options">
           <div class="option">
             <button class="dropdown-btn" class="button-option">
-              <span data-i18n="options.game.helpdemo"></span>
+              <span data-i18n="options.game.task"></span>
               <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-container">
-              <a href="/debugging" class="dropdown-option" data-i18n="options.game.practice">練習場</a>
-              <a href="" class="dropdown-option" data-i18n="options.game.solo">個人賽</a>
-              <a href="" class="dropdown-option" data-i18n="options.game.multiplayer">多人混戰</a>
-              <a href="" class="dropdown-option" data-i18n="options.game.record">對戰紀錄</a>
+              <a href="javascript:void(0);" class="dropdown-option" data-i18n="options.game.opentask">公開的任務</a>
+              <a href="javascript:void(0);" class="dropdown-option" data-i18n="options.game.yourtask">自己的任務</a>
+              <!-- <a href="javascript:void(0);" class="dropdown-option" data-i18n="options.game.record">對戰紀錄</a> -->
+              <a href="javascript:void(0)" class="dropdown-option" data-i18n="options.class.add" id="addNewClass" onclick="addingClassContent();">新增</a>
+              <a href="javascript:void(0)" id="information" class="dropdown-option" data-i18n="options.class.backend">後台</a>
             </div>
           </div>
           <div class="option">
@@ -73,18 +75,17 @@
             </button>
             <div class="dropdown-container">
               <a href="" class="dropdown-option" data-i18n="options.community.friend">好友動態</a>
-              <a href="javascript:void(0)" id="information" class="dropdown-option" data-i18n="options.community.edit">個人資料</a>
+              <a href="javascript:void(0)" id="information" class="dropdown-option" data-i18n="options.community.edit" onclick="editContent();">個人資料</a>
           </div>
-          <div class="option">
+          <!-- <div class="option">
             <button class="dropdown-btn" class="button-option">
               <span data-i18n="options.class.task">課程</span>
               <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-container">
-              <a href="javascript:void(0)" class="dropdown-option" data-i18n="options.class.add">新增</a>
-              <a href="javascript:void(0)" id="information" class="dropdown-option" data-i18n="options.class.backend">後台</a>
+              
             </div>
-          </div>
+          </div> -->
           <!-- <div class="option">
               <button class="dropdown-btn">button 3
                   <i class="fa fa-caret-down"></i>
@@ -195,7 +196,7 @@
         </div>
       </div>
 
-      <div id="addclass" style="display:block">
+      <div id="addclass" style="display:none">
         <div id="add-title">
             <span style="font-size: 40px;">新增任務</span>
             <div style="border: 1px solid lightgrey"></div>
@@ -234,6 +235,7 @@
           <button id="submitClasses">送出</button>
         </div>
       </div>
+      
       
     </div><!-- letter-->
   </div> <!-- wrapper-->

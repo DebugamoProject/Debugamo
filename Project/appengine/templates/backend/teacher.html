@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="../../static/backend/style.css">
+    <link rel="stylesheet" href="../../static/user/teacher.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <title>Document</title>
 </head>
@@ -32,23 +33,34 @@
         </div>
         <div id="content">
             <div id="courses">
-                <div class="classItem">
-                    <a href="javascript:void(0)" id="debugging1" class="course">Debugging1</a>
-                    <div class="dropdownContent">
-                        <a href="javascript:void(0)">課程管理</a>
-                        <a href="javascript:void(0)">成員管理</a>
-                    </div>
-                </div>
-                <div class="classItem">
-                    <a href="javascrtip:void(0)" id="debugging2" class="course">Debugging2</a>
-                    <div class="dropdownContent">
-                        <a href="javascript:void(0)">課程管理</a>
-                        <a href="javascript:void(0)">成員管理</a>
-                    </div>
-                </div>
+                
             </div>
             <div id="task">
-
+                <div class="membersOverview">
+                    <div class="statistics">
+                        <h1>The Statistics Will Be Here</h1>
+                    </div>
+                    <div style="border-top: 1px solid grey;"></div>
+                    <div class="dropdownBar">
+                        <i class="fas fa-angle-down"></i>
+                    </div>
+                    <div class="members">
+                        <div class="up">
+                            <i class="fas fa-angle-up"></i>
+                        </div>
+                        <div style="border-top: 1px solid grey;"></div>
+                        <div class="methods">
+                            <a href="javascript:void(0);">調整排序順序</a>
+                            <a href="javascript:void(0);">新增成員</a>
+                            <!-- <i class="fas fa-ellipsis-h"></i> -->
+                        </div>
+                        <div class="member">
+                            <span class="memberID">USERID</span>
+                            <span class="memberName">USERNAME</span>
+                            <div class="completeDegree"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -60,8 +72,11 @@
 <script src="../../static/backend/backend.js"></script>
 
 <script>
-    var courses = courseProcess('/backend/123/mycourse');
-    courses = coursesSetup(courses);
-    console.log(courses)
+    // var courses = courseProcess('/backend/123/mycourse');
+    // courses = coursesSetup(courses);
+    // var task = document.getElementById('task');
+    
 </script>
+<script src="../../static/backend/coursesManager.js"></script>
+<script src="../../static/user/classEventListener.js"></script>
 </html>

@@ -229,3 +229,11 @@ button.dropdown-btn{
     outline: none;
 }
 
+.courseInformation{
+    width: 80%;
+}
+
+#main-container a{
+    color: black;
+    text-decoration: none;
+}

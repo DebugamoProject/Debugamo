@@ -17,20 +17,20 @@
     outline: none
 }
 
-#addclass #discription{
+#discription{
     width: 100%;
     padding: 10px;
 }
 
-#addclass button{
+button{
     outline: none;
     border-radius: 3px;
     width: 50px;
-    margin:5px;
+    /* margin:5px; */
     cursor: pointer;
 }
 
-#addclass .classInfo{
+.classInfo{
     float: right;
     width: 40%;
     height: 80%;
@@ -38,12 +38,12 @@
     /* color: grey; */
     padding: 10px
 }
-#addclass .classImg{
+.classImg{
     width: 40%;
     height: 80%;
     display: inline-block;
 }
-#addclass .dropdownBar{
+.dropdownBar{
     height: 15%;
     text-align: center;
     cursor: pointer;

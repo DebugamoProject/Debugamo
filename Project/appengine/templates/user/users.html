@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="../../static/user/edit.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns"
     crossorigin="anonymous">
+  <link rel="stylesheet" href="../../static/user/task.css">
   <title>Document</title>
 </head>
 
@@ -56,14 +57,14 @@
         <div id="options">
           <div class="option">
             <button class="dropdown-btn" class="button-option">
-              <span data-i18n="options.game.helpdemo"></span>
+              <span data-i18n="options.game.task"></span>
               <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-container">
-              <a href="/debugging" class="dropdown-option" data-i18n="options.game.practice">練習場</a>
-              <a href="" class="dropdown-option" data-i18n="options.game.solo">個人賽</a>
-              <a href="" class="dropdown-option" data-i18n="options.game.multiplayer">多人混戰</a>
-              <a href="" class="dropdown-option" data-i18n="options.game.record">對戰紀錄</a>
+              <!-- <a href="/debugging" class="dropdown-option" data-i18n="options.game.task">任務</a> -->
+              <a href="javascript:void(0);" class="dropdown-option" data-i18n="options.game.opentask" onclick="tasksOverview();">公開的任務</a>
+              <a href="javascript:void(0);" class="dropdown-option" data-i18n="options.game.yourtask">自己的任務</a>
+              <a href="javascript:void(0);" class="dropdown-option" data-i18n="options.game.record">對戰紀錄</a>
             </div>
           </div>
           <div class="option">
@@ -72,8 +73,8 @@
               <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-container">
-              <a href="" class="dropdown-option" data-i18n="options.community.friend">好友動態</a>
-              <a href="javascript:void(0)" id="information" class="dropdown-option" data-i18n="options.community.edit">個人資料</a>
+              <a href="javascript:void(0);" class="dropdown-option" data-i18n="options.community.friend">好友動態</a>
+              <a href="javascript:void(0)" id="information" class="dropdown-option" data-i18n="options.community.edit" onclick="editContent();">個人資料</a>
             </div>
           </div>
           <!-- <div class="option">
@@ -90,8 +91,7 @@
       </div>
     </div>
     <div class="letter" id="main-container">
-
-
+      
       <div id="edit" style="display:none;">
         <div id="edit-title">
           <span style="font-size: 40px" data-i18n="edit.title.edit">Edit</span>
@@ -184,6 +184,97 @@
           </div>
         </div>
       </div>
+
+      <div id="joinTask" style="display:none">
+        <p id="joinTaskTitle">
+          <span style="font-size:50px">歡迎來到 Debugamo</span>
+        </p>
+        <div style="border-top:1px solid grey;"></div>
+        <!-- <div class="row"> -->
+            <!-- <div class="courseItem">
+                <button class="addCourseBtn" style="float:right;margin:5px;">
+                    <i class="fas fa-plus"></i>
+                </button>
+                <div class="courseInformation" style="display: none">
+                  <p class="course-name">Debugging</p>
+                  <p class="course-description">
+                    This is developed by debugamo's original developer;
+                  </p>
+                </div>
+            </div> -->
+            <!-- Web Structure
+            <div class="courseItem">
+                <button class="addCourseBtn" style="float:right;margin:5px;">
+                    <i class="fas fa-plus"></i>
+                </button>
+                <div class="courseInformation" style="display: none">
+                  <p class="course-name"></p>
+                  <p class="course-description"></p>
+                </div>
+            </div>
+            -->
+            
+        <!-- </div> -->
+
+
+      </div>
+
+      <div id="myTask">
+        <p id="myTaskTitle">
+          <span style="font-size:50px">我的任務</span>
+        </p>
+        <div style="border-top:1px solid grey;"></div>
+        <div id="TaskOverview">
+
+          <div class="taskItem">
+            <div class="task-info-img">
+              <div class="taskImg">
+                This Is Img
+              </div>
+              <div class="userInfo">
+                <p>任務:
+                  <span>Debugging </span>
+                </p>
+                <p>完成度 :
+                  <span>5/4</span>
+                </p>
+                <button>
+                  <a href="/debugging?lang=zh-hant&level=1&user=321&task=debugging" style="color:black">開始遊戲</a>
+                </button>
+              </div>
+              
+              <div style="border-top: 1px solid grey;"></div>
+              <div class="dropdownBar" >
+                  <i class="fas fa-angle-down"></i>
+              </div>
+            </div>
+            <div class="members dropdownContent">
+                <div class="up">
+                    <i class="fas fa-angle-up"></i>
+                </div>
+                <div style="border-top: 1px solid grey;"></div>
+                <div class="methods">
+                  <a href="javascript:void(0);" class='sortedOrder'>排序順序</a>
+                  
+                  <div class="sorting">
+                    <a href="javascript:void(0);" style="margin-top: 10px;"><br>解題速度<br><br></a>
+                    <a href="javascript:void(0);">解題進度</a>
+                  </div>
+                </div>
+                <div class="member">
+                  <span class="SortedNum">1.</span>
+                  <span class="ID" style="margin-left:30px;">321</span>
+                </div>
+                <div class="member">
+                    <span class="SortedNum">1.</span>
+                    <span class="ID" style="margin-left:30px;">321</span>
+                  </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
     </div><!-- letter-->
   </div> <!-- wrapper-->
   <div class="footer">
@@ -213,5 +304,15 @@
   <script src="../../static/user/class.js"></script>
   <!-- <script src="../../static/user/user.js"></script> -->
 </body>
+<script>
+  $('.courseItem').hover(function(e){
+    $(this).children('.courseInformation').slideToggle();
+  })
+  $('.sortedOrder').on('click',function (e) {
+    e.preventDefault();
+    $(this).parent().children('.sorting').slideToggle();
+  })
+</script>
+<script src="../../static/user/classEventListener.js"></script>
 
 </html>

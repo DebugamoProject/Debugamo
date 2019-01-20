@@ -17,7 +17,6 @@ goog.require('Debugging.UI');
 goog.require('Levels');
 goog.require('Debugging.soy');
 goog.require('NewUI');
-goog.require('Blockly.db');
 
 BlocklyGames.NAME = 'debugging';
 
@@ -52,14 +51,8 @@ Scope.init = function() {
 
     BlocklyInterface.init();
 
-    newUI.css();
-    newUI.rightbar(goog.dom.getElement('rightBar'));
-    newUI.target();
-    try{
-        db.init('/GameRecord/','1123123');
-    }catch(e){
-        console.log(e)
-    }
+    
+    newUI.init();
         var rtl = BlocklyGames.isRtl(); // right to left?
     var blocklyDiv = document.getElementById('blockly');
 
@@ -226,7 +219,7 @@ Scope.init = function() {
     // enable developer mode
     if (window.location.origin == "http://localhost:8080") {
         console.log('[Game] Enable developer mode.');
-        localStorage.setItem('done', '[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]');
+        // localStorage.setItem('done', '[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]');
         localStorage.setItem('maxDoneLevel', '18');
         // $('#debugModeBox').show();
         // $('#loadSolutionButton').show();
@@ -412,7 +405,7 @@ Scope.bigQueryLogSend = function() {
     var xhr = new XMLHttpRequest();
     var payload = { 'rows': [{ 'json': { 'time': d, 'user': user, 'level': localStorage.currentLevel, 'action': logText, 'blockVersion': blockVersion, 'numOfAction': JSON.parse(logText).length, 'numOfBlockVersion': JSON.parse(blockVersion).length} }] };
 
-    xhr.open("POST", "https://www.googleapis.com/bigquery/v2/projects/debugamo/datasets/userlog/tables/levelLog/insertAll", true);
+    xhr.open("POST", "/GameRecord", true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
     xhr.send(JSON.stringify(payload));
@@ -728,8 +721,8 @@ Scope.execute = function() {
     // } catch (e) {
     // alert(e);
     // }
-    console.log('Solution Code')
-    console.log(code)
+    // console.log('Solution Code')
+    // console.log(code)
     var interpreter = new Interpreter(code, Scope.initInterpreter);
     Scope.interpretCode(interpreter, 0);
 };

@@ -14,10 +14,10 @@
             "level" : "等級",
             "options":{
                 "game":{
-                    "helpdemo":"幫幫迪摩",
-                    "practice" : "練習",
-                    "solo":"個人賽",
-                    "multiplayer":"多人混戰",
+                    "task":"任務欄",
+                    "opentask":"任務清單",
+                    "yourtask":"你的任務",
+                    "multiplayer":"多人對戰",
                     "record":"對戰紀錄"
                 },
                 "community":{
