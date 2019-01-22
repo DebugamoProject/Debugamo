@@ -407,8 +407,10 @@ class RepeatCheck(webapp2.RequestHandler):
             return self.response.write('{}'.format(False))
 
 class GameData(webapp2.RequestHandler):
+
     def __getCurrentLevel(self,result):
         flag = False
+        newUser = 1
         for i in range(1,len(result)):
             flag = False
             try:
@@ -417,10 +419,11 @@ class GameData(webapp2.RequestHandler):
                     if j["action"] == 'checkLevelSuccess':
                         flag = True
                         break
+                    newUser = 0
                 if not flag:
-                    return i - 1
+                    return i - 1 , newUser
             except:
-                return i - 1
+                return i - 1 , newUser
 
     def get(self,user):
         
@@ -429,52 +432,55 @@ class GameData(webapp2.RequestHandler):
     def post(self):
         """
 
+        """
+        request = self.request
+        data = json.loads(request.body)
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        cursor.execute(
             """
-            request = self.request
-            data = json.loads(request.body)
-            db = connect_to_cloudsql()
-            cursor = db.cursor()
-            cursor.execute(
-                """
-                SELECT levels FROM classTB WHERE name='%s'
-                """ % (data['task'])
-            )
-            # data['task'] if url isn't specified which task here will raise exception!!
-            # use try-except to handle and redirect to the correct page.
-            result = cursor.fetchall()
-            task = json.loads(result[0][0])
-            print(json.dumps(task,indent=4))
-            games = task.keys()
-            selectedLevels = []
-            for i in games:
-                chapters = task[i].keys()
-                for j in chapters:
-                    gamesLevel = task[i][j].keys()
-                    for level in gamesLevel:
-                        selectedLevels.append((int(j) - 1) * 3 + int(level))
+            SELECT levels FROM classTB WHERE name='%s'
+            """ % (data['task'])
+        )
+        # data['task'] if url isn't specified which task here will raise exception!!
+        # use try-except to handle and redirect to the correct page.
+        result = cursor.fetchall()
+        task = json.loads(result[0][0])
+        print(json.dumps(task,indent=4))
+        games = task.keys()
+        selectedLevels = []
+        for i in games:
+            chapters = task[i].keys()
+            for j in chapters:
+                gamesLevel = task[i][j].keys()
+                for level in gamesLevel:
+                    selectedLevels.append((int(j) - 1) * 3 + int(level))
 
-            selectedLevels = sorted(selectedLevels)
-            # in NAMESPACE BlocklyInterface.nextLevel, functon will switch to next level based on this data 
+        selectedLevels = sorted(selectedLevels)
         # in NAMESPACE BlocklyInterface.nextLevel, functon will switch to next level based on this data 
-            # in NAMESPACE BlocklyInterface.nextLevel, functon will switch to next level based on this data 
-            nextLevelDict = {}
-            for i in range(len(selectedLevels) - 1):
-                nextLevelDict[selectedLevels[i]] = selectedLevels[i + 1]
-            
-            cursor.execute(
-                """
-                SELECT * FROM %s WHERE ID='%s'
-                """ % (data['task'],data['user'])
-            )  
+
+        nextLevelDict = {}
+        for i in range(len(selectedLevels) - 1):
+            nextLevelDict[selectedLevels[i]] = selectedLevels[i + 1]
+        
+        cursor.execute(
+            """
+            SELECT * FROM %s WHERE ID='%s'
+            """ % (data['task'],data['user'])
         )  
-            )  
-            result = cursor.fetchall()[0]
-            startlevel = self.__getCurrentLevel(result)
-            
-            self.response.headers['Content-Type'] = 'application/json' 
+        
+        result = cursor.fetchall()[0]
+        
+        startlevel, newUser = self.__getCurrentLevel(result)
+        
+        
         self.response.headers['Content-Type'] = 'application/json' 
-            self.response.headers['Content-Type'] = 'application/json' 
-            return self.response.out.write(json.dumps({"nextLevel":nextLevelDict,"startLevel":selectedLevels[startlevel]})) 
+        return self.response.out.write(json.dumps({
+    "nextLevel":nextLevelDict,
+    "startLevel":startlevel,
+    "selectedLevel":selectedLevels,
+    "newPlayer" : newUser
+    })) 
 
 
 
