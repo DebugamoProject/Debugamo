@@ -214,18 +214,21 @@ BlocklyGames.getTaskData = function (){
   var nextLevel;
   var data;
   var startedLevel;
+  var selectedLevel;
   xhr.open("POST","/GameRecord",false);
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onreadystatechange = function(){
     if(this.readyState == 4 && this.status === 200 ){
       // console.log('response is');
       data = JSON.parse(this.responseText)
-
+      console.log(data)
       nextLevel = data["nextLevel"];
-
+      selectedLevel  = data["selectedLevel"]
       localStorage.nextLevel = JSON.stringify(nextLevel)
+      localStorage.selectedLevel = JSON.stringify(selectedLevel)
+      localStorage.setItem('newPlayer',JSON.stringify(data["newPlayer"]))
       var urlLevel = BlocklyGames.getStringParamFromUrl('level','1');
-      if(urlLevel in nextLevel)
+      if(urlLevel in selectedLevel)
         startedLevel = urlLevel;
       else{
         startedLevel = data['startLevel'];
