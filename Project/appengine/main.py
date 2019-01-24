@@ -427,21 +427,12 @@ class GameData(webapp2.RequestHandler):
         """
 
         """
-        flag = False
-        newUser = 1
-        for i in range(1,len(result)):
-            flag = False
-            try:
-                data = json.load(result[i])
-                for j in data["action"]:
-                    if j["action"] == 'checkLevelSuccess':
-                        flag = True
-                        break
-                    newUser = 0
-                if not flag:
-                    return i - 1 , newUser
-            except:
-                return i - 1 , newUser
+        tupleLength = len(result)
+        for i in range(1,tupleLength) : 
+            print(type(result[i]))
+            if result[i] != None:
+                return 0
+        return 1
 
     def levelInfo(self,userLevelData):
         """
@@ -503,13 +494,14 @@ class GameData(webapp2.RequestHandler):
         
         result = cursor.fetchall()[0]
         
-        startlevel, newUser = self.__getCurrentLevel(result)
+        newUser = self.__getCurrentLevel(result)
         
+        print('newUser is %s ' % newUser)
         
         self.response.headers['Content-Type'] = 'application/json' 
         return self.response.out.write(json.dumps({
     "nextLevel":nextLevelDict,
-    "startLevel":startlevel,
+    "startLevel":selectedLevels[0],
     "selectedLevel":selectedLevels,
     "newPlayer" : newUser
     })) 
@@ -640,7 +632,7 @@ class Class(webapp2.RequestHandler):
             
             cursor.execute(
                 """
-                INSERT INTO %s(ID) VALUES(%s)
+                INSERT INTO %s(ID) VALUES('%s')
                 """
                 % (request.get('course'), GameID)
             )
@@ -750,9 +742,36 @@ class GameBackendHandler(webapp2.RequestHandler):
 
             return self.response.out.write(template.render('templates/backend/teacher.html',''))
 
-    def post(self):
-        print(self.request)
+    def post(self,**kwargs):
+        request = self.request
+        task = kwargs['task']
+        user = kwargs['user']
+        gamedata = json.loads(request.body)
+        print(json.dumps(gamedata,indent=4,encoding='utf'))
+        print('-'*50)
+        print('*' * 30 + 'Action' + '*'*30)
+        action = json.loads(gamedata["rows"][0]["json"]["action"])
+        print(json.dumps(action,indent=4))
+        print('-'*50)
+        print('*' * 30 + 'Action' + '*'*30)
+        code = json.loads(gamedata["rows"][0]["json"]["blockVersion"])
+        print(json.dumps(code,indent=4))
+        level = int(gamedata["rows"][0]["json"]["level"])
+        level = (str(level // 3 + 1) + '_' + str(level - (level//3 * 3)))
+        print('level is ',level)
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        cursor.execute(
+            """
+            UPDATE %s SET Debugging%s = '%s' WHERE ID='%s'
+            """
+            % (task,level,json.dumps(action),user)
+        )
+        db.commit()
+
         pass
+
+
 
 
 
@@ -779,7 +798,8 @@ app = webapp2.WSGIApplication([
     webapp2.Route(r'/backend/<user>/<request>',handler=GameBackendHandler,name='GameCourses'),
     webapp2.Route(r'/class',handler=Class,name='Class'),
     webapp2.Route(r'/class/<user>',handler=Class,name='ParticipateCourse'),
-    webapp2.Route(r'/class/<user>/<request>',handler=Class,name='CourseRequest')
+    webapp2.Route(r'/class/<user>/<request>',handler=Class,name='CourseRequest'),
+    webapp2.Route(r'/userGameData/<user>/<task>',handler=GameBackendHandler,name='userGameData'),
     # webapp2.Route(r'/debugging/public', handler=DebugPublic, name='debuuging_punlic'),
     # webapp2.Route(r'/debugging/js', handler=LogPage, name='log'),
 

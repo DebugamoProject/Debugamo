@@ -260,8 +260,7 @@ Scope.init = function() {
 Scope.showTarget = function(){
     Game.reset()
     var code = level.solutionCodes;
-    console.log('This is showTarget')
-    console.log(code);
+    Scope.addLog("userCheckTarget");
     var interpretCode = new Interpreter(code, Scope.initInterpreter);
     Scope.showTargetAnimation(interpretCode);
     var runButton = document.getElementById('runButton');
@@ -397,18 +396,18 @@ Scope.getAuthToken = function() {
  * Send localStorage log back to server
  */
 Scope.bigQueryLogSend = function() {
-    var user = localStorage.user;
-    if (JSON.parse(user).name == 'admin' || JSON.parse(user).name == 'anonymous') {
-        console.log('admin pass bigQuery logging');
-        return;
-    }
+    // var user = localStorage.user;
+    // if (JSON.parse(user).name == 'admin' || JSON.parse(user).name == 'anonymous') {
+    //     console.log('admin pass bigQuery logging');
+    //     return;
+    // }
     var logText = localStorage.log;
     var blockVersion = localStorage.blockVersion
     var d = String(new Date());
     var xhr = new XMLHttpRequest();
-    var payload = { 'rows': [{ 'json': { 'time': d, 'user': user, 'level': localStorage.currentLevel, 'action': logText, 'blockVersion': blockVersion, 'numOfAction': JSON.parse(logText).length, 'numOfBlockVersion': JSON.parse(blockVersion).length} }] };
+    var payload = { 'rows': [{ 'json': { 'time': d, 'level': localStorage.currentLevel, 'action': logText, 'blockVersion': blockVersion, 'numOfAction': JSON.parse(logText).length, 'numOfBlockVersion': JSON.parse(blockVersion).length} }] };
 
-    xhr.open("POST", "/GameRecord", true);
+    xhr.open("POST", "/userGameData/" + BlocklyGames.USER + '/' + BlocklyGames.TASK, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
     xhr.send(JSON.stringify(payload));
@@ -1024,20 +1023,20 @@ Scope.startGame = function() {
     }
     localStorage.setItem('newPlayer', '0');
 
-    var user = {
-        school: $('#playerSchool').val(),
-        grade: $('#playerGrade').val(),
-        classNum: $('#playerClass').val(),
-        num: $('#playerNumber').val(),
-        name: $('#playerName').val()
-    }
+    // var user = {
+    //     school: $('#playerSchool').val(),
+    //     grade: $('#playerGrade').val(),
+    //     classNum: $('#playerClass').val(),
+    //     num: $('#playerNumber').val(),
+    //     name: $('#playerName').val()
+    // }
 
     // if ($('#playerSchool').val() == 'FG') {
         // localStorage.done = "[1,2,3,4,5,6,7,8,9]";
         // localStorage.maxDoneLevel = "9";
     // }
 
-    localStorage.setItem('user', JSON.stringify(user));
+    // localStorage.setItem('user', JSON.stringify(user));
 
     Scope.startIntro();
     Game.kiboFunction = false;

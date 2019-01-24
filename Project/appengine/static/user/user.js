@@ -223,7 +223,7 @@ function UserClassDataDomCreater(){
     $(taskItem).append(`
     <div class="task-info-img">
     <div class="taskImg">
-      This Is IMG of Task ${userTaskData[i]['name']}
+      This Is The IMG of Task ${userTaskData[i]['name']}
     </div>
     <div class="userInfo">
       <p>任務 :
