@@ -4,7 +4,7 @@
 *
 
 ## Data Format
-```js
+```js=
 var cup = {
   class: "cup",
   capacity: 500, // unchangeable

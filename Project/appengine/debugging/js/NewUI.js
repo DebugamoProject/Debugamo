@@ -18,7 +18,7 @@ newUI.init = function(){
     newUI.target();
 }
 
-newUI.levelBarModification = function(){
+newUI.levelBar = function(){
     
 }
 

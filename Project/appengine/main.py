@@ -299,10 +299,25 @@ class UserPage(webapp2.RequestHandler):
         if self.request.cookies.get('login') == 'TRUE':
             
             path = 'templates/user/{}.html'
-            if(self.request.cookies.get('identity') == 'teacher'):
-                path = path.format('teacher')
-            else:
-                path = path.format('users')
+            db = connect_to_cloudsql()
+            cursor = db.cursor()
+            cursor.execute(
+                """
+                SELECT identity FROM users WHERE email='%s'
+                """ % self.request.cookies.get('user')
+            )
+            try:
+                result = cursor.fetchall()[0][0]
+            except IndexError as e:
+                print('IN THE EXCEPTION HANDLER')
+                cookies = self.request.cookies
+                for i in cookies:
+                    self.response.delete_cookie(i)
+                    self.response.location = '/'
+                return self.response
+            
+            path = path.format(result)
+            # return webapp2.redirect('/')
             template_values = ''
             return self.response.write(template.render(path, template_values))
         else:
@@ -351,9 +366,9 @@ class Register(webapp2.RequestHandler):
         db = connect_to_cloudsql()
         cursor = db.cursor()
         cursor.execute("""
-        INSERT INTO users(name, gameID, password, email,identity,birthday,level) 
-        VALUES(%s, %s, %s, %s,%s, %s ,%s)"""
-        ,(name,ID,password,email,identity , year+'-'+month+'-'+date,0)
+        INSERT INTO users(name, gameID, password, email,identity,birthday,level, courses) 
+        VALUES(%s, %s, %s, %s,%s, %s ,%s, %s)"""
+        ,(name,ID,password,email,identity , year+'-'+month+'-'+date,0,json.dumps([]))
         )
         db.commit()
         db.close()
@@ -409,21 +424,29 @@ class RepeatCheck(webapp2.RequestHandler):
 class GameData(webapp2.RequestHandler):
 
     def __getCurrentLevel(self,result):
-        flag = False
-        newUser = 1
-        for i in range(1,len(result)):
-            flag = False
-            try:
-                data = json.load(result[i])
-                for j in data["action"]:
-                    if j["action"] == 'checkLevelSuccess':
-                        flag = True
-                        break
-                    newUser = 0
-                if not flag:
-                    return i - 1 , newUser
-            except:
-                return i - 1 , newUser
+        """
+
+        """
+        tupleLength = len(result)
+        for i in range(1,tupleLength) : 
+            print(type(result[i]))
+            if result[i] != None:
+                return 0
+        return 1
+
+    def levelInfo(self,userLevelData):
+        """
+        You need to finish this method after you decide which value you'd like to store in the db 
+
+        This method need to return which level user should start and 
+        which levels user has been completed.
+
+        Also, determine if user is a new player of this task or not
+        """
+        startedLevel = 1 # need to be a integer
+        userDoneLevel = [] # need to be list
+        newUser = 1 # if user is a new player newUser is 1 , if not newUser = 0
+        return startedLevel, userDoneLevel , newUser
 
     def get(self,user):
         
@@ -471,13 +494,14 @@ class GameData(webapp2.RequestHandler):
         
         result = cursor.fetchall()[0]
         
-        startlevel, newUser = self.__getCurrentLevel(result)
+        newUser = self.__getCurrentLevel(result)
         
+        print('newUser is %s ' % newUser)
         
         self.response.headers['Content-Type'] = 'application/json' 
         return self.response.out.write(json.dumps({
     "nextLevel":nextLevelDict,
-    "startLevel":startlevel,
+    "startLevel":selectedLevels[0],
     "selectedLevel":selectedLevels,
     "newPlayer" : newUser
     })) 
@@ -608,7 +632,7 @@ class Class(webapp2.RequestHandler):
             
             cursor.execute(
                 """
-                INSERT INTO %s(ID) VALUES(%s)
+                INSERT INTO %s(ID) VALUES('%s')
                 """
                 % (request.get('course'), GameID)
             )
@@ -718,26 +742,49 @@ class GameBackendHandler(webapp2.RequestHandler):
 
             return self.response.out.write(template.render('templates/backend/teacher.html',''))
 
-    def post(self):
-        print(self.request)
+    def post(self,**kwargs):
+        request = self.request
+        task = kwargs['task']
+        user = kwargs['user']
+        gamedata = json.loads(request.body)
+        print(json.dumps(gamedata,indent=4,encoding='utf'))
+        print('-'*50)
+        print('*' * 30 + 'Action' + '*'*30)
+        action = json.loads(gamedata["rows"][0]["json"]["action"])
+        print(json.dumps(action,indent=4))
+        print('-'*50)
+        print('*' * 30 + 'Action' + '*'*30)
+        code = json.loads(gamedata["rows"][0]["json"]["blockVersion"])
+        print(json.dumps(code,indent=4))
+        level = int(gamedata["rows"][0]["json"]["level"])
+        level = (str(level // 3 + 1) + '_' + str(level - (level//3 * 3)))
+        print('level is ',level)
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        cursor.execute(
+            """
+            UPDATE %s SET Debugging%s = '%s' WHERE ID='%s'
+            """
+            % (task,level,json.dumps(action),user)
+        )
+        db.commit()
+
         pass
 
 
-class GameData(webapp2.RequestHandler):
-    def get(self,user):
+# class GameData(webapp2.RequestHandler):
+#     def get(self,user):
         
-        return self.response.out.write('user is %s' % user)
+#         return self.response.out.write('user is %s' % user)
 
-    def post(self):
-        request = self.request
+#     def post(self):
+#         request = self.request
 
-        arguments = request.arguments()
-        print(arguments)
+#         arguments = request.arguments()
+#         print(arguments)
 
-class CreateClass(webapp2.RequestHandler):
-    def post(self):
-        request = self.request
-        
+
+
 LANGUAGE_API = '/language/'
 
 app = webapp2.WSGIApplication([
@@ -761,7 +808,8 @@ app = webapp2.WSGIApplication([
     webapp2.Route(r'/backend/<user>/<request>',handler=GameBackendHandler,name='GameCourses'),
     webapp2.Route(r'/class',handler=Class,name='Class'),
     webapp2.Route(r'/class/<user>',handler=Class,name='ParticipateCourse'),
-    webapp2.Route(r'/class/<user>/<request>',handler=Class,name='CourseRequest')
+    webapp2.Route(r'/class/<user>/<request>',handler=Class,name='CourseRequest'),
+    webapp2.Route(r'/userGameData/<user>/<task>',handler=GameBackendHandler,name='userGameData'),
     # webapp2.Route(r'/debugging/public', handler=DebugPublic, name='debuuging_punlic'),
     # webapp2.Route(r'/debugging/js', handler=LogPage, name='log'),
 
