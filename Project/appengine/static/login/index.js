@@ -12,8 +12,8 @@ var lang;
 function setLanguage(){
     var cookies = Cookies.get('lang')
     if(!cookies){
-        Cookies.set('lang','zh',{expires: 7});
-        lang = 'zh';
+        Cookies.set('lang','zh-hant',{expires: 7});
+        lang = 'zh-hant';
         // console.log('set cookies')
     }else{
         lang = Cookies.get('lang')
@@ -154,56 +154,6 @@ function LoginOrRegister(API,userdata){
 }
 
 
-//--------------------Event Listener---------------------//
-
-$('#inputYear').on('change',function (e) {
-    ChooseYear = $(this).children('option:selected').text();
-    console.log(ChooseYear)
-    generateDate()
-});
-$('#inputMonth').on('change',function(e){
-    ChooseMonth = $(this).children('option:selected').text();
-    console.log(ChooseMonth)
-    generateDate()
-})
-$('#inputEmail').change(function (e) {
-    e.preventDefault();
-    if(this.value)
-        RepeatCheck({
-            "email":this.value
-        },'#Email','email','#inputEmail','form.Email.Notice')
-    else{
-        $('.email-warning').remove()
-        console.log('connot be zero')
-    }
-});
-$('#inputPassword').change(function(e){
-    if($('#inputPasswordagain').val() != 0 && $('#inputPasswordagain').val() != this.value){
-        IsnotAvailable('#password-again','password','#inputPasswordagain','form.password.Notice')
-    }else
-        IsAvailable('password','#inputPasswordagain')
-});
-$('#inputPasswordagain').change(function(e){
-    var value = $('#inputPassword').val()
-    if(value != this.value){
-        console.log('false')
-        IsnotAvailable('#password-again','password','#inputPasswordagain','form.passwordagain.Notice')
-    }else{
-        // $('.password-warning').remove()
-        // $('#inputPasswordagain').css('background-color','#FFFFFF')
-        IsAvailable('password','#inputPasswordagain')
-    }
-});
-$('#inputID').change(function(e){
-    if(this.value)
-    RepeatCheck({
-        'gameID':this.value
-    },'#ID','id','#inputID','form.ID.Notice');
-    else{
-        $('.id-warning').remove()
-        console.log('connot be zero')
-    }
-})
 
 //-----------------Post the data---------------------------//
 
@@ -264,6 +214,58 @@ function emptyCheck(data){
     return true;
 }
 
+//--------------------Event Listener---------------------//
+
+$('#inputYear').on('change',function (e) {
+    ChooseYear = $(this).children('option:selected').text();
+    console.log(ChooseYear)
+    generateDate()
+});
+$('#inputMonth').on('change',function(e){
+    ChooseMonth = $(this).children('option:selected').text();
+    console.log(ChooseMonth)
+    generateDate()
+})
+$('#inputEmail').change(function (e) {
+    e.preventDefault();
+    if(this.value)
+        RepeatCheck({
+            "email":this.value
+        },'#Email','email','#inputEmail','form.Email.Notice')
+    else{
+        $('.email-warning').remove()
+        console.log('connot be zero')
+    }
+});
+$('#inputPassword').change(function(e){
+    if($('#inputPasswordagain').val() != 0 && $('#inputPasswordagain').val() != this.value){
+        IsnotAvailable('#password-again','password','#inputPasswordagain','form.password.Notice')
+    }else
+        IsAvailable('password','#inputPasswordagain')
+});
+$('#inputPasswordagain').change(function(e){
+    var value = $('#inputPassword').val()
+    if(value != this.value){
+        console.log('false')
+        IsnotAvailable('#password-again','password','#inputPasswordagain','form.passwordagain.Notice')
+    }else{
+        // $('.password-warning').remove()
+        // $('#inputPasswordagain').css('background-color','#FFFFFF')
+        IsAvailable('password','#inputPasswordagain')
+    }
+});
+$('#inputID').change(function(e){
+    if(this.value)
+    RepeatCheck({
+        'gameID':this.value
+    },'#ID','id','#inputID','form.ID.Notice');
+    else{
+        $('.id-warning').remove()
+        console.log('connot be zero')
+    }
+})
+
+
 $('#register-button').click(function (e) {
     var data = getformData();
 
@@ -282,3 +284,4 @@ $('#register-button').click(function (e) {
 $('.footer').click(function(e){
     console.log($('#inputIdentity').val());
 })
+

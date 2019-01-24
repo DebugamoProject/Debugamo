@@ -299,10 +299,25 @@ class UserPage(webapp2.RequestHandler):
         if self.request.cookies.get('login') == 'TRUE':
             
             path = 'templates/user/{}.html'
-            if(self.request.cookies.get('identity') == 'teacher'):
-                path = path.format('teacher')
-            else:
-                path = path.format('users')
+            db = connect_to_cloudsql()
+            cursor = db.cursor()
+            cursor.execute(
+                """
+                SELECT identity FROM users WHERE email='%s'
+                """ % self.request.cookies.get('user')
+            )
+            try:
+                result = cursor.fetchall()[0][0]
+            except IndexError as e:
+                print('IN THE EXCEPTION HANDLER')
+                cookies = self.request.cookies
+                for i in cookies:
+                    self.response.delete_cookie(i)
+                    self.response.location = '/'
+                return self.response
+            
+            path = path.format(result)
+            # return webapp2.redirect('/')
             template_values = ''
             return self.response.write(template.render(path, template_values))
         else:
@@ -351,9 +366,9 @@ class Register(webapp2.RequestHandler):
         db = connect_to_cloudsql()
         cursor = db.cursor()
         cursor.execute("""
-        INSERT INTO users(name, gameID, password, email,identity,birthday,level) 
-        VALUES(%s, %s, %s, %s,%s, %s ,%s)"""
-        ,(name,ID,password,email,identity , year+'-'+month+'-'+date,0)
+        INSERT INTO users(name, gameID, password, email,identity,birthday,level, courses) 
+        VALUES(%s, %s, %s, %s,%s, %s ,%s, %s)"""
+        ,(name,ID,password,email,identity , year+'-'+month+'-'+date,0,json.dumps([]))
         )
         db.commit()
         db.close()
@@ -409,6 +424,9 @@ class RepeatCheck(webapp2.RequestHandler):
 class GameData(webapp2.RequestHandler):
 
     def __getCurrentLevel(self,result):
+        """
+
+        """
         flag = False
         newUser = 1
         for i in range(1,len(result)):
@@ -424,6 +442,20 @@ class GameData(webapp2.RequestHandler):
                     return i - 1 , newUser
             except:
                 return i - 1 , newUser
+
+    def levelInfo(self,userLevelData):
+        """
+        You need to finish this method after you decide which value you'd like to store in the db 
+
+        This method need to return which level user should start and 
+        which levels user has been completed.
+
+        Also, determine if user is a new player of this task or not
+        """
+        startedLevel = 1 # need to be a integer
+        userDoneLevel = [] # need to be list
+        newUser = 1 # if user is a new player newUser is 1 , if not newUser = 0
+        return startedLevel, userDoneLevel , newUser
 
     def get(self,user):
         

@@ -181,7 +181,8 @@ Scope.init = function() {
     BlocklyGames.bindClick('Setting',Scope.setSettingEventListener);
     BlocklyGames.bindClick('restoreBlockHeader', Scope.restoreBlock);
     BlocklyGames.bindClick('showCodeHeader', Scope.showCode);
-    BlocklyGames.bindClick('target_btn',Scope.showTarget)
+    BlocklyGames.bindClick('target_btn',Scope.showTarget);
+    BlocklyGames.bindClick('home_btn',Scope.backToHome);
     // BlocklyGames.bindClick('bigQueryTest', Scope.bigQueryLogSend);
     
 
@@ -276,7 +277,9 @@ Scope.showTarget = function(){
     targetButton.disabled = true;
 }
 
-
+Scope.backToHome = function () {
+    window.location.replace('/user')
+}
 
 Scope.setSettingEventListener = function(){
    BlocklyGames.bindClick('Music', Scope.musicOnOff);
