@@ -308,6 +308,8 @@ class UserPage(webapp2.RequestHandler):
             )
             try:
                 result = cursor.fetchall()[0][0]
+                print('\n\n---\n\n')
+                print(result)
             except IndexError as e:
                 print('IN THE EXCEPTION HANDLER')
                 cookies = self.request.cookies
@@ -388,9 +390,8 @@ class Login(webapp2.RequestHandler):
         print(result)
         # if(result[4] == 'teacher'):
         
-        self.response.set_cookie('identity',result[0][4])
-
         if len(result) == 1:
+            self.response.set_cookie('identity',result[0][4])
             return self.response.write('successful')
         else:
             return self.response.write('failed')
@@ -641,6 +642,8 @@ class Class(webapp2.RequestHandler):
             return self.response.out.write('successful')
                  
     def get(self,**kwargs):
+        print('\n\n---\n\n')
+        print(kwargs)
         db = connect_to_cloudsql()
         cursor = db.cursor()
         if(len(kwargs.keys()) == 0):
@@ -663,7 +666,11 @@ class Class(webapp2.RequestHandler):
                 """ % user
             )
             result = cursor.fetchall()
-            userCourse = json.loads(result[0][0])
+            print('\n\n---\n\n')
+            print(result[0][0])
+            print('\n\n')
+            # userCourse = json.loads(result[0][0])
+            userCourse = result[0][0]
             userID = result[0][1]
             print(userCourse)
             # return self.response.out.write('%s' % result)
