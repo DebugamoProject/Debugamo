@@ -83,7 +83,7 @@
   } catch (e) {
     // Don't even think of throwing an error.
   }
-  // var debug = true;
+  var debug = true;
 
   // DebugamO: add done property into localStorage
   if (!window.localStorage.hasOwnProperty('done')) {
@@ -113,6 +113,10 @@
   }
   if (appName === "debugging") {
       script.src = appName + '/public/generated/' + lang +
+      (debug ? '/uncompressed.js' : '/compressed.js');
+  }
+  if (appName === "debugging_backend"){
+      script.src = 'debugging' + '/public/generated/' + lang +
       (debug ? '/uncompressed.js' : '/compressed.js');
   }
   script.type = 'text/javascript';

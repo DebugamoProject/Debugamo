@@ -193,6 +193,7 @@
       "third-party/soyutils_usegoog.js",
       "generated/en/soy.js",
       "debugging/public/generated/en/soy.js",
+      "debugging/js/cookies.js",
       "third-party/blockly/generators/javascript.js",
       "third-party/blockly/generators/javascript/lists.js",
       "third-party/blockly/generators/javascript/variables.js",

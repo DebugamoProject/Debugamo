@@ -28,6 +28,7 @@
 # cycle since there is no need to rebuild or recompile, just reload.
 
 import os.path, re, subprocess, sys
+import os
 
 # Given a user's language, which of the available Blockly core languagues
 # should be used.

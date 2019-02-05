@@ -42,7 +42,7 @@ BlocklyInterface.editor = null;
  * @suppress {checkVars}
  */
 BlocklyInterface.init = function() {
-  BlocklyGames.init();
+  // BlocklyGames.init();
 
   // Disable the link button if page isn't backed by App Engine storage.
   var linkButton = document.getElementById('linkButton');
