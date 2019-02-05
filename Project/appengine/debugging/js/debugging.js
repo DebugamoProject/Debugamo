@@ -17,6 +17,7 @@ goog.require('Debugging.UI');
 goog.require('Levels');
 goog.require('Debugging.soy');
 goog.require('NewUI');
+goog.require('cookies')
 
 BlocklyGames.NAME = 'debugging';
 
@@ -48,11 +49,11 @@ Scope.init = function() {
         maxLevel: BlocklyGames.MAX_LEVEL,
         html: BlocklyGames.IS_HTML
     });
-
+    BlocklyGames.init();
     BlocklyInterface.init();
-
-    
     newUI.init();
+
+
         var rtl = BlocklyGames.isRtl(); // right to left?
     var blocklyDiv = document.getElementById('blockly');
 
@@ -1103,4 +1104,4 @@ Scope.checkAnswer = function(e) {
 /**
  * Initialize Blockly and the game.
  */
-window.addEventListener('load', Scope.init);
+// window.addEventListener('load', Scope.init);
