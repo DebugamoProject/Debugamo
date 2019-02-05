@@ -205,6 +205,17 @@ BlocklyGames.USER = BlocklyGames.getStringParamFromUrl('user','debugging');
 
 
 
+/**
+ * Get the user task data
+ * 
+ * Return user's starting level
+ * Store the all of the user's data
+ * API : POST /GameRecord 
+ * {
+ *  "user" : BlocklyGames.USER
+ *  "task" : BlocklyGames.TASK
+ * }
+ */
 BlocklyGames.getTaskData = function (){
   var xhr = new XMLHttpRequest();
   var taskData  = {
@@ -214,7 +225,7 @@ BlocklyGames.getTaskData = function (){
   var nextLevel;
   var data;
   var startedLevel;
-  var selectedLevel;
+  var selectedLevel; 
   xhr.open("POST","/GameRecord",false);
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onreadystatechange = function(){
@@ -239,6 +250,7 @@ BlocklyGames.getTaskData = function (){
   return startedLevel;
 }
 
+// Get the starting level
 BlocklyGames.LEVEL = BlocklyGames.getTaskData();
 
 /**
@@ -404,8 +416,6 @@ BlocklyGames.getMsgOrNull = function(key) {
  */
 BlocklyGames.bindClick = function(el, func) {
   if (typeof el == 'string') {
-    console.log('bindClick')
-    console.log(el)
     el = document.getElementById(el);
   }
   el.addEventListener('click', func, true);

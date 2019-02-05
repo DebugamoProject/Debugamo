@@ -4,6 +4,7 @@
 
 appengine/third-party-backup/*
 third-party-backup/*
+appengine/debugging_backend
 
 *.komodoproject
 
