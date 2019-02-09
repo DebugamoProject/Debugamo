@@ -1,0 +1,4 @@
+mysqlhost : micro-enigma-219007:asia-east1:my-sql-instance
+mysqluser : 'root'
+mysqlpasswd : 'Pass@debugamo#word%'
+mysqldb : 'infodb'
