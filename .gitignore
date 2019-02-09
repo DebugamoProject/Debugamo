@@ -8,3 +8,4 @@
 /sql_config.yaml
 *.pyc
 *.swp
+/Project/appengine/SQL_Operation/config.yaml
