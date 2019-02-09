@@ -2,7 +2,7 @@ import mysql.connector
 import yaml
 import json
 
-config = yaml.load(open('config.yaml','r'))
+config = yaml.load(open('../../../sql_config.yaml','r'))
 
 
 mydb = mysql.connector.connect(
