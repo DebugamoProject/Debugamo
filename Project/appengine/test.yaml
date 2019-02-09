@@ -88,10 +88,10 @@ libraries:
 
 # [START env_variables]
 env_variables:
-    CLOUDSQL_CONNECTION_NAME: 
-    CLOUDSQL_USER: 
-    CLOUDSQL_PASSWORD: 
-    CLOUDSQL_DATABASE: 
+    CLOUDSQL_CONNECTION_NAME: micro-enigma-219007:asia-east1:my-sql-instance
+    CLOUDSQL_USER: root
+    CLOUDSQL_PASSWORD: Pass@debugamo#word%
+    CLOUDSQL_DATABASE: infodb
 # [END env_variables]
 
 
