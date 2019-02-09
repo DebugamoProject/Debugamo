@@ -252,8 +252,16 @@ class TestPage(webapp2.RequestHandler):
         self.response.headers['Content-Type'] = 'text/plain'
         db = connect_to_cloudsql()
         cursor = db.cursor()
-        # cursor.execute('SHOW DATABASES')
-        cursor.execute('desc users')
+        a = """
+            {"Debugging": {"1": {"1": "Learn Move", "2": "Learn Grab and Drop"}, "2": {"1": "Learn Goto", "3": "Evaluation"}, "3": {"3": "Evaluation"}, "4": {"2": "Learn Function"}, "5": {"1": "Learn If-Then"}, "6": {"1": "Learn For Loop", "3": "Evaluation"}}}
+            """
+        a = json.loads(a)
+
+        cursor.execute("""
+            UPDATE classTB SET levels = '%s' WHERE name="Debugging"
+            """ % json.dumps(a))
+        db.commit()
+        db.close()
         for r in cursor.fetchall():
             self.response.write('{}\n'.format(r))
                 
@@ -669,8 +677,8 @@ class Class(webapp2.RequestHandler):
             print('\n\n---\n\n')
             print(result[0][0])
             print('\n\n')
-            # userCourse = json.loads(result[0][0])
-            userCourse = result[0][0]
+            userCourse = json.loads(result[0][0])
+            # userCourse = result[0][0]
             userID = result[0][1]
             print(userCourse)
             # return self.response.out.write('%s' % result)

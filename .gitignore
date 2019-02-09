@@ -5,6 +5,6 @@
 /webapp2_draft/env27
 /webapp2_draft/cloud_sql_proxy
 /test
-
+/sql_config.yaml
 *.pyc
 *.swp
