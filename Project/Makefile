@@ -3,11 +3,11 @@
 ##############################
 
 # USER_APPS = {index,courses,puzzle,maze,bird,turtle,movie,pond/docs,pond/tutor,pond/duck,debugging}
-USER_APPS = {index,maze,debugging}
+USER_APPS = {index,maze,debugging,backend}
 # ALL_JSON = {./,index,courses,puzzle,maze,bird,turtle,movie,pond/docs,pond,pond/tutor,pond/duck,debugging}
-ALL_JSON = {./,index,maze,debugging}
+ALL_JSON = {./,index,maze,debugging,backend}
 # ALL_TEMPLATES = appengine/template.soy,appengine/index/template.soy,appengine/template.soy,appengine/courses/template.soy,appengine/puzzle/template.soy,appengine/maze/template.soy,appengine/bird/template.soy,appengine/turtle/template.soy,appengine/movie/template.soy,appengine/pond/docs/template.soy,appengine/pond/template.soy,appengine/pond/tutor/template.soy,appengine/pond/duck/template.soy,appengine/shop/template.soy,appengine/debugging/template.soy
-ALL_TEMPLATES = appengine/template.soy,appengine/index/template.soy,appengine/debugging/template.soy
+ALL_TEMPLATES = appengine/template.soy,appengine/index/template.soy,appengine/debugging/template.soy,appengine/backend/template.soy
 
 APP_ENGINE_THIRD_PARTY = appengine/third-party
 
@@ -131,6 +131,21 @@ debugging: extract-msgs
 	mkdir -p appengine/$(APP)/public/generated/$(LANG)
 	i18n/json_to_js.py --path_to_jar third-party --output_dir appengine/$(APP)/public/generated --template $(TEMPLATE) --key_file json/keys.json json/$(LANG).json
 	python build-app-public.py $(APP) $(LANG)
+
+backend: extract-msgs
+	$(eval APP := backend)
+	$(eval TEMPLATE := appengine/$(APP)/template.soy)
+	mkdir -p appengine/$(APP)/public/generated
+
+	$(eval LANG := en)
+	mkdir -p appengine/$(APP)/public/generated/$(LANG)
+	i18n/json_to_js.py --path_to_jar third-party --output_dir appengine/$(APP)/public/generated --template $(TEMPLATE) --key_file json/keys.json json/$(LANG).json
+	python build-app-public.py $(APP) $(LANG)
+
+	# $(eval LANG := zh-hant)
+	# mkdir -p appengine/$(APP)/public/generated/$(LANG)
+	# i18n/json_to_js.py --path_to_jar third-party --output_dir appengine/$(APP)/public/generated --template $(TEMPLATE) --key_file json/keys.json json/$(LANG).json
+	# python build-app-public.py $(APP) $(LANG)
 
 
 maze-zh: common-zh

@@ -108,6 +108,10 @@ def write_uncompressed(name, lang):
     cmd.append('--root=appengine/%s/public/generated/%s/' % (directory, lang))
     cmd.append('--root=appengine/%s/js/' % directory)
     (directory, sep, fragment) = directory.rpartition(os.path.sep)
+  if(name.title() == 'Backend'):
+    cmd.append('--root=appengine/%s/js/' % ('debugging'))
+    # cmd.append('--root=appengine/%s/public/generated/%s/' % ("debugging", lang))
+  print(cmd)
   proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
   files = proc.stdout.readlines()
 

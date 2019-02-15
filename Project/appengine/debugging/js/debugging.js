@@ -17,7 +17,7 @@ goog.require('Debugging.UI');
 goog.require('Levels');
 goog.require('Debugging.soy');
 goog.require('NewUI');
-goog.require('cookies')
+goog.require('cookies');
 
 BlocklyGames.NAME = 'debugging';
 
@@ -60,7 +60,8 @@ Scope.init = function() {
     /* Init Blockly */
     var toolbox = document.getElementById('toolbox');
     var scale = Levels[BlocklyGames.LEVEL].scale || 1;
-    var readOnly = false;
+    var readOnly = BlocklyGames.MODE == 'gamming' ? false : true;
+    // var readOnly = true;
     // var readOnly = Levels[BlocklyGames.LEVEL].isEvaluation || false;
 
     // init blocks or categories
@@ -149,11 +150,28 @@ Scope.init = function() {
     BlocklyInterface.loadBlocks(savedXml, false);
     // console.log('[Game] Load saved blocks.');
 
-    Scope.initHeaderWidth();
+
+    // init the UI workspace header width or create the backTrack Container;
+    var UIinitMode;
+    if(BlocklyGames.MODE == 'gamming')
+        UIinitMode = Scope.initHeaderWidth;
+    else{
+        var identity = Cookies.getCookies('identity');
+        UIinitMode = Scope.backTrackModeUIInit;
+        UIinitMode();
+        if(identity == 'student'){
+            Scope.studentsbackTrackUIInit();
+            // UIinitMode = Scope.studentsbackTrackUIInit;
+        }else{
+            Scope.teacherBackTrackUIInit();
+        }
+    }
+
+    UIinitMode();
 
     // On Window resize init workspace header width
     window.addEventListener('resize', function(event) {
-        Scope.initHeaderWidth();
+        UIinitMode();
     }, true);
 
     // Maze.reset(true);
@@ -206,15 +224,19 @@ Scope.init = function() {
     // }
 
     // init tutorial
+    
     var tutorialFinishedOne = localStorage.tutorialFinishedOne;
     if (!tutorialFinishedOne && localStorage.newPlayer == "0") {
         // console.log(tutorialFinishedOne);
         // console.log(localStorage.newPlayer);
-        Scope.startIntro();
+        // Scope.startIntro();
     }
     if (!done && tutorialFinishedOne && localStorage.newPlayer == "0") {
         UI.showOrHideInterface(false);
     }
+
+    UI.showOrHideInterface(true);
+    
 
     var tutorialFinishedThree = localStorage.tutorialFinishedThree;
 
@@ -228,19 +250,24 @@ Scope.init = function() {
         // $('#clearLocalStorageButton').show();
     }
 
-    Scope.getAuthToken();
+    // Scope.getAuthToken();
 
     if (localStorage.newPlayer == "1") {
         $('#begin').on('keyup', UI.checkAllNewPlayerInfoIsFilled);
         $('#begin').on('click', UI.checkAllNewPlayerInfoIsFilled);
     }
 
+    /*
+    evaluation, set the readOnly 
+    */
     if (Levels[BlocklyGames.LEVEL].isEvaluation) {
         // re-init numOfChanceToAnswer to 3
         $('#restoreBlockHeader').hide();
         BlocklyGames.workspace.options.readOnly = true;
         localStorage.numOfChanceToAnswer = "3";
     }
+
+
 
     $('#dialogStorage').append('<audio loop id="backgroundMusic"><source src="debugging/public/sound/gidget_tutorial.mp3" type="audio/mpeg"></audio>');
     if (localStorage.musicPlay == "1") {
@@ -426,7 +453,6 @@ Scope.initHeaderWidth = function() {
         // workspaceHeader.style.display = 'none';
         blocklyFlyout.style.display = 'none';
         toolboxHeader.style.display = 'none';
-
         workspaceHeader.style.display = 'inline-block';
         workspaceHeader.style.width = (widthWorkspace - 2) + 'px';
 
@@ -1039,7 +1065,7 @@ Scope.startGame = function() {
 
     // localStorage.setItem('user', JSON.stringify(user));
 
-    Scope.startIntro();
+    // Scope.startIntro();
     Game.kiboFunction = false;
 };
 
@@ -1101,7 +1127,89 @@ Scope.checkAnswer = function(e) {
     // }
 }
 
+
+Scope.backTrackModeUIInit = function (){
+    $('#toolbox-header').hide();
+    var codeEditorContainer = document.getElementById('debugamo-code-editor-container');
+    // codeEditorContainer.style.width = '40%';
+    codeEditorContainer.style.cssFloat = 'right'
+    var debugamoRightContainer = document.getElementById('debugamo-right-container');
+    var heightCodeContainer = codeEditorContainer.getBoundingClientRect().height;
+
+    
+    if(document.getElementById('backTrackContainer') == null){
+        var backtrackContainer = document.createElement('div');
+        backtrackContainer.id = 'backTrackContainer';
+        backtrackContainer.style.height = heightCodeContainer + 'px';
+        debugamoRightContainer.append(backtrackContainer);
+    }else{
+        var backTrackContainer = document.getElementById('backTrackContainer');
+        backTrackContainer.style.height = heightCodeContainer;
+    }
+
+    var aclistContent = document.getElementById('actionList');
+    if( aclistContent !== null){
+        aclistContent.style.height = (heightCodeContainer - 30) + 'px';
+    }
+}
+
+
+/**
+ * the UI of back track mode for students
+ */
+Scope.studentsbackTrackUIInit = function (){
+    var backTrackContainer = document.getElementById('backTrackContainer');
+    var codeEditorContainer = document.getElementById('debugamo-code-editor-container');
+    codeEditorContainer.style.width = '70%';
+    backTrackContainer.style.width = '30%';
+    codeEditorContainer.style.cssFloat = 'right'
+    var aclist = actionListCreate();
+    backTrackContainer.append(aclist);
+}
+
+Scope.teacherBackTrackUIInit = function (){
+    var backTrackContainer = document.getElementById('backTrackContainer');
+    backTrackContainer.style.display = 'grid';
+    backTrackContainer.style.gridTemplateColumns = 'repeat(2,1fr)';
+    
+    // append students list;
+    var sList = document.createElement('div');
+    sList.id = 'studentsContainer';
+    var subTitle = document.createElement('div');
+    subTitle.id = 'studentsTitle';
+    subTitle.className = 'backTrackContainerTiTle';
+    subTitle.innerText = '學生列表';
+    sList.append(subTitle);
+
+    var list = document.createElement('div');
+    list.id = 'studentsList';
+    list.className = 'list';
+    sList.append(list);
+}
+
+function actionListCreate(){
+    var height = document.getElementById('debugamo-code-editor-container').getBoundingClientRect().height;
+    var aclist = document.createElement('div');
+    aclist.id = 'actionListContainer';
+    var subTitle = document.createElement('div');
+    subTitle.id = 'actionTitle';
+    subTitle.className = 'backTrackContainerTiTle';
+    subTitle.innerText = '動作列表';
+    aclist.append(subTitle);
+
+    var list = document.createElement('div');
+    list.id = 'actionList';
+    list.className = 'list';
+    list.style.height = (height - 30) + 'px';
+    aclist.append(list);
+    return aclist;
+}
+
+function loadAction(){
+
+}
+
 /**
  * Initialize Blockly and the game.
  */
-// window.addEventListener('load', Scope.init);
+window.addEventListener('load', Scope.init);

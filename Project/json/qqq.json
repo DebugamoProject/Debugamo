@@ -118,5 +118,6 @@
 	"Debugging.toolboxHeader": "block toolbox header",
 	"Debugging.workspaceHeader": "workspace header",
 	"Debugging.showCodeHeader": "Debugging - Show JS Code Header",
-	"Debugging.restoreBlockHeader": "Debugging - Restore Original Block Header"
+	"Debugging.restoreBlockHeader": "Debugging - Restore Original Block Header",
+	"DebuggingBackend.NewTeacherGuide1": "New Teacher Guide"
 }

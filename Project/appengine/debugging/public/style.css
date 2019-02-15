@@ -1002,3 +1002,23 @@ img.showCodeRobot {
     /* background: lightgrey; */
     background-image: url("./img/hint2.jpg");
 }
+
+#backTrackContainer{
+    /* width: 60%; */
+    display: inline-block;
+
+}
+
+.backTrackContainerTiTle{
+    height: 30px;
+    background-color: rgb(118, 101, 160);
+    line-height: 30px;
+    text-align: center;
+    color: white;
+}
+
+.list{
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
