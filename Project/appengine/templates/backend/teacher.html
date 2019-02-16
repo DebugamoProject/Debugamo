@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="../../static/backend/style.css">
     <link rel="stylesheet" href="../../static/user/teacher.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
+    
     <title>Document</title>
 </head>
 <body>
@@ -31,6 +36,11 @@
                 <a href="#">Logout</a>
             </div>
         </div>
+
+        <div class="selector">
+            
+        </div>
+
         <div id="content">
             <div id="courses">
                 
@@ -51,17 +61,58 @@
                         <div style="border-top: 1px solid grey;"></div>
                         <div class="methods">
                             <a href="javascript:void(0);">調整排序順序</a>
-                            <a href="javascript:void(0);">新增成員</a>
+                            <a href="javascript:void(0);" class="new_member">新增成員</a>
                             <!-- <i class="fas fa-ellipsis-h"></i> -->
                         </div>
-                        <div class="member">
-                            <span class="memberID">USERID</span>
-                            <span class="memberName">USERNAME</span>
-                            <div class="completeDegree"></div>
-                        </div>
+                        <!-- <div class="row"> -->
+                        <ul class="member">
+                        </ul>
+                    <!-- </div> -->
                     </div>
                 </div>
             </div>
+
+            <div id="addclass" style="display:none">
+                <div id="add-title">
+                    <span style="font-size: 40px;">新增任務</span>
+                    <div style="border: 1px solid lightgrey"></div>
+                </div>
+                <div id="name" class='item'>
+                  <label for="className">任務名稱</label>
+                  <input type="text" id="inputName">
+                </div>
+                <!-- <div id="number" class='item'>
+                  <label for="classNumber">任務代碼</label>
+                  <input type="text" id="inputNumber">
+                </div> -->
+                <div id="private" class="item">
+                  <label for="classPrivate">私人任務</label>
+                  <select name="mode-selector" id="mode">
+                      <option selected>選擇任務型態</option>
+                      <option value="1">公開</option>
+                      <option value="0">保護</option>
+                      <option value="-1">私人</option>
+                  </select>
+                  <!-- <label for="yes">是</label> -->
+                  <!-- <button id="yes" value="true">是</button> -->
+                  <!-- <input type="checkbox" name="privateYes" id="yesBox"> -->
+                  <!-- <label for="yes">否</label> -->
+                  <!-- <button id="no" value="false">否</button> -->
+                  <!-- <input type="checkbox" name="privateNo" id="noBox"> -->
+                </div>
+                <div id="discription" class="">
+                  <p>任務描述</p>
+                  <textarea name="taskDiscription" id="inputDiscription" cols="100" rows="10"></textarea>
+                </div>
+                <div id="inherit">
+                  <label>加入任務</label>
+                  <div id="publicClass">
+                  </div>
+                  <button id="submitClasses">送出</button>
+                </div>
+              </div>
+        
+
         </div>
         
     </div>

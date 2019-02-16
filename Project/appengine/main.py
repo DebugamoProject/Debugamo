@@ -501,8 +501,10 @@ class GameData(webapp2.RequestHandler):
             """ % (data['task'],data['user'])
         )  
         
-        result = cursor.fetchall()[0]
-        
+        result = cursor.fetchall()
+        print('\n\n\n------')
+        print(result)
+
         newUser = self.__getCurrentLevel(result)
         
         print('newUser is %s ' % newUser)
@@ -749,8 +751,16 @@ class GameBackendHandler(webapp2.RequestHandler):
             result = cursor.fetchall()
             self.response.headers['Content-Type'] = 'application/json'
             return self.response.out.write(json.dumps(result,indent=4))
-        # for key,item in kwargs.iteritems():
-        #     print('key is %s item is %s' % (key,item))
+        for key,item in kwargs.iteritems():
+            print('key is %s item is %s' % (key,item))
+
+        if kwargs.has_key('request') and kwargs['request'] == 'members':
+            cursor.execute("""
+            SELECT ID FROM %s
+            """ % (kwargs['course_id']))
+            result = cursor.fetchall()
+            self.response.headers['Content-Type'] = 'application/json'
+            return self.response.out.write(json.dumps(result, indent=4))
         else:
             db.commit()
             db.close()
@@ -821,6 +831,7 @@ app = webapp2.WSGIApplication([
     webapp2.Route(r'/GameRecord/<user>',handler=GameData,name='gameRecord'),
     webapp2.Route(r'/backend/<user>',handler=GameBackendHandler,name='Game'),
     webapp2.Route(r'/backend/<user>/<request>',handler=GameBackendHandler,name='GameCourses'),
+    webapp2.Route(r'/backend/<user>/<request>/<course_id>',handler=GameBackendHandler,name='MemberHandler'),
     webapp2.Route(r'/class',handler=Class,name='Class'),
     webapp2.Route(r'/class/<user>',handler=Class,name='ParticipateCourse'),
     webapp2.Route(r'/class/<user>/<request>',handler=Class,name='CourseRequest'),

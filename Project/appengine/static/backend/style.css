@@ -156,7 +156,6 @@ a{
 }
 
 .member{
-    height: 40px;
     width: 100%;
     border-top: 1px solid black;
     border-bottom: 1px solid black;
@@ -165,6 +164,13 @@ a{
     margin-top: 10px;
     margin-bottom: 10px;
     box-sizing: border-box;
+}
+
+.member_item{
+    height: 20px;
+    display: block;
+    padding: .75rem 1.25rem;
+    border: 1px solid rgba(0,0,0,.125);
 }
 
 .member div{
