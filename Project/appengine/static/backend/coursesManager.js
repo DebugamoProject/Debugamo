@@ -36,8 +36,10 @@ function getCourse(){
     return objCourses
 }
 
-function getMembers() {
-    
+function getMembers(id) {
+    var url = window.location.href;
+    var members = getCourseMembers(url + '/members' + '/' + id);
+    return members;
 }
 
 var courses = getCourse();
@@ -55,6 +57,27 @@ $('.course').on('click',function(e){
 })
 
 $('.memberManage').on('click',function(e){
-    $('#task').children('div').remove();
+    $('.member').empty();
     $(this).parent().slideToggle();
+    var id = $(this).parent().parent()[0].id
+    var members =  getMembers(id);
+
+    // add members to list
+    let item = '';
+    for(var i = 0; i < members.length; i++) {
+        item = '<li class="member_item">' + members[i] + '</li>';
+        $('.member').append(item);
+    }
+    
+})
+
+$('.new_member').on('click', function(e) {
+    var url = window.location.href;
+    url = url + ''
+    var form = `
+    <form action="" method="post">
+    <input type="text" name="input_member" id="input_member">
+    <button type="submit">Submit</button>
+    `
+    $('.methods').append(form);
 })

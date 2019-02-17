@@ -63,3 +63,11 @@ function addNewClass(SelectCoures){
     });
 }
 
+function generateBackendLink() {
+    var user = Cookies.get('user');
+    var link = '/backend/' + user; 
+    $("#information").attr("href", link);
+}
+
+// generate backend link
+generateBackendLink();

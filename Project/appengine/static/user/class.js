@@ -93,3 +93,17 @@ var coursesSetup = function (courses) {
     return classes
 }
 
+// get member
+
+function getCourseMembers(URL) {
+    var members;
+    $.ajax({
+        type: "GET",
+        url: URL,
+        async: false,
+        success: function (response) {
+            members = response;
+        }
+    });
+    return members;
+}
