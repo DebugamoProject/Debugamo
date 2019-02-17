@@ -132,6 +132,21 @@ debugging: extract-msgs
 	i18n/json_to_js.py --path_to_jar third-party --output_dir appengine/$(APP)/public/generated --template $(TEMPLATE) --key_file json/keys.json json/$(LANG).json
 	python build-app-public.py $(APP) $(LANG)
 
+backend: extract-msgs
+	$(eval APP := backend)
+	$(eval TEMPLATE := appengine/$(APP)/template.soy)
+	mkdir -p appengine/$(APP)/public/generated
+
+	$(eval LANG := en)
+	mkdir -p appengine/$(APP)/public/generated/$(LANG)
+	i18n/json_to_js.py --path_to_jar third-party --output_dir appengine/$(APP)/public/generated --template $(TEMPLATE) --key_file json/keys.json json/$(LANG).json
+	python build-app-public.py $(APP) $(LANG)
+
+	# $(eval LANG := zh-hant)
+	# mkdir -p appengine/$(APP)/public/generated/$(LANG)
+	# i18n/json_to_js.py --path_to_jar third-party --output_dir appengine/$(APP)/public/generated --template $(TEMPLATE) --key_file json/keys.json json/$(LANG).json
+	# python build-app-public.py $(APP) $(LANG)
+
 
 maze-zh: common-zh
 	$(SOY_COMPILER) --outputPathFormat appengine/maze/generated/zh-hant/soy.js --srcs appengine/maze/template.soy

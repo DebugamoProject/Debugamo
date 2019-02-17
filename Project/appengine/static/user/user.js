@@ -211,6 +211,8 @@ function getUserTaskData(){
       userTaskData = response;
     }
   });
+  console.log('[load] user Task Data');
+  console.log(userTaskData);
   return userTaskData;
 }
 
@@ -233,7 +235,10 @@ function UserClassDataDomCreater(){
         <span>5/4</span>
       </p> -->
       <button>
-        <a href="/debugging?lang=zh-hant&level=1${userTaskData[i]['url']}" style="color:black">開始遊戲</a>
+        <a href="/debugging?lang=zh-hant&level=1${userTaskData[i]['url']}&mode=gamming" style="color:black">開始遊戲</a>
+      </button>
+      <button>
+        <a href="/debugging?lang=zh-hant&level=1${userTaskData[i]['url']}&mode=backTrack" style="color:black">任務回顧</a>
       </button>
     </div>
     

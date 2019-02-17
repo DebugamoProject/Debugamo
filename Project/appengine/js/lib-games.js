@@ -203,7 +203,10 @@ BlocklyGames.TASK = BlocklyGames.getStringParamFromUrl('task','debugging');
  */
 BlocklyGames.USER = BlocklyGames.getStringParamFromUrl('user','debugging');
 
-
+/**
+ * Blockly's Game Mode
+ */
+BlocklyGames.MODE = BlocklyGames.getStringParamFromUrl('mode','gamming');
 
 /**
  * Get the user task data
@@ -258,7 +261,8 @@ BlocklyGames.LEVEL = BlocklyGames.getTaskData();
  */
 BlocklyGames.init = function() {
   if(BlocklyGames.LEVEL === undefined){
-    window.location.replace('/');
+    // window.location.replace('/');
+    BlocklyGames.LEVEL = 1;
   }
   // change url if level param is changed
   if (BlocklyGames.NAME == "debugging") {

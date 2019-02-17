@@ -17,7 +17,7 @@ goog.require('Debugging.UI');
 goog.require('Levels');
 goog.require('Debugging.soy');
 goog.require('NewUI');
-goog.require('cookies')
+goog.require('cookies');
 
 BlocklyGames.NAME = 'debugging';
 
@@ -60,7 +60,8 @@ Scope.init = function() {
     /* Init Blockly */
     var toolbox = document.getElementById('toolbox');
     var scale = Levels[BlocklyGames.LEVEL].scale || 1;
-    var readOnly = false;
+    var readOnly = BlocklyGames.MODE == 'gamming' ? false : true;
+    // var readOnly = true;
     // var readOnly = Levels[BlocklyGames.LEVEL].isEvaluation || false;
 
     // init blocks or categories
@@ -149,11 +150,28 @@ Scope.init = function() {
     BlocklyInterface.loadBlocks(savedXml, false);
     // console.log('[Game] Load saved blocks.');
 
-    Scope.initHeaderWidth();
+
+    // init the UI workspace header width or create the backTrack Container;
+    var UIinitMode;
+    if(BlocklyGames.MODE == 'gamming')
+        UIinitMode = Scope.initHeaderWidth;
+    else{
+        var identity = Cookies.getCookies('identity');
+        UIinitMode = Scope.backTrackModeUIInit;
+        UIinitMode();
+        if(identity == 'student'){
+            Scope.studentsbackTrackUIInit();
+            // UIinitMode = Scope.studentsbackTrackUIInit;
+        }else{
+            Scope.teacherBackTrackUIInit();
+        }
+    }
+
+    UIinitMode();
 
     // On Window resize init workspace header width
     window.addEventListener('resize', function(event) {
-        Scope.initHeaderWidth();
+        UIinitMode();
     }, true);
 
     // Maze.reset(true);
@@ -184,6 +202,11 @@ Scope.init = function() {
     BlocklyGames.bindClick('showCodeHeader', Scope.showCode);
     BlocklyGames.bindClick('target_btn',Scope.showTarget);
     BlocklyGames.bindClick('home_btn',Scope.backToHome);
+    try{
+        BlocklyGames.bindClick('play',Scope.playBack);
+    }catch(e){
+
+    }
     // BlocklyGames.bindClick('bigQueryTest', Scope.bigQueryLogSend);
     
 
@@ -206,15 +229,19 @@ Scope.init = function() {
     // }
 
     // init tutorial
+    
     var tutorialFinishedOne = localStorage.tutorialFinishedOne;
     if (!tutorialFinishedOne && localStorage.newPlayer == "0") {
         // console.log(tutorialFinishedOne);
         // console.log(localStorage.newPlayer);
-        Scope.startIntro();
+        // Scope.startIntro();
     }
     if (!done && tutorialFinishedOne && localStorage.newPlayer == "0") {
         UI.showOrHideInterface(false);
     }
+
+    UI.showOrHideInterface(true);
+    
 
     var tutorialFinishedThree = localStorage.tutorialFinishedThree;
 
@@ -228,19 +255,24 @@ Scope.init = function() {
         // $('#clearLocalStorageButton').show();
     }
 
-    Scope.getAuthToken();
+    // Scope.getAuthToken();
 
     if (localStorage.newPlayer == "1") {
         $('#begin').on('keyup', UI.checkAllNewPlayerInfoIsFilled);
         $('#begin').on('click', UI.checkAllNewPlayerInfoIsFilled);
     }
 
+    /*
+    evaluation, set the readOnly 
+    */
     if (Levels[BlocklyGames.LEVEL].isEvaluation) {
         // re-init numOfChanceToAnswer to 3
         $('#restoreBlockHeader').hide();
         BlocklyGames.workspace.options.readOnly = true;
         localStorage.numOfChanceToAnswer = "3";
     }
+
+
 
     $('#dialogStorage').append('<audio loop id="backgroundMusic"><source src="debugging/public/sound/gidget_tutorial.mp3" type="audio/mpeg"></audio>');
     if (localStorage.musicPlay == "1") {
@@ -320,7 +352,7 @@ Scope.addVer = function(version_xml_string) {
     var d = new Date();
     var time = d.getTime();
     // console.log(time);
-    console.log(version_xml_string);
+    // console.log(version_xml_string);
     var blockVersion = JSON.parse(localStorage.blockVersion);
     if (blockVersion.length != 0 && time - blockVersion[blockVersion.length-1].time < 500) {
         console.log('too quick!');
@@ -426,7 +458,6 @@ Scope.initHeaderWidth = function() {
         // workspaceHeader.style.display = 'none';
         blocklyFlyout.style.display = 'none';
         toolboxHeader.style.display = 'none';
-
         workspaceHeader.style.display = 'inline-block';
         workspaceHeader.style.width = (widthWorkspace - 2) + 'px';
 
@@ -689,7 +720,6 @@ Scope.resetButtonClick = function(e) {
  * @param {!Interpreter} interpreter The JS interpreter.
  */
 Scope.initInterpreter = function(interpreter, scope) {
-    console.log('in initInterpreter')
     var commandNames = Object.keys(Game.commands);
     commandNames.map(function(commandName) {
         interpreter.setProperty(scope, commandName, interpreter.createNativeFunction(Game.commands[commandName]));
@@ -727,6 +757,7 @@ Scope.execute = function() {
     // console.log('Solution Code')
     // console.log(code)
     var interpreter = new Interpreter(code, Scope.initInterpreter);
+    console.log(interpreter)
     Scope.interpretCode(interpreter, 0);
 };
 
@@ -1039,7 +1070,7 @@ Scope.startGame = function() {
 
     // localStorage.setItem('user', JSON.stringify(user));
 
-    Scope.startIntro();
+    // Scope.startIntro();
     Game.kiboFunction = false;
 };
 
@@ -1101,7 +1132,208 @@ Scope.checkAnswer = function(e) {
     // }
 }
 
+
+Scope.backTrackModeUIInit = function (){
+    $('#toolbox-header').hide();
+    var codeEditorContainer = document.getElementById('debugamo-code-editor-container');
+    // codeEditorContainer.style.width = '40%';
+    codeEditorContainer.style.cssFloat = 'right'
+    var debugamoRightContainer = document.getElementById('debugamo-right-container');
+    var heightCodeContainer = codeEditorContainer.getBoundingClientRect().height;
+
+    
+    if(document.getElementById('backTrackContainer') == null){
+        var backtrackContainer = document.createElement('div');
+        backtrackContainer.id = 'backTrackContainer';
+        backtrackContainer.style.height = heightCodeContainer + 'px';
+        debugamoRightContainer.append(backtrackContainer);
+    }else{
+        var backTrackContainer = document.getElementById('backTrackContainer');
+        backTrackContainer.style.height = heightCodeContainer;
+    }
+
+    var aclistContent = document.getElementById('actionList');
+    if( aclistContent !== null){
+        aclistContent.style.height = (heightCodeContainer - 30) + 'px';
+    }
+}
+
+
+/**
+ * the UI of back track mode for students
+ */
+Scope.studentsbackTrackUIInit = function (){
+    var command = {
+        run: Scope.runButtonClick,
+        reset: Scope.resetButtonClick,
+        step: Scope.stepButtonClick,
+        userCheckTarget:Scope.showTarget,
+        editBlock: BlocklyInterface.loadBlocks
+    }
+
+    var backTrackContainer = document.getElementById('backTrackContainer');
+    var codeEditorContainer = document.getElementById('debugamo-code-editor-container');
+    codeEditorContainer.style.width = '70%';
+    backTrackContainer.style.width = '30%';
+    codeEditorContainer.style.cssFloat = 'right'
+    var aclist = actionListCreate();
+    backTrackContainer.append(aclist);
+    var data = loadAction(BlocklyGames.USER,BlocklyGames.TASK, BlocklyGames.LEVEL);
+
+    var actionlistContainer = document.getElementById('actionList');
+    var actionList = new Array();
+    
+    for(var i = 0; i < data.length; i++){
+        var acitem = document.createElement('div');
+        acitem.className = 'acItem'
+        acitem.innerHTML = '<span class="acorder">'+ (i + 1) + '. ' +  Object.keys(data[i])[0] + '</span>'
+        var funcName = 'Scope.actionPlay(' + i + ');';
+        $(acitem).attr('onclick',funcName);
+
+        // what the hell ??? fucking JavaScript asynchronous
+        // acitem.addEventListener('click',function(e){
+        //     console.log('num ' + i + ' action click');
+        //     Scope.actionPlay(i);
+        // })
+        actionList.push(acitem);
+    }
+    
+    actionList.forEach(function (item) {
+        actionlistContainer.append(item)
+    })
+
+    localStorage.setItem('backTrackList',JSON.stringify(data))
+}
+
+
+Scope.teacherBackTrackUIInit = function (){
+    var backTrackContainer = document.getElementById('backTrackContainer');
+    backTrackContainer.style.display = 'grid';
+    backTrackContainer.style.gridTemplateColumns = 'repeat(2,1fr)';
+    
+    // append students list;
+    var sList = document.createElement('div');
+    sList.id = 'studentsContainer';
+    var subTitle = document.createElement('div');
+    subTitle.id = 'studentsTitle';
+    subTitle.className = 'backTrackContainerTiTle';
+    subTitle.innerText = '學生列表';
+    sList.append(subTitle);
+
+    var list = document.createElement('div');
+    list.id = 'studentsList';
+    list.className = 'list';
+    sList.append(list);
+}
+
+
+function actionListCreate(){
+    var height = document.getElementById('debugamo-code-editor-container').getBoundingClientRect().height;
+    var aclist = document.createElement('div');
+    aclist.id = 'actionListContainer';
+    var subTitle = document.createElement('div');
+    subTitle.id = 'actionTitle';
+    subTitle.className = 'backTrackContainerTiTle';
+    subTitle.innerText = '動作列表';
+    $(subTitle).append('<!-- <div id="stop" class="backTrackButton">| | 暫停</div> --><div id="play" class="backTrackButton">►| | 回放</div>')
+    aclist.append(subTitle);
+
+    var list = document.createElement('div');
+    list.id = 'actionList';
+    list.className = 'list';
+    list.style.height = (height - 30) + 'px';
+    aclist.append(list);
+    return aclist;
+}
+
+function loadAction(user,task,level){
+    var data;
+    $.ajax({
+        type:"GET",
+        url: "/backTrack/" + user + '/' + task + '/' + level,
+        async: false,
+        success:function(response){
+            data = response
+        }
+    })
+    console.log('[load] Action')
+    console.log(data)
+    return data;
+}
+
+Scope.playBack = function () {
+    var command = {
+        run: Scope.runButtonClick,
+        reset: Scope.resetButtonClick,
+        step: Scope.stepButtonClick,
+        userCheckTarget:Scope.showTarget,
+    }
+    var backTrackList = JSON.parse(localStorage.backTrackList)
+    
+    var fackEvent = new Event('click')
+    for(var i = 0 ; i < backTrackList.length; i++){
+        
+        console.log('[event]' + Object.keys(backTrackList[i])[0]);
+        if(Object.keys(backTrackList[i])[0] == 'editBlock'){
+            console.log('[editBlock] ' + backTrackList[i]['editBlock']);
+            // BlocklyInterface.loadBlocks(backTrackList[i]['editBlock'], false);
+            setTimeout(BlocklyInterface.loadBlocks,300,backTrackList[i]['editBlock'], false);
+        }
+        else{
+            try{
+                setTimeout(command[Object.keys(backTrackList[i])[0]],300,fackEvent)
+            }catch(e){
+            }
+        }
+    }
+}
+
+Scope.command = {
+    run: Scope.runButtonClick,
+    reset: Scope.resetButtonClick,
+    step: Scope.stepButtonClick,
+    userCheckTarget:Scope.showTarget,
+}
+
+/**
+ * perform the action
+ */
+Scope.actionPlay = function (actionNum){
+    console.log('[Scope.actionPlay] ' + actionNum)
+    var backTrackList = JSON.parse(localStorage.backTrackList);
+    var action = Object.keys(backTrackList[actionNum])[0];
+    if(action === 'editBlock'){
+        // console.log('[actionPlay] load block version');
+        // console.log(backTrackList[actionNum][action]);
+        // BlocklyInterface.setCode(backTrackList[actionNum][action]);
+        BlocklyGames.workspace.clear();
+  
+        // var xml = Blockly.Xml.textToDom(backTrackList[actionNum][action]);
+        // var xml = "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><variables><variable type=\"\" id=\"1G8/0+MAm_[Rv]cv1014\">kitten</variable></variables><block type=\"When_Run\" id=\"When_Run\" deletable=\"false\" movable=\"false\" editable=\"false\" x=\"73\" y=\"43\"><next><block type=\"Move_Robot\" id=\"Move_Robot\" deletable=\"false\" movable=\"false\" editable=\"false\"><field name=\"DIRECTION\">Right</field><field name=\"NUM_OF_MOVE\">3</field><next><block type=\"Move_Robot\" id=\"4*RfZgzbkf!]z+hE30eD\" deletable=\"false\" movable=\"false\" editable=\"false\"><field name=\"DIRECTION\">Up</field><field name=\"NUM_OF_MOVE\">3</field></block></next></block></next></block></xml>";
+        // console.log(backTrackList[actionNum][action]);
+        var xml = backTrackList[actionNum][action];
+        try{
+            xml = Blockly.Xml.textToDom(xml);
+        }catch(e){
+            console.log(xml)
+            xml = "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><variables><variable type=\"\" id=\"1G8/0+MAm_[Rv]cv1014\">kitten</variable></variables><block type=\"When_Run\" id=\"When_Run\" deletable=\"false\" movable=\"false\" editable=\"false\" x=\"73\" y=\"43\"><next><block type=\"Move_Robot\" id=\"Move_Robot\" deletable=\"false\" movable=\"false\" editable=\"false\"><field name=\"DIRECTION\">Right</field><field name=\"NUM_OF_MOVE\">3</field><next><block type=\"Move_Robot\" id=\"4*RfZgzbkf!]z+hE30eD\" deletable=\"false\" movable=\"false\" editable=\"false\"><field name=\"DIRECTION\">Up</field><field name=\"NUM_OF_MOVE\">3</field></block></next></block></next></block></xml>";
+            console.log(xml)
+            xml = Blockly.Xml.textToDom(xml)
+        }
+        Blockly.Xml.domToWorkspace(xml, BlocklyGames.workspace);
+        BlocklyGames.workspace.clearUndo();
+    }else{
+        var fakeEvent = new Event('click');
+        try{
+            Scope.command[action](fakeEvent);
+        }catch(e){
+            console.log('[command error], action is ' + action)
+        }
+    }
+}
+
+
 /**
  * Initialize Blockly and the game.
  */
-// window.addEventListener('load', Scope.init);
+window.addEventListener('load', Scope.init);
