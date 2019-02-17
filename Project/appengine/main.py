@@ -7,6 +7,7 @@ import jinja2
 import json
 import random
 import re
+import xml.etree.ElementTree as ET
 from Crypto.Cipher import AES
 from Crypto import Random
 from Crypto.Util import Counter
@@ -515,8 +516,6 @@ class GameData(webapp2.RequestHandler):
     "newPlayer" : newUser
     })) 
 
-
-
 class Class(webapp2.RequestHandler):
 
     def __getLevelContent(self,gamesData):
@@ -716,10 +715,34 @@ class Class(webapp2.RequestHandler):
                 self.response.out.write(json.dumps(courseData,indent=4))
                 pass
                 
-                
-
-
 class GameBackendHandler(webapp2.RequestHandler):
+
+    def extractXML(self,xmlStr):
+        pattern = r'\sxmlns=\\?"http://www.w3.org/1999/xhtml\\?"'
+        xmlStr = re.sub(pattern,'',xmlStr)
+        # print("*"*50 + 'extractXML' + '*' * 50)
+        print(xmlStr)
+        root = ET.XML(xmlStr)
+        # xml = ET.tostring(root, encoding='unicode',method='xml')
+        return self.extract(root)
+
+    def extract(self,element):
+        data = dict()
+        data["t"] = element.tag
+        data["a"] = element.attrib
+        if element.text is not None:
+            data["tx"] = element.text
+        else:
+            data["tx"] = ""
+        if(len(element) == 0):
+            data["c"] = []
+            return data
+        else:
+            data["c"] = []
+            for child in element:
+                data["c"].append(self.extract(child))
+            return data
+
     def get(self,**kwargs):
         """
         /backend/<user>/<request>
@@ -762,18 +785,25 @@ class GameBackendHandler(webapp2.RequestHandler):
         task = kwargs['task']
         user = kwargs['user']
         gamedata = json.loads(request.body)
-        print(json.dumps(gamedata,indent=4,encoding='utf'))
-        print('-'*50)
-        print('*' * 30 + 'Action' + '*'*30)
+        # print(json.dumps(gamedata,indent=4,encoding='utf'))
+        # print('-'*50)
+        # print('*' * 30 + 'Action' + '*'*30)
         action = json.loads(gamedata["rows"][0]["json"]["action"])
-        print(json.dumps(action,indent=4))
-        print('-'*50)
-        print('*' * 30 + 'Action' + '*'*30)
-        code = json.loads(gamedata["rows"][0]["json"]["blockVersion"])
-        print(json.dumps(code,indent=4))
+        # print(json.dumps(action,indent=4))
+        # print('-'*50)
+        # print('*' * 30 + 'Action' + '*'*30)
+        code = json.loads(gamedata["rows"][0]["json"]["blockVersion"]) # raise error totally whack
+        for i in code:
+            i["xml"] = self.extractXML(i["xml"])
+        # print(json.dumps(code,indent=4))
         level = int(gamedata["rows"][0]["json"]["level"])
         level = (str(level // 3 + 1) + '_' + str(level - (level//3 * 3)))
         print('level is ',level)
+
+        # print('*' * 30 + 'Action with Code' + '*' * 30)
+        for i in code:
+            action.append(i)
+        print(json.dumps(action,indent=4))
         db = connect_to_cloudsql()
         cursor = db.cursor()
         cursor.execute(
@@ -786,6 +816,75 @@ class GameBackendHandler(webapp2.RequestHandler):
 
         pass
 
+class backTrack(webapp2.RequestHandler):
+
+    def fillXML(self,xmlJson):
+        xmldata = self.fill(xmlJson)
+        pattern = r'<xml>'
+        xmldata = re.sub(pattern,'<xml xmlns="http://www.w3.org/1999/xhtml >"',xmldata)
+        return xmldata
+
+    def fill(self,data):
+        xml = '<' + data["t"]
+        atrkey = data['a'].keys()
+        for i in atrkey:
+            xml += ' '+ str(i) + '="%s"' % data['a'][i]
+        xml += '>'
+        xml += data['tx']
+        for i in data['c']:
+            xml += self.fill(i)
+        xml += '</%s>' % data['t']
+        return xml
+    
+    def get(self,**kwargs):
+        level = int(kwargs['level'])
+        level = (str(level // 3 + 1) + '_' + str(level - (level//3 * 3)))
+        task = kwargs['task']
+        user = kwargs['user']
+        
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+    
+        cursor.execute(
+            """
+            SELECT Debugging%s FROM %s WHERE ID='%s'
+            """ %(level,task,user)
+        )
+        result = cursor.fetchall()
+        result = json.loads(result[0][0])
+        result = sorted(result,key=lambda x : x["time"]) # sort the action
+        # result = [i["action"] for i in result]
+        # print(result)
+        action = []
+        blockVer = []
+        pattern = r'_\w{0,}' #to match showFailText
+        for i in result:
+            try:
+                string = i['action']
+                if(re.search(pattern,string) != None):
+                    string = re.sub(pattern, '', string)
+                action.append(string)
+            except KeyError as e:
+                blockVer.append(self.fillXML(i['xml']))
+
+        result = []
+        blockPos = 0
+        for i in action:
+            if i == 'editBlock':
+                result.append({
+                    i : blockVer[blockPos]
+                })
+                blockPos += 1
+            else:
+                result.append({
+                    i : ''
+                })
+        print('-'*30 + 'result' + '-'*30)
+        print(result)
+        self.response.headers['Content-Type'] = 'application/json'
+        return self.response.out.write(json.dumps(result,indent=4))
+    def post(self):
+        pass
 
 # class GameData(webapp2.RequestHandler):
 #     def get(self,user):
@@ -825,6 +924,7 @@ app = webapp2.WSGIApplication([
     webapp2.Route(r'/class/<user>',handler=Class,name='ParticipateCourse'),
     webapp2.Route(r'/class/<user>/<request>',handler=Class,name='CourseRequest'),
     webapp2.Route(r'/userGameData/<user>/<task>',handler=GameBackendHandler,name='userGameData'),
+    webapp2.Route(r'/backTrack/<user>/<task>/<level>',handler=backTrack,name="backTrackData")
     # webapp2.Route(r'/debugging/public', handler=DebugPublic, name='debuuging_punlic'),
     # webapp2.Route(r'/debugging/js', handler=LogPage, name='log'),
 

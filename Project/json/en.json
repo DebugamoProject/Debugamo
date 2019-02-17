@@ -1,7 +1,7 @@
 {
 	"@metadata": {
 		"author": "Neil Fraser <fraser@google.com>",
-		"lastupdated": "2019-02-13 22:40:23.865030",
+		"lastupdated": "2019-02-17 14:17:14.566810",
 		"locale": "en",
 		"messagedocumentation" : "qqq"
 	},
@@ -124,6 +124,5 @@
 	"Debugging.toolboxHeader": "Blocks",
 	"Debugging.workspaceHeader": "Debug Workspace",
 	"Debugging.showCodeHeader": "Show Code",
-	"Debugging.restoreBlockHeader": "Original Blocks",
-	"DebuggingBackend.NewTeacherGuide1": "Welcome to Teacher's Backend"
+	"Debugging.restoreBlockHeader": "Original Blocks"
 }

@@ -3,11 +3,11 @@
 ##############################
 
 # USER_APPS = {index,courses,puzzle,maze,bird,turtle,movie,pond/docs,pond/tutor,pond/duck,debugging}
-USER_APPS = {index,maze,debugging,backend}
+USER_APPS = {index,maze,debugging}
 # ALL_JSON = {./,index,courses,puzzle,maze,bird,turtle,movie,pond/docs,pond,pond/tutor,pond/duck,debugging}
-ALL_JSON = {./,index,maze,debugging,backend}
+ALL_JSON = {./,index,maze,debugging}
 # ALL_TEMPLATES = appengine/template.soy,appengine/index/template.soy,appengine/template.soy,appengine/courses/template.soy,appengine/puzzle/template.soy,appengine/maze/template.soy,appengine/bird/template.soy,appengine/turtle/template.soy,appengine/movie/template.soy,appengine/pond/docs/template.soy,appengine/pond/template.soy,appengine/pond/tutor/template.soy,appengine/pond/duck/template.soy,appengine/shop/template.soy,appengine/debugging/template.soy
-ALL_TEMPLATES = appengine/template.soy,appengine/index/template.soy,appengine/debugging/template.soy,appengine/backend/template.soy
+ALL_TEMPLATES = appengine/template.soy,appengine/index/template.soy,appengine/debugging/template.soy
 
 APP_ENGINE_THIRD_PARTY = appengine/third-party
 
