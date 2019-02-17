@@ -107,3 +107,18 @@ function getCourseMembers(URL) {
     });
     return members;
 }
+
+// add member
+
+function addMemberProcess(URL) {
+    var members;
+    $.ajax({
+        type: "POST",
+        url: URL,
+        async: false,
+        success: function (response) {
+            members = response;
+        }
+    });
+    return members;
+}

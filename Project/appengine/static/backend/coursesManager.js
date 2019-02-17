@@ -57,9 +57,12 @@ $('.course').on('click',function(e){
 })
 
 $('.memberManage').on('click',function(e){
-    $('.member').empty();
     $(this).parent().slideToggle();
+    $('.member').empty();
+
+    // setting current course attribute
     var id = $(this).parent().parent()[0].id
+    $('.current_course').attr('current_course', id);
     var members =  getMembers(id);
 
     // add members to list
@@ -71,13 +74,41 @@ $('.memberManage').on('click',function(e){
     
 })
 
-$('.new_member').on('click', function(e) {
-    var url = window.location.href;
-    url = url + ''
+$('.new_member').on('click', function() {
+    $('.methods .input_group').remove();
     var form = `
-    <form action="" method="post">
-    <input type="text" name="input_member" id="input_member">
-    <button type="submit">Submit</button>
+    <div class="input_group">
+    <form name="input_form" method="post" >
+    <input type="text" value="" id="input_member" onchange="getInputValue()">
+    <span id="submit_member">Submit</sapn>
+    </form>
+    </div>
     `
     $('.methods').append(form);
 })
+
+
+$(document).on('click', '#submit_member', (function(){
+    var url = window.location.href;
+    var course_id = $('.current_course').attr('current_course');
+ 
+    // var name = getInputValue();
+    var name = getInputValue();
+    url = url + '/add/' + course_id + '/' + name;
+    console.log(url);
+    var isAdded = addMemberProcess(url);
+    console.log(isAdded);
+    if(isAdded) {
+        var item = '';
+        item = '<li class="member_item">' + name + '</li>';
+        $('.member').append(item);
+    }
+    else {
+        console.log('not found');
+    }
+}))
+
+function getInputValue() {
+    var nameValue = document.forms["input_form"]["input_member"].value;
+    return nameValue;
+}

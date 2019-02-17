@@ -768,33 +768,74 @@ class GameBackendHandler(webapp2.RequestHandler):
             return self.response.out.write(template.render('templates/backend/teacher.html',''))
 
     def post(self,**kwargs):
-        request = self.request
-        task = kwargs['task']
-        user = kwargs['user']
-        gamedata = json.loads(request.body)
-        print(json.dumps(gamedata,indent=4,encoding='utf'))
-        print('-'*50)
-        print('*' * 30 + 'Action' + '*'*30)
-        action = json.loads(gamedata["rows"][0]["json"]["action"])
-        print(json.dumps(action,indent=4))
-        print('-'*50)
-        print('*' * 30 + 'Action' + '*'*30)
-        code = json.loads(gamedata["rows"][0]["json"]["blockVersion"])
-        print(json.dumps(code,indent=4))
-        level = int(gamedata["rows"][0]["json"]["level"])
-        level = (str(level // 3 + 1) + '_' + str(level - (level//3 * 3)))
-        print('level is ',level)
-        db = connect_to_cloudsql()
-        cursor = db.cursor()
-        cursor.execute(
-            """
-            UPDATE %s SET Debugging%s = '%s' WHERE ID='%s'
-            """
-            % (task,level,json.dumps(action),user)
-        )
-        db.commit()
 
-        pass
+        if(kwargs.has_key('task')):
+            request = self.request
+            task = kwargs['task']
+            user = kwargs['user']
+            gamedata = json.loads(request.body)
+            print(json.dumps(gamedata,indent=4,encoding='utf'))
+            print('-'*50)
+            print('*' * 30 + 'Action' + '*'*30)
+            action = json.loads(gamedata["rows"][0]["json"]["action"])
+            print(json.dumps(action,indent=4))
+            print('-'*50)
+            print('*' * 30 + 'Action' + '*'*30)
+            code = json.loads(gamedata["rows"][0]["json"]["blockVersion"])
+            print(json.dumps(code,indent=4))
+            level = int(gamedata["rows"][0]["json"]["level"])
+            level = (str(level // 3 + 1) + '_' + str(level - (level//3 * 3)))
+            print('level is ',level)
+            db = connect_to_cloudsql()
+            cursor = db.cursor()
+            cursor.execute(
+                """
+                UPDATE %s SET Debugging%s = '%s' WHERE ID='%s'
+                """
+                % (task,level,json.dumps(action),user)
+            )
+            db.commit()
+        if(kwargs.has_key('user_name')):
+            db = connect_to_cloudsql()
+            cursor = db.cursor()
+            course_id = kwargs['course_id']
+            user_name = kwargs['user_name']
+            try:                
+
+                # update user's course data
+                cursor.execute(
+                    """
+                    SELECT courses from users where name='%s';
+                    """
+                    % (user_name)
+                )
+                result = cursor.fetchall()
+                print(result)
+                print(type(result[0][0]))
+                print(result[0][0])
+                result = result[0][0].split(']')[0] + ', "' + course_id + '"]'
+                print(result)
+                cursor.execute(
+                    """
+                    UPDATE users SET courses='%s' where name='%s'; 
+                    """
+                    % (result, user_name)
+                )
+
+
+                # update class table
+                print('\n')
+                print(course_id + user_name)
+                cursor.execute(
+                    """
+                    INSERT INTO %s(ID) values('%s');
+                    """
+                    % (course_id, user_name)
+                )
+                print('after ')
+            except:
+                print('none')
+            db.commit()
 
 
 # class GameData(webapp2.RequestHandler):
@@ -832,7 +873,7 @@ app = webapp2.WSGIApplication([
     webapp2.Route(r'/backend/<user>',handler=GameBackendHandler,name='Game'),
     webapp2.Route(r'/backend/<user>/<request>',handler=GameBackendHandler,name='GameCourses'),
     webapp2.Route(r'/backend/<user>/<request>/<course_id>',handler=GameBackendHandler,name='MemberHandler'),
-    webapp2.Route(r'/backend/<user>/<request>/<course_id>/<coure_name>',handler=GameBackendHandler,name='AddMemberHandler'),
+    webapp2.Route(r'/backend/<user>/<request>/<course_id>/<user_name>',handler=GameBackendHandler,name='AddMemberHandler'),
     webapp2.Route(r'/class',handler=Class,name='Class'),
     webapp2.Route(r'/class/<user>',handler=Class,name='ParticipateCourse'),
     webapp2.Route(r'/class/<user>/<request>',handler=Class,name='CourseRequest'),

@@ -177,6 +177,10 @@ a{
     display: inline-block;
 }
 
+#submit_member{
+    border: 1px solid rgba(0,0,0,.5);
+    padding: 1px;
+}
 
 .methods{
     height: 30px;
