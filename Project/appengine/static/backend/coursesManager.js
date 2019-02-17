@@ -66,12 +66,17 @@ $('.memberManage').on('click',function(e){
     let item = '';
     for(var i = 0; i < members.length; i++) {
         item = '<li class="member_item">' + members[i] + '</li>';
+<<<<<<< HEAD
+=======
+        console.log(item);
+>>>>>>> ee7f7fa5e7a21ae70b07cdfadb972fbbc9e3d724
         $('.member').append(item);
     }
     
 })
 
 $('.new_member').on('click', function(e) {
+<<<<<<< HEAD
     var url = window.location.href;
     url = url + ''
     var form = `
@@ -80,4 +85,8 @@ $('.new_member').on('click', function(e) {
     <button type="submit">Submit</button>
     `
     $('.methods').append(form);
+=======
+    $(this).append('hihihi');
+    console.log('hoho');
+>>>>>>> ee7f7fa5e7a21ae70b07cdfadb972fbbc9e3d724
 })

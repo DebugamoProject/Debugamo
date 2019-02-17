@@ -832,7 +832,10 @@ app = webapp2.WSGIApplication([
     webapp2.Route(r'/backend/<user>',handler=GameBackendHandler,name='Game'),
     webapp2.Route(r'/backend/<user>/<request>',handler=GameBackendHandler,name='GameCourses'),
     webapp2.Route(r'/backend/<user>/<request>/<course_id>',handler=GameBackendHandler,name='MemberHandler'),
+<<<<<<< HEAD
     webapp2.Route(r'/backend/<user>/<request>/<course_id>/<coure_name>',handler=GameBackendHandler,name='AddMemberHandler'),
+=======
+>>>>>>> ee7f7fa5e7a21ae70b07cdfadb972fbbc9e3d724
     webapp2.Route(r'/class',handler=Class,name='Class'),
     webapp2.Route(r'/class/<user>',handler=Class,name='ParticipateCourse'),
     webapp2.Route(r'/class/<user>/<request>',handler=Class,name='CourseRequest'),
