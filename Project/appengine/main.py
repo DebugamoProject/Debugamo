@@ -810,6 +810,13 @@ class GameBackendHandler(webapp2.RequestHandler):
             level = (str(level // 3 + 1) + '_' + str(level - (level//3 * 3)))
             print('level is ',level)
             db = connect_to_cloudsql()
+            ######################################################
+            # Please Do Not fix this conflict while you merge or pull the git repo
+            # Here is to store the blockly code of user 
+            for i in code:
+                i['xml'] = self.extractXML(i['xml']) # transfer xml to json
+                action.append(i)
+            ######################################################
             cursor = db.cursor()
             cursor.execute(
                 """
@@ -865,7 +872,7 @@ class backTrack(webapp2.RequestHandler):
     def fillXML(self,xmlJson):
         xmldata = self.fill(xmlJson)
         pattern = r'<xml>'
-        xmldata = re.sub(pattern,'<xml xmlns="http://www.w3.org/1999/xhtml >"',xmldata)
+        xmldata = re.sub(pattern,'<xml xmlns="http://www.w3.org/1999/xhtml" >',xmldata)
         return xmldata
 
     def fill(self,data):
@@ -898,7 +905,8 @@ class backTrack(webapp2.RequestHandler):
         result = json.loads(result[0][0])
         result = sorted(result,key=lambda x : x["time"]) # sort the action
         # result = [i["action"] for i in result]
-        # print(result)
+        print('\n\n\n' + '*'*50 + 'result' + '*'*50)
+        print(json.dumps(result,indent=4))
         action = []
         blockVer = []
         pattern = r'_\w{0,}' #to match showFailText
@@ -913,16 +921,20 @@ class backTrack(webapp2.RequestHandler):
 
         result = []
         blockPos = 0
-        for i in action:
-            if i == 'editBlock':
-                result.append({
-                    i : blockVer[blockPos]
-                })
-                blockPos += 1
-            else:
-                result.append({
-                    i : ''
-                })
+        try:
+            for i in action:
+                if i == 'editBlock':
+                    result.append({
+                        i : blockVer[blockPos]
+                    })
+                    blockPos += 1
+                else:
+                    result.append({
+                        i : ''
+                    })
+        except Exception as e:
+            print('block pos ', blockPos)
+            print(blockVer)
         print('-'*30 + 'result' + '-'*30)
         print(result)
         self.response.headers['Content-Type'] = 'application/json'

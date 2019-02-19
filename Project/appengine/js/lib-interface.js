@@ -203,7 +203,7 @@ BlocklyInterface.nextLevel = function() {
     var nextLevel = JSON.parse(localStorage.nextLevel)
     window.location = window.location.protocol + '//' +
         window.location.host + window.location.pathname +
-        '?lang=' + BlocklyGames.LANG + '&level=' + (nextLevel[BlocklyGames.LEVEL]) + '&user=' + BlocklyGames.USER + '&task=' + BlocklyGames.TASK;
+        '?lang=' + BlocklyGames.LANG + '&level=' + (nextLevel[BlocklyGames.LEVEL]) + '&user=' + BlocklyGames.USER + '&task=' + BlocklyGames.TASK + '&mode=' + BlocklyGames.MODE;
   } else if (BlocklyGames.LEVEL == BlocklyGames.MAX_LEVEL) {
   // } else if (BlocklyGames.LEVEL == BlocklyGames.MAX_LEVEL) {
     var developing = document.getElementById('developing');

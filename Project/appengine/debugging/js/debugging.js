@@ -840,9 +840,11 @@ Scope.executeStep = function(pass_in_interpreter) {
             $('#stepButton').hide();
 
             // Check if level is completed
-            setTimeout(function() {
-                Scope.checkCurrentLevelComplete();
-            }, 300);
+            if(BlocklyGames.MODE == 'gamming'){
+                setTimeout(function() {
+                    Scope.checkCurrentLevelComplete();
+                }, 300);
+            }
         } else if (Game.stepAnchor) {
             // Save current interpreter
             Game.currentInterpreter = interpreter;
@@ -905,9 +907,11 @@ Scope.interpretCode = function(interpreter, stepCount) {
         }
         // when the code is fully executed, check if the user passes the level
         else if (!interpreter.step()) {
-            setTimeout(function() {
-                Scope.checkCurrentLevelComplete();
-            }, 300);
+            if(BlocklyGames.MODE == 'gamming'){
+                setTimeout(function() {
+                    Scope.checkCurrentLevelComplete();
+                }, 300);
+            }
             // else will throw error message
         }
     } catch (e) {
@@ -972,28 +976,12 @@ Scope.checkCurrentLevelComplete = function() {
     // } else {
     var result = Levels[BlocklyGames.LEVEL].checkLevelComplete();
     if (result == true) {
-        Scope.addLog('checkLevelSuccess');
+        
 
         Game.things.robot.state = 'happy';
         Game.play('success', 0.2);
-        BlocklyInterface.saveToLocalStorage();
-        BlocklyDialogs.congratulations();
-        var done = JSON.parse(localStorage.done);
-        if (done.indexOf(BlocklyGames.LEVEL) == -1) {
-            done.push(BlocklyGames.LEVEL);
-            localStorage.done = JSON.stringify(done);
-            $('.level_in_progress').addClass('level_done');
-            if ($('.level_disable')[0] != undefined) {
-                $($('.level_disable')[0]).addClass('level_in_progress');
-                $($('.level_disable')[0]).removeClass('level_disable');
-            }
-        }
-        BlocklyInterface.highlight(null);
-    } else if (typeof(result) == 'number') {
-        setTimeout(function() {
+        if(BlocklyGames.MODE == 'gamming'){
             Scope.addLog('checkLevelSuccess');
-            Game.things.robot.state = 'happy';
-            Game.play('success', 0.2);
             BlocklyInterface.saveToLocalStorage();
             BlocklyDialogs.congratulations();
             var done = JSON.parse(localStorage.done);
@@ -1007,9 +995,33 @@ Scope.checkCurrentLevelComplete = function() {
                 }
             }
             BlocklyInterface.highlight(null);
+        }
+    } else if (typeof(result) == 'number') {
+        setTimeout(function() {
+            
+            Game.things.robot.state = 'happy';
+            Game.play('success', 0.2);
+            if(BlocklyGames.MODE == 'gamming'){
+                Scope.addLog('checkLevelSuccess');
+                BlocklyInterface.saveToLocalStorage();
+                BlocklyDialogs.congratulations();
+            
+                var done = JSON.parse(localStorage.done);
+                if (done.indexOf(BlocklyGames.LEVEL) == -1) {
+                    done.push(BlocklyGames.LEVEL);
+                    localStorage.done = JSON.stringify(done);
+                    $('.level_in_progress').addClass('level_done');
+                    if ($('.level_disable')[0] != undefined) {
+                        $($('.level_disable')[0]).addClass('level_in_progress');
+                        $($('.level_disable')[0]).removeClass('level_disable');
+                    }
+                }
+            }
+            BlocklyInterface.highlight(null);
         }, result * (UI.drawFrame * UI.drawSpeed + 150) + 150)
     } else {
-        Scope.addLog('checkLevelFail');
+        if(BlocklyGames.MODE == 'gamming')
+            Scope.addLog('checkLevelFail');
         Game.things.robot.state = 'sad';
     }
     UI.drawGrid($('#playground')[0], false);
