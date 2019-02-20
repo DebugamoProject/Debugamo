@@ -888,6 +888,7 @@ Scope.showTargetAnimation = function (interpreter) {
  * Interpret Workspace Code
  */
 Scope.interpretCode = function(interpreter, stepCount) {
+    console.log('[MODE] : ' + BlocklyGames.MODE);
     try {
         // infinite loop
         if (stepCount > Scope.MAX_STEPS) {
@@ -907,6 +908,7 @@ Scope.interpretCode = function(interpreter, stepCount) {
         }
         // when the code is fully executed, check if the user passes the level
         else if (!interpreter.step()) {
+            // console.log('[MODE] : ' + BlocklyGames.MODE);
             if(BlocklyGames.MODE == 'gamming'){
                 setTimeout(function() {
                     Scope.checkCurrentLevelComplete();
@@ -1315,11 +1317,11 @@ function findNearestEditBlock(actionNum){
 Scope.backTrackRun = function (actionNum){
     // blockly xml ---> Dom, to avoid run the wrong blockly code;
     var pos = findNearestEditBlock(actionNum);
-    // Scope.backTrackEditBlock(pos);
+    Scope.backTrackEditBlock(pos);
     // setTimeout(Scope.backTrackEditBlock,0,pos);
 
 
-    console.log('[1325 pos] = ' + pos);
+    console.log('[1325 pos]' + pos);
     // perform run bottom click;
     var fakeEvent = new Event('click');
     Scope.runButtonClick(fakeEvent);
@@ -1330,8 +1332,11 @@ Scope.backTrackRun = function (actionNum){
 Scope.backTrackEditBlock = function(actionNum){
     var backTrackList = JSON.parse(localStorage.backTrackList);
     var xml = backTrackList[actionNum]['editBlock']
-    xml = Blockly.Xml.textToDom(xml);
-    Blockly.Xml.domToWorkspace(xml, BlocklyGames.workspace);
+    BlocklyInterface.setCode(xml)
+
+    // bug is here, replace with BlocklyInterface.setCode(xml), fix the bug
+    // xml = Blockly.Xml.textToDom(xml);
+    // Blockly.Xml.domToWorkspace(xml, BlocklyGames.workspace);
     // BlocklyGames.workspace.clearUndo();
 }
 
@@ -1342,18 +1347,20 @@ Scope.backTrackResetClick = function(actionNum){
 
 Scope.backTrackStep = function(actionNum){
     var pos = findNearestEditBlock(actionNum);
-    Scope.backTrackEditBlock(actionNum);
+    Scope.backTrackEditBlock(pos);
     var fackEvent = new Event('click');
     Scope.stepButtonClick(fackEvent);
 }
 
 Scope.backTrackLevel = function(actionNum){
     var runButton = document.getElementById('runButton');
-    if (runButton.style.display === 'none'){ // means that run button hasn't clicked;
+    console.log('[backTrackLevel]' + runButton.style.display);
+    if (runButton.style.display !== 'none'){ // means that run button hasn't been clicked;
+        BlocklyGames.MODE = 'gamming' // #################################################I can't fix this bug due to async!!
         Scope.backTrackRun(actionNum);
     }
-
-    Scope.checkCurrentLevelComplete();
+ 
+   
 }
 
 Scope.backTrackShowTarget = function (actionNum){
@@ -1377,9 +1384,16 @@ Scope.actionPlay = function (actionNum){
     console.log('[Scope.actionPlay] ' + actionNum)
     var backTrackList = JSON.parse(localStorage.backTrackList);
     var action = Object.keys(backTrackList[actionNum])[0];
+    // if(action === 'run'){
+    //     var fakeEvent = new Event('click');
+    //     Scope.runButtonClick(fakeEvent);
+    // }else{
+    //     Scope.command[action](actionNum);
+    // }
     try{
         Scope.command[action](actionNum);
     }catch(e){
+        console.log(e)
         console.log(action);
         console.log(Scope.command[action])
     }
