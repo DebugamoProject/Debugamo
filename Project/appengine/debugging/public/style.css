@@ -991,16 +991,17 @@ img.showCodeRobot {
 #target_btn{
     /* float: right; */
     display: inline-block;
-    width: 68px;
-    height: 68px;
-    background-image: url("./img/hint.jpg");
-    background-repeat: no-repeat;
+    cursor: pointer;
+    /* width: 68px;
+    height: 68px; */
+    /* background-image: url("./img/hint.jpg"); */
+    /* background-repeat: no-repeat; */
     transition: .3s;
 }
 
 #target_btn:hover{
-    /* background: lightgrey; */
-    background-image: url("./img/hint2.jpg");
+    background: lightgrey;
+    /* background-image: url("./img/hint2.jpg"); */
 }
 
 #backTrackContainer{
@@ -1065,4 +1066,13 @@ img.showCodeRobot {
 
 .backTrackButton:hover{
     background-color: rgb(0, 148, 202);
+}
+
+.acItem{
+    cursor: pointer;
+    transition: .3s ease;
+}
+
+.acItem:hover{
+    background-color: lightgray;
 }

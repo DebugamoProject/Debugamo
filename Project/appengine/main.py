@@ -723,7 +723,7 @@ class GameBackendHandler(webapp2.RequestHandler):
         pattern = r'\sxmlns=\\?"http://www.w3.org/1999/xhtml\\?"'
         xmlStr = re.sub(pattern,'',xmlStr)
         # print("*"*50 + 'extractXML' + '*' * 50)
-        print(xmlStr)
+        # print(xmlStr)
         root = ET.XML(xmlStr)
         # xml = ET.tostring(root, encoding='unicode',method='xml')
         return self.extract(root)

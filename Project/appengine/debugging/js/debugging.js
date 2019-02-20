@@ -1180,7 +1180,8 @@ Scope.studentsbackTrackUIInit = function (){
         reset: Scope.resetButtonClick,
         step: Scope.stepButtonClick,
         userCheckTarget:Scope.showTarget,
-        editBlock: BlocklyInterface.loadBlocks
+        editBlock: BlocklyInterface.loadBlocks,
+        checkLevelSuccess : Scope.checkCurrentLevelComplete,
     }
 
     var backTrackContainer = document.getElementById('backTrackContainer');
@@ -1247,7 +1248,7 @@ function actionListCreate(){
     subTitle.id = 'actionTitle';
     subTitle.className = 'backTrackContainerTiTle';
     subTitle.innerText = '動作列表';
-    $(subTitle).append('<!-- <div id="stop" class="backTrackButton">| | 暫停</div> --><div id="play" class="backTrackButton">►| | 回放</div>')
+    $(subTitle).append('<!-- <div id="stop" class="backTrackButton">| | 暫停</div> --><div id="play" class="backTrackButton">►| | 下一步</div>')
     aclist.append(subTitle);
 
     var list = document.createElement('div');
@@ -1300,11 +1301,73 @@ Scope.playBack = function () {
     }
 }
 
+function findNearestEditBlock(actionNum){
+    var backTrackList = JSON.parse(localStorage.backTrackList);
+    var pos;
+    for(var i = actionNum; i >= 0; i--){
+        var action = Object.keys(backTrackList[i])[0];
+        if(action === 'editBlock'){
+            return i;
+        }
+    }
+}
+
+Scope.backTrackRun = function (actionNum){
+    // blockly xml ---> Dom, to avoid run the wrong blockly code;
+    var pos = findNearestEditBlock(actionNum);
+    // Scope.backTrackEditBlock(pos);
+    // setTimeout(Scope.backTrackEditBlock,0,pos);
+
+
+    console.log('[1325 pos] = ' + pos);
+    // perform run bottom click;
+    var fakeEvent = new Event('click');
+    Scope.runButtonClick(fakeEvent);
+//    setTimeout(Scope.runButtonClick,300,fakeEvent);
+    // Scope.runButtonClick(fakeEvent);
+}
+
+Scope.backTrackEditBlock = function(actionNum){
+    var backTrackList = JSON.parse(localStorage.backTrackList);
+    var xml = backTrackList[actionNum]['editBlock']
+    xml = Blockly.Xml.textToDom(xml);
+    Blockly.Xml.domToWorkspace(xml, BlocklyGames.workspace);
+    // BlocklyGames.workspace.clearUndo();
+}
+
+Scope.backTrackResetClick = function(actionNum){
+    var fakeEvent = new Event('click');
+    Scope.resetButtonClick(fakeEvent);
+}
+
+Scope.backTrackStep = function(actionNum){
+    var pos = findNearestEditBlock(actionNum);
+    Scope.backTrackEditBlock(actionNum);
+    var fackEvent = new Event('click');
+    Scope.stepButtonClick(fackEvent);
+}
+
+Scope.backTrackLevel = function(actionNum){
+    var runButton = document.getElementById('runButton');
+    if (runButton.style.display === 'none'){ // means that run button hasn't clicked;
+        Scope.backTrackRun(actionNum);
+    }
+
+    Scope.checkCurrentLevelComplete();
+}
+
+Scope.backTrackShowTarget = function (actionNum){
+    var fakeEvent = new Event('click');
+    Scope.showTarget(fakeEvent);
+}
+
 Scope.command = {
-    run: Scope.runButtonClick,
-    reset: Scope.resetButtonClick,
-    step: Scope.stepButtonClick,
-    userCheckTarget:Scope.showTarget,
+    editBlock:Scope.backTrackEditBlock,
+    run: Scope.backTrackRun,
+    reset: Scope.backTrackResetClick,
+    step: Scope.backTrackStep,
+    userCheckTarget:Scope.backTrackShowTarget,
+    checkLevelSuccess : Scope.backTrackLevel,
 }
 
 /**
@@ -1314,35 +1377,15 @@ Scope.actionPlay = function (actionNum){
     console.log('[Scope.actionPlay] ' + actionNum)
     var backTrackList = JSON.parse(localStorage.backTrackList);
     var action = Object.keys(backTrackList[actionNum])[0];
-    if(action === 'editBlock'){
-        // console.log('[actionPlay] load block version');
-        // console.log(backTrackList[actionNum][action]);
-        // BlocklyInterface.setCode(backTrackList[actionNum][action]);
-        BlocklyGames.workspace.clear();
-  
-        // var xml = Blockly.Xml.textToDom(backTrackList[actionNum][action]);
-        // var xml = "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><variables><variable type=\"\" id=\"1G8/0+MAm_[Rv]cv1014\">kitten</variable></variables><block type=\"When_Run\" id=\"When_Run\" deletable=\"false\" movable=\"false\" editable=\"false\" x=\"73\" y=\"43\"><next><block type=\"Move_Robot\" id=\"Move_Robot\" deletable=\"false\" movable=\"false\" editable=\"false\"><field name=\"DIRECTION\">Right</field><field name=\"NUM_OF_MOVE\">3</field><next><block type=\"Move_Robot\" id=\"4*RfZgzbkf!]z+hE30eD\" deletable=\"false\" movable=\"false\" editable=\"false\"><field name=\"DIRECTION\">Up</field><field name=\"NUM_OF_MOVE\">3</field></block></next></block></next></block></xml>";
-        // console.log(backTrackList[actionNum][action]);
-        var xml = backTrackList[actionNum][action];
-        try{
-            xml = Blockly.Xml.textToDom(xml);
-        }catch(e){
-            console.log(xml)
-            xml = "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><variables><variable type=\"\" id=\"1G8/0+MAm_[Rv]cv1014\">kitten</variable></variables><block type=\"When_Run\" id=\"When_Run\" deletable=\"false\" movable=\"false\" editable=\"false\" x=\"73\" y=\"43\"><next><block type=\"Move_Robot\" id=\"Move_Robot\" deletable=\"false\" movable=\"false\" editable=\"false\"><field name=\"DIRECTION\">Right</field><field name=\"NUM_OF_MOVE\">3</field><next><block type=\"Move_Robot\" id=\"4*RfZgzbkf!]z+hE30eD\" deletable=\"false\" movable=\"false\" editable=\"false\"><field name=\"DIRECTION\">Up</field><field name=\"NUM_OF_MOVE\">3</field></block></next></block></next></block></xml>";
-            console.log(xml)
-            xml = Blockly.Xml.textToDom(xml)
-        }
-        Blockly.Xml.domToWorkspace(xml, BlocklyGames.workspace);
-        BlocklyGames.workspace.clearUndo();
-    }else{
-        var fakeEvent = new Event('click');
-        try{
-            Scope.command[action](fakeEvent);
-        }catch(e){
-            console.log('[command error], action is ' + action)
-        }
+    try{
+        Scope.command[action](actionNum);
+    }catch(e){
+        console.log(action);
+        console.log(Scope.command[action])
     }
 }
+
+
 
 
 /**

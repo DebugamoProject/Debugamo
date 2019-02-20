@@ -85,11 +85,13 @@ newUI.rightbar = function(rootNode){
 
 
 newUI.target = function(){
-    var target = new goog.ui.Button();
-    // target.setId('target_btn');
-    target.createDom();
+    // var target = new goog.ui.Button();
+    // target.createDom();
+    var target = document.createElement('div');
+    target.id = 'target_btn';
+    target.innerHTML = '<span uk-icon="icon: bell; ratio: 2"></span>'
     var goal_right_box = document.getElementById('player-avatar-box')
-    target = target.getElement()
-    target.setAttribute('id','target_btn')
+    // target = target.getElement()
+    // target.setAttribute('id','target_btn')
     goal_right_box.appendChild(target);
 }
