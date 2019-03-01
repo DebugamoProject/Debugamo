@@ -95,3 +95,18 @@ newUI.target = function(){
     // target.setAttribute('id','target_btn')
     goal_right_box.appendChild(target);
 }
+
+/**
+ * edit the level wrapper's url
+ */
+newUI.levelWrapper = function(){
+    var selectedLevel = JSON.parse(localStorage.selectedLevel);
+    var id = 'level';
+    for(var i = 0; i < selectedLevel.length; i++){
+        var dotId = id + selectedLevel[i];
+        var dot = document.getElementById(dotId);
+        console.log(dot)
+        //&user=321&task=Debugging&mode=backTrack
+        dot.href += '&user=' + BlocklyGames.USER + '&task=' + BlocklyGames.TASK + '&mode=' + BlocklyGames.MODE;
+    }
+}

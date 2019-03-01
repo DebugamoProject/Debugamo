@@ -25,6 +25,8 @@ var Scope = Debugging;
 
 Scope.MAX_STEPS = 10000;
 
+Scope.CHECKANSWER = true;
+
 /**
  * Route-to and Start next level
  */
@@ -52,7 +54,7 @@ Scope.init = function() {
     BlocklyGames.init();
     BlocklyInterface.init();
     newUI.init();
-
+    
 
         var rtl = BlocklyGames.isRtl(); // right to left?
     var blocklyDiv = document.getElementById('blockly');
@@ -156,6 +158,7 @@ Scope.init = function() {
     if(BlocklyGames.MODE == 'gamming')
         UIinitMode = Scope.initHeaderWidth;
     else{
+        Scope.CHECKANSWER = false;
         var identity = Cookies.getCookies('identity');
         UIinitMode = Scope.backTrackModeUIInit;
         UIinitMode();
@@ -248,7 +251,7 @@ Scope.init = function() {
     // enable developer mode
     if (window.location.origin == "http://localhost:8080") {
         console.log('[Game] Enable developer mode.');
-        // localStorage.setItem('done', '[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]');
+        localStorage.setItem('done', '[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]');
         localStorage.setItem('maxDoneLevel', '18');
         // $('#debugModeBox').show();
         // $('#loadSolutionButton').show();
@@ -282,6 +285,7 @@ Scope.init = function() {
             audio.play();
         }, 3000);
     }
+    newUI.levelWrapper();
 
     setTimeout(function(){
         $('#loadSolutionButton').show();
@@ -840,7 +844,7 @@ Scope.executeStep = function(pass_in_interpreter) {
             $('#stepButton').hide();
 
             // Check if level is completed
-            if(BlocklyGames.MODE == 'gamming'){
+            if(Scope.CHECKANSWER){
                 setTimeout(function() {
                     Scope.checkCurrentLevelComplete();
                 }, 300);
@@ -888,7 +892,7 @@ Scope.showTargetAnimation = function (interpreter) {
  * Interpret Workspace Code
  */
 Scope.interpretCode = function(interpreter, stepCount) {
-    console.log('[MODE] : ' + BlocklyGames.MODE);
+    // console.log('[MODE] : ' + BlocklyGames.MODE);
     try {
         // infinite loop
         if (stepCount > Scope.MAX_STEPS) {
@@ -908,8 +912,9 @@ Scope.interpretCode = function(interpreter, stepCount) {
         }
         // when the code is fully executed, check if the user passes the level
         else if (!interpreter.step()) {
+            BlocklyGames.MODE
             // console.log('[MODE] : ' + BlocklyGames.MODE);
-            if(BlocklyGames.MODE == 'gamming'){
+            if(Scope.CHECKANSWER){
                 setTimeout(function() {
                     Scope.checkCurrentLevelComplete();
                 }, 300);
@@ -976,6 +981,14 @@ Scope.checkCurrentLevelComplete = function() {
     //     UI.drawThings();
     //     UI.drawTags();
     // } else {
+
+    // Reset Scope.CHECKANSWER 
+    if(BlocklyGames.MODE !== 'backTrack'){
+        Scope.CHECKANSWER = true;
+    }
+    else{
+        Scope.CHECKANSWER = false;
+    }
     var result = Levels[BlocklyGames.LEVEL].checkLevelComplete();
     if (result == true) {
         
@@ -1356,10 +1369,11 @@ Scope.backTrackLevel = function(actionNum){
     var runButton = document.getElementById('runButton');
     console.log('[backTrackLevel]' + runButton.style.display);
     if (runButton.style.display !== 'none'){ // means that run button hasn't been clicked;
-        BlocklyGames.MODE = 'gamming' // #################################################I can't fix this bug due to async!!
+        Scope.CHECKANSWER = true;
         Scope.backTrackRun(actionNum);
+    }else{
+        Scope.checkCurrentLevelComplete();
     }
- 
    
 }
 
@@ -1375,6 +1389,7 @@ Scope.command = {
     step: Scope.backTrackStep,
     userCheckTarget:Scope.backTrackShowTarget,
     checkLevelSuccess : Scope.backTrackLevel,
+    checkLevelFail : Scope.backTrackLevel,
 }
 
 /**

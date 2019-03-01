@@ -7,6 +7,7 @@ import jinja2
 import json
 import random
 import re
+import math
 import xml.etree.ElementTree as ET
 from Crypto.Cipher import AES
 from Crypto import Random
@@ -478,7 +479,11 @@ class GameData(webapp2.RequestHandler):
         # data['task'] if url isn't specified which task here will raise exception!!
         # use try-except to handle and redirect to the correct page.
         result = cursor.fetchall()
-        task = json.loads(result[0][0])
+        try:
+            task = json.loads(result[0][0])
+        except Exception as e:
+            task = []
+            
         print(json.dumps(task,indent=4))
         games = task.keys()
         selectedLevels = []
@@ -807,8 +812,10 @@ class GameBackendHandler(webapp2.RequestHandler):
             code = json.loads(gamedata["rows"][0]["json"]["blockVersion"])
             print(json.dumps(code,indent=4))
             level = int(gamedata["rows"][0]["json"]["level"])
-            level = (str(level // 3 + 1) + '_' + str(level - (level//3 * 3)))
-            print('level is ',level)
+            # here fix the level bug
+            level = (str(int(math.ceil(float(level) / 3))) + '_' + str(int(float(level) - math.ceil(float(level) / 3) * 3 + 3 )))
+            # level = (str(level // 3 + 1) + '_' + str(level - (level//3 * 3)))
+            # print('level is ',level)
             db = connect_to_cloudsql()
             ######################################################
             # Please Do Not fix this conflict while you merge or pull the git repo
@@ -870,12 +877,22 @@ class GameBackendHandler(webapp2.RequestHandler):
 class backTrack(webapp2.RequestHandler):
 
     def fillXML(self,xmlJson):
+        """
+        fill xml type blockly code
+
+        parameter : 
+            xmlJson : store or obtain in SQL
+        """
+
         xmldata = self.fill(xmlJson)
         pattern = r'<xml>'
         xmldata = re.sub(pattern,'<xml xmlns="http://www.w3.org/1999/xhtml" >',xmldata)
         return xmldata
 
     def fill(self,data):
+        """
+        fill the xml 
+        """
         xml = '<' + data["t"]
         atrkey = data['a'].keys()
         for i in atrkey:
@@ -889,7 +906,9 @@ class backTrack(webapp2.RequestHandler):
     
     def get(self,**kwargs):
         level = int(kwargs['level'])
-        level = (str(level // 3 + 1) + '_' + str(level - (level//3 * 3)))
+        # if here occure conflict, do not fix!
+        level = (str(int(math.ceil(float(level) / 3))) + '_' + str(int(float(level) - math.ceil(float(level) / 3) * 3 + 3 ))) # fix the level bug
+        print('level is ' + level)
         task = kwargs['task']
         user = kwargs['user']
         
@@ -902,8 +921,11 @@ class backTrack(webapp2.RequestHandler):
             """ %(level,task,user)
         )
         result = cursor.fetchall()
-        result = json.loads(result[0][0])
-        result = sorted(result,key=lambda x : x["time"]) # sort the action
+        try:
+            result = json.loads(result[0][0])
+            result = sorted(result,key=lambda x : x["time"]) # sort the action
+        except:
+            result = []
         # result = [i["action"] for i in result]
         print('\n\n\n' + '*'*50 + 'result' + '*'*50)
         print(json.dumps(result,indent=4))
@@ -939,6 +961,7 @@ class backTrack(webapp2.RequestHandler):
         print(result)
         self.response.headers['Content-Type'] = 'application/json'
         return self.response.out.write(json.dumps(result,indent=4))
+        
     def post(self):
         pass
 

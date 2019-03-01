@@ -142,11 +142,11 @@ Game.isSamePosition = function(a, b) {
 Game.speedModeChange = function() {
     if (!$('#speedMode').prop("checked")) {
         // $('#speedMode').prop("checked", true);
-        Debugging.addLog('Game.changeToSpeed');
+        // Debugging.addLog('Game.changeToSpeed');
         Game.changeToSpeedMode();
     } else {
         // $('#speedMode').prop("checked", false);
-        Debugging.addLog('Game.changeToSlow');
+        // Debugging.addLog('Game.changeToSlow');
         Game.changeToSlowMode();
     }
 };
@@ -218,12 +218,12 @@ Game.checkAnswer = function(e) {
         Game.evaluationEnd = true;
         Game.play('success', 0.2);
         UI.showText('答對了！現在你可以開始編輯積木，請修正錯誤的積木讓我通過關卡。');
-        Debugging.addLog('Game.checkAnswerCorrect');
+        // Debugging.addLog('Game.checkAnswerCorrect');
         BlocklyGames.workspace.options.readOnly = false;
         $('#restoreBlockHeader').show();
         Debugging.initHeaderWidth();
     } else {
-        Debugging.addLog('Game.checkAnswerWrong_' + blockId);
+        // Debugging.addLog('Game.checkAnswerWrong_' + blockId);
         localStorage.numOfChanceToAnswer = localStorage.numOfChanceToAnswer * 1 - 1;
         if (localStorage.numOfChanceToAnswer == "0") {
             Game.evaluationEnd = true;

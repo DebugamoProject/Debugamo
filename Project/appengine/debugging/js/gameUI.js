@@ -157,7 +157,7 @@ UI.showPreviousGuide = function(e) {
         return;
     }
 
-    Debugging.addLog('UI.showPreviousGuide');
+    // Debugging.addLog('UI.showPreviousGuide');
 
     UI.missionGuideInd -= 1;
     $('#guide-inner-box').find('p').html(level.missionGuideDescription[UI.missionGuideInd]);
@@ -173,7 +173,7 @@ UI.showNextGuide = function(e) {
         return;
     }
 
-    Debugging.addLog('UI.showNextGuide');
+    // Debugging.addLog('UI.showNextGuide');
 
     UI.missionGuideInd += 1;
     $('#guide-inner-box').find('p').html(level.missionGuideDescription[UI.missionGuideInd]);
@@ -236,7 +236,7 @@ UI.showText = function(msg) {
 }
 
 UI.showFailText = function(msg) {
-    Debugging.addLog('showFailText_' + msg);
+    // Debugging.addLog('showFailText_' + msg);
     Game.things.robot.state = 'sad';
     UI.drawThings('robot');
     $('#runButton').hide();

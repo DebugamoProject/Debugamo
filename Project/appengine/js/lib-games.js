@@ -242,14 +242,24 @@ BlocklyGames.getTaskData = function (){
       localStorage.selectedLevel = JSON.stringify(selectedLevel)
       localStorage.setItem('newPlayer',JSON.stringify(data["newPlayer"]))
       var urlLevel = BlocklyGames.getStringParamFromUrl('level','1');
-      if(urlLevel in selectedLevel)
-        startedLevel = urlLevel;
-      else{
-        startedLevel = data['startLevel'];
+      // console.log('urlLevel = ', urlLevel);
+      // get the correct level
+      startedLevel = urlLevel;
+      startedLevel = selectedLevel[0]
+      for(var i = 0; i < selectedLevel.length; i++){
+        if(urlLevel == selectedLevel[i]){
+          startedLevel = urlLevel;
+        }
       }
+      // if(urlLevel in selectedLevel)
+      //   startedLevel = urlLevel;
+      // else{
+      //   startedLevel = data['startLevel'][0];
+      // }
     }
   }
   xhr.send(JSON.stringify(taskData));
+  console.log('[BlocklyGames.startedLevel] startedLevel = ' + startedLevel);
   return startedLevel;
 }
 
