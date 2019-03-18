@@ -85,10 +85,6 @@
     display: inline-block;
 }
 
-.group1.right, .group2.right{
-    float: right;
-}
-
 .group3{
     width:32%;
     display: inline-block;

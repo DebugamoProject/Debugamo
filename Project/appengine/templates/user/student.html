@@ -5,193 +5,250 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-    crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/8.1.0/i18next.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-i18next/1.2.0/jquery-i18next.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
   <!-- <script src="/static/user/user.js"></script> -->
   <link rel="stylesheet" href="../../static/user/style.css">
   <link rel="stylesheet" href="../../static/user/edit.css">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns"
-    crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css"
+    integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
   <link rel="stylesheet" href="../../static/user/task.css">
   <title>Document</title>
 </head>
 
 <body>
-  <div class="header">
-    <div id="left-side">
-      <p id="title" data-i18n="header.title">Debugamo : 幫幫迪摩</p>
-    </div>
-    <div id="mid"></div>
-    <div id="right-side">
-      <a class="normal " href="/" data-i18n="header.home">首頁</a>
-      <a class="normal" href="/user" data-i18n="header.mydemo">我的迪摩</a>
-      <a class="normal" href="/" id="log-out" data-i18n="header.logout">登出</a>
-      <div id="setting-dropdown-div">
-        <button class="dropdown-btn" id="setting">
-          <span data-i18n="header.setting.setting"></span>
-          <i class="fa fa-caret-down"></i>
+  <div id="header">
+    <div id="headerLeft" class="headerContent">
+      <nav class="navbar navbar-expand-lg navbar-light" style="background-color:inherit;">
+        <a class="navbar-brand" href="#">DebuGamO</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="dropdown-container">
-          <a href="" class="dropdown-option" data-i18n="header.setting.gameSetting">遊戲設定</a>
-          <!-- <a href="" class="dropdown-option">個人資料設定</a> -->
-          <a href="" class="dropdown-option">選項2</a>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav">
+
+            <li class="nav-item">
+              <a class="nav-link" id="log-out">登出</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                聯絡我們
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item" href="#">錯誤回報</a>
+                <a class="dropdown-item" href="#">合作與支持</a>
+              </div>
+            </li>
+          </ul>
         </div>
-      </div>
+      </nav>
+    </div>
+    <div id="headerRight" class="headerContent">
+      <ul class="nav justify-content-center nav-fill">
+        <li class="nav-item">
+          <a class="nav-link active" href="#" id="news">最新消息</a>
+        </li>
+        <li class="nav-item" id="missionOverview">
+          <a class="nav-link active" href="#" onclick="tasksOverview();" >任務總覽</a>
+        </li>
+        <li class="nav-item" id="missionList">
+          <a class="nav-link active" href="javascript:void(0);" onclick="myTaskShow();" >任務清單</a>
+        </li>
+        <li class="nav-item" id="userInfo">
+          <a class="nav-link active" href="javascript:void(0);" onclick="editContent();">個人資訊</a>
+        </li>
+      </ul>
     </div>
   </div>
-  <div class="wrapper">
-    <div class="letter">
-      <div class="left-side">
-        <div id="photo">
-          <!-- photo -->
-        </div>
+  <div id="mid" class="container">
+    <div class="row" style="padding:0px;">
+      <div id="left" class="col-4">
         <div id="info">
-          <p>ID : <span>Yu-Chun,Lin</span></p>
-          <p>Level : <span>000000</span></p>
-        </div>
-        <div id="options">
-          <div class="option">
-            <button class="dropdown-btn" class="button-option">
-              <span data-i18n="options.game.task"></span>
-              <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-container">
-              <!-- <a href="/debugging" class="dropdown-option" data-i18n="options.game.task">任務</a> -->
-              <a href="javascript:void(0);" class="dropdown-option" data-i18n="options.game.opentask" onclick="tasksOverview();">公開的任務</a>
-              <a href="javascript:void(0);" class="dropdown-option" data-i18n="options.game.yourtask">自己的任務</a>
-              <a href="javascript:void(0);" class="dropdown-option" data-i18n="options.game.record">對戰紀錄</a>
-            </div>
-          </div>
-          <div class="option">
-            <button class="dropdown-btn" class="button-option">
-              <span data-i18n="options.community.story"></span>
-              <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-container">
-              <a href="javascript:void(0);" class="dropdown-option" data-i18n="options.community.friend">好友動態</a>
-              <a href="javascript:void(0)" id="information" class="dropdown-option" data-i18n="options.community.edit" onclick="editContent();">個人資料</a>
-            </div>
-          </div>
-          <!-- <div class="option">
-              <button class="dropdown-btn">button 3
-                  <i class="fa fa-caret-down"></i>
-              </button>
-              <div class="dropdown-container">
-                  <a href="" class="dropdown-option">a</a>
-                  <a href="" class="dropdown-option">b</a>
-                  <a href="" class="dropdown-option">c</a>
-              </div>
-          </div> -->
+
         </div>
       </div>
-    </div>
-    <div class="letter" id="main-container">
-      
-      <div id="edit" style="display:none;">
-        <div id="edit-title">
-          <span style="font-size: 40px" data-i18n="edit.title.edit">Edit</span>
-          <div style="border: 1px solid lightgrey"></div>
-        </div>
-        <div id="name-ID" class="item">
-          <div id="name">
-            <div style="display: inline">
-              <label for="user-name" data-i18n="edit.nameid.name.name">Name : </label>
-
-              <i class="fas fa-pen edit" id="name-edit" style="color:grey"></i>
-            </div>
-            <div id="Name-drop-down" class="edit-dropdown">
-              <label for="edit-name" data-i18n="edit.nameid.name.name">Name : </label>
-              <input type="text" id="edit-name"> <button id="name-button" data-i18n="edit.button">submit</button>
-
-            </div>
+      <div id="right" class="col-8">
+        <div id="edit" style="display:none;">
+          <div id="edit-title">
+            <span style="font-size: 40px" data-i18n="edit.title.edit">Edit</span>
+            <div style="border: 1px solid lightgrey"></div>
           </div>
-          <div id="ID">
-            <div>
-              <label for="edit-id" data-i18n="edit.nameid.id.gameid">gameID : </label>
+          <div id="name-ID" class="item">
+            <div id="name">
+              <div style="display: inline">
+                <label for="user-name" data-i18n="edit.nameid.name.name">Name : </label>
 
-              <i class="fas fa-pen edit" id="ID-edit" style="color:grey"></i>
+                <i class="fas fa-pen edit" id="name-edit" style="color:grey"></i>
+              </div>
+              <div id="Name-drop-down" class="edit-dropdown">
+                <label for="edit-name" data-i18n="edit.nameid.name.name">Name : </label>
+                <input type="text" id="edit-name"> <button id="name-button" data-i18n="edit.button">submit</button>
+
+              </div>
             </div>
-            <div id="ID-drop-down" class="edit-dropdown">
-              <div style="width:100%" id="id-input">
+            <div id="ID">
+              <div>
                 <label for="edit-id" data-i18n="edit.nameid.id.gameid">gameID : </label>
-                <input type="text" id="edit-gameID"> <button id="id-button" data-i18n="edit.button">submit</button>
+
+                <i class="fas fa-pen edit" id="ID-edit" style="color:grey"></i>
               </div>
-              <!-- <small style="display:inline">adslfk;askljf;alskjf</small> -->
+              <div id="ID-drop-down" class="edit-dropdown">
+                <div style="width:100%" id="id-input">
+                  <label for="edit-id" data-i18n="edit.nameid.id.gameid">gameID : </label>
+                  <input type="text" id="edit-gameID"> <button id="id-button" data-i18n="edit.button">submit</button>
+                </div>
+                <!-- <small style="display:inline">adslfk;askljf;alskjf</small> -->
+              </div>
             </div>
           </div>
-        </div>
-        <div id="edit-email" class="item">
-          <div>
-            <label for="edit-email" data-i18n="edit.email.email">Email : </label>
-            <!-- <span id="user-email" class="user-data">example@gmail.com</span> -->
-            <i class="fas fa-pen edit" id="email-edit" style="color:grey"></i>
-          </div>
-          <div id="Email-drop-down" class="edit-dropdown" style="width:50%;">
-            <div id="email-input-div" style="width:100%;">
-              <label for="edit-email" data-i18n="edit.email.email">Email : </label>
-              <input type="email" style="width:60%;" id="edit-email-input"> <button id="email-button" data-i18n="edit.button">Submit</button>
-            </div>
-          </div>
-        </div>
-        <div id="edit-password" class="item">
-          <div>
-            <label for="password" data-i18n="edit.password.password">Password :</label>
-            <span id="password">********</span>
-            <i class="fas fa-pen edit" style="color:grey"></i>
-          </div>
-          <div id="password-dropdown" class="edit-dropdown" style="display:none;width:90%;">
+          <div id="edit-email" class="item">
             <div>
-              <label for="old-password" data-i18n="edit.password.old-password">Old Password</label>
-              <input type="password" style="display:inline;" id="old-password">
+              <label for="edit-email" data-i18n="edit.email.email">Email : </label>
+              <!-- <span id="user-email" class="user-data">example@gmail.com</span> -->
+              <i class="fas fa-pen edit" id="email-edit" style="color:grey"></i>
             </div>
-            <div id="password-confirm">
-              <label for="new-password" data-i18n="edit.password.new-password">New Password</label>
-              <input type="password" style="margin-top:5px;" id='newpassword'>
-              <label for="comfirm" data-i18n="edit.password.confirm">Confirm</label>
-              <input type="password" id='confirm'>
-              <button id="password-button" data-i18n="edit.button">submit</button>
+            <div id="Email-drop-down" class="edit-dropdown" style="width:50%;">
+              <div id="email-input-div" style="width:100%;">
+                <label for="edit-email" data-i18n="edit.email.email">Email : </label>
+                <input type="email" style="width:60%;" id="edit-email-input"> <button id="email-button"
+                  data-i18n="edit.button">Submit</button>
+              </div>
+            </div>
+          </div>
+          <div id="edit-password" class="item">
+            <div>
+              <label for="password" data-i18n="edit.password.password">Password :</label>
+              <span id="password">********</span>
+              <i class="fas fa-pen edit" style="color:grey"></i>
+            </div>
+            <div id="password-dropdown" class="edit-dropdown" style="display:none;width:90%;">
+              <div>
+                <label for="old-password" data-i18n="edit.password.old-password">Old Password</label>
+                <input type="password" style="display:inline;" id="old-password">
+              </div>
+              <div id="password-confirm">
+                <label for="new-password" data-i18n="edit.password.new-password">New Password</label>
+                <input type="password" style="margin-top:5px;" id='newpassword'>
+                <label for="comfirm" data-i18n="edit.password.confirm">Confirm</label>
+                <input type="password" id='confirm'>
+                <button id="password-button" data-i18n="edit.button">submit</button>
+              </div>
+            </div>
+          </div>
+          <div id="edit-birthday" class="item">
+            <div>
+              <label for="user-birthday" data-i18n="edit.birthday">Birthday : </label>
+              <i class="fas fa-pen edit" id="birthday-edit" style="color:grey"></i>
+            </div>
+            <div id="Birthday-drop-down" class="edit-dropdown" style="width:50%;">
+              <label for="edit-birthday">Birthday : </label>
+              <select name="year" id="year" class="form-cotrol"></select>
+              <select name="month" id="month"></select>
+              <select name="date" id="date"></select>
+              <button style="margin-left:20px;" id="birthday-button" data-i18n="edit.button">Submit</button>
+            </div>
+          </div>
+          <div id="edit-class" class="item" style="display:none">
+            <div>
+              <label for="edit-class" data-i18n="edit.class">Class : </label>
+
+              <i class="fas fa-pen edit" id="class-edit" style="color:grey"></i>
+            </div>
+            <div id="class-dropdown" class="edit-dropdown" style="width:30%;">
+              <label for="edit-class" data-i18n="edit.class">Class : </label>
+              <input type="text" style="width:38%" id="class-input">
+              <button id="class-button" data-i18n="edit.button">Submit</button>
             </div>
           </div>
         </div>
-        <div id="edit-birthday" class="item">
-          <div>
-            <label for="user-birthday" data-i18n="edit.birthday">Birthday : </label>
-            <i class="fas fa-pen edit" id="birthday-edit" style="color:grey"></i>
-          </div>
-          <div id="Birthday-drop-down" class="edit-dropdown" style="width:50%;">
-            <label for="edit-birthday">Birthday : </label>
-            <select name="year" id="year" class="form-cotrol"></select>
-            <select name="month" id="month"></select>
-            <select name="date" id="date"></select>
-            <button style="margin-left:20px;" id="birthday-button" data-i18n="edit.button">Submit</button>
-          </div>
-        </div>
-        <div id="edit-class" class="item" style="display:none">
-          <div>
-            <label for="edit-class" data-i18n="edit.class">Class : </label>
 
-            <i class="fas fa-pen edit" id="class-edit" style="color:grey"></i>
+        <div id="joinTask" style="display:none;" class="frame">
+          <div id="taskLeft" class="taskContent framleft">
+            <div id="mainTask" class="tasktype dropdown">
+              <div class="taskTitle">
+                  <a href="javascript:void(0);">主線任務</a>
+              </div>
+              <ul id="mainTasklist" style="display:none;">
+              </ul>
+            </div>
+            <div id="customTask" class="tasktype dropdown">
+                <div class="taskTitle active">
+                    <a href="">支線任務</a>
+                </div>
+                <ul id="mainTasklist">
+                    <!-- <li><a href="javascript:void(0);">DebuGamO</a></li> -->
+                </ul>
+            </div>
+            <!-- <div id="mainTask" class="tasktype dropdown">
+              <a href="">支線任務</a>
+            </div>
+            <div id="mainTask" class="tasktype dropdown">
+            
+            </div> -->
           </div>
-          <div id="class-dropdown" class="edit-dropdown" style="width:30%;">
-            <label for="edit-class" data-i18n="edit.class">Class : </label>
-            <input type="text" style="width:38%" id="class-input">
-            <button id="class-button" data-i18n="edit.button">Submit</button>
-          </div>
-        </div>
-      </div>
+          <div id="taskRight" class="taskContent frameright">
+            <div class="section sec hint">
+              請點選左邊側欄查看有哪些任務喔！
+            </div>
+            <div class="section sec" style="display:none">
+                <div class="name">
+                  <p class="taskTitle">
+                    名稱
+                  </p>
+                </div>
+                <div class="nameText" >
+                  <span class="nameTitle" id="taskName">
+                    歡迎來到 DebuGamO
+                  </span>
+                </div>
+            </div>
 
-      <div id="joinTask" style="display:none">
-        <p id="joinTaskTitle">
-          <span style="font-size:50px">歡迎來到 Debugamo</span>
-        </p>
-        <div style="border-top:1px solid grey;"></div>
-        <!-- <div class="row"> -->
-            <!-- <div class="courseItem">
+            <div class="section sec"style="display:none">
+              <div class="name">
+                <p class="taskTitle">
+                  獎勵
+                </p>
+              </div>
+              <div class="nameText">
+                  <span class="nameBonus">
+                    解完任務就會有獎勵喔！！
+                  </span>
+              </div>
+            </div>
+
+            <div class="section sec" style="display:none">
+                <div class="name">
+                    <p class="taskTitle">
+                      目標
+                    </p>
+                </div>
+                <div class="nameText">
+                  <span class="nameDescription" id="taskDescription">
+                    完成目標就能完成任務喔！
+                  </span>
+                </div>
+            </div>
+            
+
+            <div class="sec" style="display:none;">
+              <button>
+                <a href="">領取</a>
+              </button>
+            </div>
+
+            
+          </div>
+
+           
+          <!-- <p id="joinTaskTitle">
+            <span style="font-size:50px">歡迎來到 Debugamo</span>
+          </p>
+          <div style="border-top:1px solid grey;"></div>
+          <div class="row">
+            <div class="courseItem">
                 <button class="addCourseBtn" style="float:right;margin:5px;">
                     <i class="fas fa-plus"></i>
                 </button>
@@ -202,102 +259,110 @@
                   </p>
                 </div>
             </div> -->
-            <!-- Web Structure
-            <div class="courseItem">
-                <button class="addCourseBtn" style="float:right;margin:5px;">
-                    <i class="fas fa-plus"></i>
-                </button>
-                <div class="courseInformation" style="display: none">
-                  <p class="course-name"></p>
-                  <p class="course-description"></p>
-                </div>
-            </div>
-            -->
-            
-        <!-- </div> -->
-
-
-      </div>
-
-      <div id="myTask">
-        <p id="myTaskTitle">
-          <span style="font-size:50px">我的任務</span>
-        </p>
-        <div style="border-top:1px solid grey;"></div>
-        <div id="TaskOverview">
-          <!--
-          <div class="taskItem">
-            <div class="task-info-img">
-              <div class="taskImg">
-                This Is Img
-              </div>
-              <div class="userInfo">
-                <p>任務:
-                  <span>Debugging </span>
-                </p>
-                <p>完成度 :
-                  <span>5/4</span>
-                </p>
-                <button>
-                  <a href="/debugging?lang=zh-hant&level=1&user=321&task=debugging" style="color:black">開始遊戲</a>
-                </button>
-              </div>
-              
-              <div style="border-top: 1px solid grey;"></div>
-              <div class="dropdownBar" >
-                  <i class="fas fa-angle-down"></i>
-              </div>
-            </div>
-            <div class="members dropdownContent">
-                <div class="up">
-                    <i class="fas fa-angle-up"></i>
-                </div>
-                <div style="border-top: 1px solid grey;"></div>
-                <div class="methods">
-                  <a href="javascript:void(0);" class='sortedOrder'>排序順序</a>
-                  
-                  <div class="sorting">
-                    <a href="javascript:void(0);" style="margin-top: 10px;"><br>解題速度<br><br></a>
-                    <a href="javascript:void(0);">解題進度</a>
+          <!-- Web Structure
+                  <div class="courseItem">
+                      <button class="addCourseBtn" style="float:right;margin:5px;">
+                          <i class="fas fa-plus"></i>
+                      </button>
+                      <div class="courseInformation" style="display: none">
+                        <p class="course-name"></p>
+                        <p class="course-description"></p>
+                      </div>
                   </div>
-                </div>
-                <div class="member">
-                  <span class="SortedNum">1.</span>
-                  <span class="ID" style="margin-left:30px;">321</span>
-                </div>
-                <div class="member">
-                    <span class="SortedNum">1.</span>
-                    <span class="ID" style="margin-left:30px;">321</span>
-                  </div>
-            </div>
+                  -->
+
           </div>
-        -->
+
+
+        
+
+          <div id="myTask" class="frame">
+            <div class="taskContent frameleft">
+              <ul class="tasklist" id="userTaskList">
+                <li class="userTaskItem"><a href="javascript:void(0);">test</a></li>
+              </ul>
+            </div>
+            <div class="taskContent frameright">
+
+                <div class="section sec hint">
+                    請點選左邊側欄查看有哪些任務喔！
+                  </div>
+
+              <div class="section sec" style="display:none">
+                <div class="name">
+                  <p class="taskTitle">
+                    名稱
+                  </p>
+                </div>
+                <div class="nameText">
+                  <span class="nameTitle" id="userTaskName">
+                    歡迎來到 DebuGamO
+                  </span>
+                </div>
+              </div>
+
+              <div class="section sec" style="display:none">
+                <div class="name">
+                  <p class="taskTitle">
+                    獎勵
+                  </p>
+                </div>
+                <div class="nameText">
+                    <span class="nameBonus">
+                      解完任務就會有獎勵喔！！
+                    </span>
+                </div>
+              </div>
+
+              <div class="section sec" style="display:none">
+                <div class="name">
+                    <p class="taskTitle">
+                      目標
+                    </p>
+                </div>
+                <div class="nameText">
+                  <span class="nameDescription" id="taskDescription">
+                    完成目標就能完成任務喔！
+                  </span>
+                </div>
+            </div>
+            
+            <div class="bottom sec" style="display:none">
+              <button>
+                <a href="" id="giveupMission">放棄任務</a>
+              </button>
+              <button style="float:right;">
+                  <a href="" id="startMission">開始任務</a>
+                </button>
+              <button style="float:right;">
+                <a href="" id="backTrackMission">任務回顧</a>
+              </button>
+              
+            </div>
+
+            </div>
+            
+            </div>
+
+          <div id="test">
+            
+          </div>
         </div>
       </div>
-
-    </div><!-- letter-->
-  </div> <!-- wrapper-->
+    </div>
+  </div>
   <div class="footer">
-    <div id="copyright-div">
-
-      <p id="copyright">
-        <select name="lang" id="language-select">
-          <option selected>Choose other language...</option>
-          <option value="en">English</option>
-          <option value="zh-hant">繁體中文</option>
-        </select>
-        <a href="" data-i18n="footer.report">Report</a>
-        <a href="" style="margin-right:10px;" data-i18n="footer.us">About Us</a>
-        ©Debugamo
-      </p>
+    <div id="logo">
     </div>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/8.1.0/i18next.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-i18next/1.2.0/jquery-i18next.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
     crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+    integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
     crossorigin="anonymous"></script>
   <script src="../../static/user/user.js"></script>
   <script src="../../static/user/edit.js"></script>
@@ -305,10 +370,10 @@
   <!-- <script src="../../static/user/user.js"></script> -->
 </body>
 <script>
-  $('.courseItem').hover(function(e){
+  $('.courseItem').hover(function (e) {
     $(this).children('.courseInformation').slideToggle();
   })
-  $('.sortedOrder').on('click',function (e) {
+  $('.sortedOrder').on('click', function (e) {
     e.preventDefault();
     $(this).parent().children('.sorting').slideToggle();
   })

@@ -333,7 +333,7 @@ class UserPage(webapp2.RequestHandler):
             template_values = ''
             return self.response.write(template.render(path, template_values))
         else:
-            return webapp2.redirect('/login-register')
+            return webapp2.redirect('/')
 
 class Email(webapp2.RequestHandler):
     def get(self, email):

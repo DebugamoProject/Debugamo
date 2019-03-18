@@ -1,6 +1,8 @@
 let LANGUAGE_API = '/language/user/'
 let UPDATE_API = '/user/'
 let REPEAT_CHEACK_API = '/record'
+let data = getClassData();
+var userCourseData = getUserTaskData();
 
 var language_package;
 var lang;
@@ -32,6 +34,7 @@ function IsLogin(){
 $('#log-out').click(function(e){
   Cookies.set('login','FALSE');
   Cookies.remove('user');
+  window.location.replace('/');
 })
 
 IsLogin();
@@ -130,44 +133,44 @@ function getClassData(){
 }
 
 function ClassDataDomCreater(){
-  var data = getClassData();
-  var rowContainer = new Array;
-  var aRow = new Array;
-  for(var i = 0; i < data.length; i++){
-    var courseItem = document.createElement('div');
-    courseItem.className = 'courseItem';
-    courseItem.id = data[i]["name"];
-    $(courseItem).append(`
-
-      <button class="addCourseBtn" id='${data[i]["name"]}Btn' style="float:right;margin:5px;" onclick="addCourse('${data[i]["name"]}')">
-          <i class="fas fa-plus"></i>
-      </button>
-      <div class="courseInformation" style="display: none">
-        <p class="course-name">${data[i]["name"]}</p>
-        <p class="course-description">${data[i]["description"]}</p>
-      </div>
-    
-    `);
-    aRow.push(courseItem);
-    if((i + 1) % 4 === 0){
-      rowContainer.push(aRow)
-      aRow = new Array;
-    }
-  }
-  if(aRow.length != 0)
-    rowContainer.push(aRow);
   
-  var jointask = $('#joinTask');
-  for(var i = 0 ; i < rowContainer.length; i++){
-    var row = document.createElement('div');
-    row.className = 'row';
-    for(var j = 0; j < rowContainer[i].length; j++){
-      $(row).append(rowContainer[i][j]);
-    }
-    jointask.append(row);
+  for(var i of data){
+    var name = i['name'];
+    $('#mainTasklist').append(`<li id="${name}" class="courseItem"><a href="javascript:void(0);">${i['name']}</a></li>`);
+  }
+  // $('#mainTasklist').append('<li><a href="javascript:void(0);">Home</a></li>');
+}
+
+function userClassDataDomCreater(){
+  for(var i of userCourseData){
+    var name = i['name'];
+    $('#userTaskList').append(`<li class="userTaskItem" id="${name}"><a href="javascript:void(0);">${name}</a></li>`);
   }
 }
 
+function taskContentModify(name){
+  document.getElementById('taskName').innerHTML = name;
+  for(var i of data){
+    
+    console.log(i["description"]);
+    if(i['name'] == name){
+      document.getElementById('taskDescription').innerText = i["description"];
+      break;
+    }
+  }
+}
+
+function userTaskContentModify(name){
+  console.log('in userTaskContentModify name is ' + name);
+
+  document.getElementById('userTaskName').innerHTML = name;
+  for(var i of userCourseData){
+    if(i['name'] == name){
+      $('#startMission').attr('href', `/debugging?lang=zh-hant&level=1${i['url']}&mode=gamming`);
+      $('#backTrackMission').attr('href',`/debugging?lang=zh-hant&level=1${i['url']}&mode=backTrack`)
+    }
+  }
+}
 
 /**
  * participating a course
@@ -196,6 +199,7 @@ function addCourse(courseName){
 }
 
 ClassDataDomCreater();
+userClassDataDomCreater();
 
 
 //--------------user's task----------------//
@@ -215,46 +219,4 @@ function getUserTaskData(){
   console.log(userTaskData);
   return userTaskData;
 }
-
-function UserClassDataDomCreater(){
-  var taskItems = new Array;
-  var userTaskData = getUserTaskData();
-  for(var i = 0; i < userTaskData.length; i++){
-    var taskItem = document.createElement('div');
-    taskItem.className = 'taskItem';
-    $(taskItem).append(`
-    <div class="task-info-img">
-    <div class="taskImg">
-      This Is The IMG of Task ${userTaskData[i]['name']}
-    </div>
-    <div class="userInfo">
-      <p>任務 :
-        <span> ${userTaskData[i]['name']}</span>
-      </p>
-      <!-- <p>完成度 :
-        <span>5/4</span>
-      </p> -->
-      <button>
-        <a href="/debugging?lang=zh-hant&level=1${userTaskData[i]['url']}&mode=gamming" style="color:black">開始遊戲</a>
-      </button>
-      <button>
-        <a href="/debugging?lang=zh-hant&level=1${userTaskData[i]['url']}&mode=backTrack" style="color:black">任務回顧</a>
-      </button>
-    </div>
-    
-    <div style="border-top: 1px solid grey;"></div>
-    <!-- <div class="dropdownBar" >
-        <i class="fas fa-angle-down"></i>
-    </div> -->
-  </div>
-    `)
-    taskItems.push(taskItem);
-  }
-  console.log(taskItems)
-  for(var i = 0; i < taskItems.length; i++){
-    $('#TaskOverview').append(taskItems[i]);
-  }
-}
-
-UserClassDataDomCreater();
 

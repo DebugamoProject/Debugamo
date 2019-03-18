@@ -1,7 +1,7 @@
 var month='';
 var year='';
 var date=''
-var ChooseYear = 0,ChooseMonth = 0;
+var ChooseYear = 2019,ChooseMonth = 1;
 
 let REPEAT_CHEACK_API ='/record'
 let LANGUAGE_API = '/language/login/'
@@ -29,8 +29,6 @@ function setLanguage(){
     })
 }
 
-setLanguage();
-
 
 
 $('select#language-select').on('change',function(e){
@@ -41,57 +39,7 @@ $('select#language-select').on('change',function(e){
     window.location.reload(true);
 })
 
-i18next.init({
-    lng:`${lang}`,
-    resources:language_package,
-},function(err,t){
-    jqueryI18next.init(i18next, $);
-    $('body').localize();
-})
 
-function generateYear(){
-    for(var i = 2018; i >= 1911;i--)
-        year += `<option class="year" value="${i}">${i}</option>`
-}
-
-function generateMonth(){
-    for(var i = 1;i < 13;i++)
-        month += `<option class="month" value="${i}">${i}</option>`
-}
-
-function generateDate() {
-    var Year = $('#inputYear').val()
-    var Month = $('#inputMonth').val()
-    $('.date').each(function (index, element) {
-        element.remove();
-    });
-    if(Year != 0 && Month != 0){
-        $('#DateNotice').remove();
-        var Fab_dates_amount = 0;
-        var dates_amount = 0;
-
-        if ((Year % 4 == 0 && Year % 100 != 0)||(Year % 400 == 0)) Fab_dates_amount = 29;
-        else Fab_dates_amount = 28;
-
-
-
-        if(Month == 2) dates_amount = Fab_dates_amount;
-        else if((Month <= 7 && Month % 2 == 1) || (Month >=8 && Month % 2 == 0))dates_amount = 31;
-        else dates_amount = 30;
-
-        date = '';
-        for(var day = 1;day <= dates_amount;day++)
-            date += `<option class="date" value="${day}">${day}</option>`
-        $('#inputDate').append(date)
-    }
-}
-
-generateMonth()
-generateYear()
-generateDate()
-$('#inputMonth').append(month);
-$('#inputYear').append(year);
-// generateCityandSchool()
 
 //=======================================================//
 
@@ -123,8 +71,8 @@ function IsnotAvailable(div_id,name,input_id,text){
     console.log(`divid = ${div_id}`)
     $('.'+name+'-'+'warning').remove();
     
-    $(div_id).append(`<small class="${name+'-'+'warning'}"style="color:red;margin-left:10px;" data-i18n="[append]${text}"></small>`)
-    $(`.${name+'-'+'warning'}`).localize();
+    $(div_id).append(`<small class="${name+'-'+'warning'}"style="color:red;margin-left:10px;">${text}</small>`)
+    // $(`.${name+'-'+'warning'}`).localize();
     $(input_id).css('background-color','#FFB6C1')
 }
 
@@ -170,13 +118,13 @@ $(document).keypress(function(e){
     console.log(e.which);
     console.log(e.which == 13);
     if(e.which == 13 &&  $('#login-email').val())
-        $('#normal-button').click()
+        $('#login-button').click()
     else if (e.which == 13 && emptyCheck(getformData()))
         $('#register-button').click();
 });
 
 //--------login---------------------//
-$('#normal-button').click(function(e){
+$('#login-button').click(function(e){
     console.log($('#login-email').val())
     // window.location.replace('./user')
     var data = {
@@ -219,19 +167,24 @@ function emptyCheck(data){
 $('#inputYear').on('change',function (e) {
     ChooseYear = $(this).children('option:selected').text();
     console.log(ChooseYear)
-    generateDate()
+    var dt = generateDate(ChooseYear, ChooseMonth);
+    $('.date').remove();
+    console.log(dt);
+    $('#inputDate').append(dt);
 });
 $('#inputMonth').on('change',function(e){
     ChooseMonth = $(this).children('option:selected').text();
     console.log(ChooseMonth)
-    generateDate()
+    var dt = generateDate(ChooseYear, ChooseMonth);
+    $('.date').remove();
+    $('#inputDate').append(dt);
 })
 $('#inputEmail').change(function (e) {
     e.preventDefault();
     if(this.value)
         RepeatCheck({
             "email":this.value
-        },'#Email','email','#inputEmail','form.Email.Notice')
+        },'#Email','email','#inputEmail','這個Email已經有人使用過了喔')
     else{
         $('.email-warning').remove()
         console.log('connot be zero')
@@ -239,7 +192,7 @@ $('#inputEmail').change(function (e) {
 });
 $('#inputPassword').change(function(e){
     if($('#inputPasswordagain').val() != 0 && $('#inputPasswordagain').val() != this.value){
-        IsnotAvailable('#password-again','password','#inputPasswordagain','form.password.Notice')
+        IsnotAvailable('#password-again','password','#inputPasswordagain','兩組密碼不一樣喔！')
     }else
         IsAvailable('password','#inputPasswordagain')
 });
@@ -247,7 +200,7 @@ $('#inputPasswordagain').change(function(e){
     var value = $('#inputPassword').val()
     if(value != this.value){
         console.log('false')
-        IsnotAvailable('#password-again','password','#inputPasswordagain','form.passwordagain.Notice')
+        IsnotAvailable('#password-again','password','#inputPasswordagain','兩組密碼不一樣喔！')
     }else{
         // $('.password-warning').remove()
         // $('#inputPasswordagain').css('background-color','#FFFFFF')
@@ -258,10 +211,10 @@ $('#inputID').change(function(e){
     if(this.value)
     RepeatCheck({
         'gameID':this.value
-    },'#ID','id','#inputID','form.ID.Notice');
+    },'#ID','id','#inputID','這個ID已經有人使用過了喔');
     else{
         $('.id-warning').remove()
-        console.log('connot be zero')
+        console.log('connot be zero');
     }
 })
 
@@ -281,7 +234,52 @@ $('#register-button').click(function (e) {
     }
 })
 
-$('.footer').click(function(e){
-    console.log($('#inputIdentity').val());
-})
+//-------------------register----------------------//
 
+var generateYear = function(){
+    var year = '';
+    for(var i = 2019; i >= 1911; i--){
+        year += `<option class="year" value="${i}">${i}</option>`;
+    }
+    return year;
+}
+
+var generateMonth = function(){
+    var month = '';
+    for(var i = 1; i< 13; i++){
+        month += `<option class="month" value="${i}">${i}</option>`;
+    }
+    return month;
+}
+
+var generateDate = function(Year,Month){
+    if(Year != 0 && Month != 0){
+        // $('#DateNotice').remove();
+        var Fab_dates_amount = 0;
+        var dates_amount = 0;
+
+        if ((Year % 4 == 0 && Year % 100 != 0)||(Year % 400 == 0)) Fab_dates_amount = 29;
+        else Fab_dates_amount = 28;
+
+
+
+        if(Month == 2) dates_amount = Fab_dates_amount;
+        else if((Month <= 7 && Month % 2 == 1) || (Month >=8 && Month % 2 == 0))dates_amount = 31;
+        else dates_amount = 30;
+
+        date = '';
+        for(var day = 1;day <= dates_amount;day++)
+            date += `<option class="date" value="${day}">${day}</option>`
+        return date;
+    }
+}
+
+var registerFormInit = function(){
+    var yearHTML = generateYear();
+    var monthHTML = generateMonth();
+    var DateHTML = generateDate(2019,1);
+
+    $('#inputYear').append(yearHTML);
+    $('#inputMonth').append(monthHTML);
+    $('#inputDate').append(DateHTML);
+}

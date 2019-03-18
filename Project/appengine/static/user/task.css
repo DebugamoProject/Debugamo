@@ -1,9 +1,89 @@
-#joinTask{
+.frame{
     width: 100%;
-    padding-top: 100px;
-    padding-left: 50px;
+    height: 87%;
+    border: 1px solid lightgrey;
+    margin: 35px 0px 5px 0px;
+    box-sizing: border-box;
+    background-color: rgba(255,255,255,0.5);
 }
-.courseItem{
+
+#taskLeft,.frameleft{
+    border-right: 1px solid lightgrey;
+    width: 40%;
+    text-align: center;
+}
+
+.nameTitle{
+    color: white;
+    font-size: 2em;
+}
+
+.tasktype a{
+    color: black;
+    font-size: 2em;
+    text-decoration: none;
+}
+
+#taskRight,.frameright{
+    width: 55%;
+    float: right;
+    padding-top: 1.5em;
+}
+
+.tasktype{
+    /* height: 4em; */
+    border-bottom: 1px solid lightgrey;
+    cursor: pointer;
+    transition: .3s ease;
+}
+
+.tasktype .taskTitle{
+    height: 4em;
+    width: 100%;
+    transition: .3s ease;
+    border-bottom: 1px solid lightgrey;
+    padding-top: 0.5em;
+}
+
+.tasktype .taskTitle:hover{
+    box-shadow:1px 5px 5px 1px;
+}
+
+ul{
+    padding: 0px;
+    list-style-type: none;
+}
+
+#joinTask li,#myTask li{
+    border-bottom: 1px solid grey;
+}
+
+#joinTask li a, #myTask li a{
+    font-size: 1.8em;
+    font-family: Microsoft JhengHei;
+    font-weight: 300;
+    text-decoration: none;
+    color: black;
+}
+
+button a{
+    color: black;
+}
+
+/* .taskTitle.active{
+    box-shadow:1px 5px 5px 1px;
+} */
+
+.taskContent{
+    display: inline-block;
+    height: 100%;
+}
+
+ul#mainTasklist,.tasklist{
+    margin: 5px;
+}
+
+/* .courseItem{
     height: 200px;
     width: 200px;
     border: 1px solid black;
@@ -13,7 +93,7 @@
     margin-bottom: 20px;
     box-sizing: border-box;
     padding: 3px;
-}
+} */
 
 .row{
     padding: 10px;
@@ -28,11 +108,6 @@
     outline: none;
 }
 
-#myTask{
-    width: 100%;
-    padding-top: 100px;
-    padding-left: 50px;
-}
 
 .task-info-img{
     height: 200px;
@@ -104,4 +179,42 @@
     height: 80px;
     z-index: 1;
     display: none;
+}
+
+.section{
+    width: 100%;
+    height: 30%;
+}
+
+.name{
+    width: 100px;
+    height: 50px;
+    border-radius: 5px;
+    border:1px solid lightgrey;
+    text-align: center;
+    /* background: #007bff; */
+}
+
+.taskTitle{
+    margin-bottom: 0px;
+    color: white;
+}
+
+.taskTitle{
+    line-height: 50px;
+}
+
+.bonusdiv{
+    width: 100%;
+}
+
+.targetdiv{
+    width: 100%;
+}
+
+.nameText{
+    width: 100%;
+    height: 50%;
+
+    padding-top: 3em;
 }

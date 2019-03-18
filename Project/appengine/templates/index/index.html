@@ -4,40 +4,179 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js" ></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/8.1.0/i18next.min.js" ></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-i18next/1.2.0/jquery-i18next.min.js" ></script>
-    <!-- <link rel="stylesheet" href="../static/header.css"> -->
     <link rel="stylesheet" href="../../static/index/style.css">
-    <title>Draft-index</title>
+    <link rel="stylesheet" href="../../static/index/bootstrap-4.3.1-dist/css/bootstrap.css">
+    <title>Document</title>
 </head>
 <body>
-    <div id="main-img" style="background-image:url('../../static/index/3.jpg');background-repeat: no-repeat;">
+    <div id="header">
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color:inherit;">
+            <a class="navbar-brand" href="/">DebuGamO</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#about">關於 <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">介紹</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-toggle="modal" data-target="#exampleModal">登入與註冊</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        聯絡我們
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="#">錯誤回報</a>
+                            <a class="dropdown-item" href="#">合作與支持</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>   
+        </nav>
+      
+    </div>
+    <div id="mid">
+        <div id="welcome" style="filter:none;">
+                <div class="jumbotron jumbotron-fluid" style="background:none; margin-bottom: 0rem;">
+                    <div class="container" style="">
+                        <h1 class="display-4">Welcome Come To DebuGamO</h1>
+                        <p class="lead">學習程式從簡單的遊戲開始</p>
+                    </div>
+                </div>
+        </div>
+        <div id="midimage">
+            
+        </div>
+        
         
     </div>
-    <div class="footer">
-        <div class="mid"></div>
-        <div class="right-side">
-            <select name="lang" id="language-select">
-                <option selected>Choose other language...</option>
-                <option value="en">English</option>
-                <option value="zh-hant">繁體中文</option>
-            </select>
-            <div id="copyright-div">
-                <p id="copyright"> 
-                    <a href="" data-i18n="footer.report"></a>
-                    <a href="" style="margin-right:10px;" data-i18n="footer.aboutus"></a>
-                        ©Debugamo
+    <div id="about">
+            <h1 class="display-4">關於</h1>
+            <div class="content" id="content-left">
+                <p>
+                    The MASSASAUGA is a brown and white venomous snake indigenous to North America. 
+                    Arranging all of the letters in MASSASAUGA, we find there are 25,200 possible arrangements.
+                    Among these are 840 in which all four A's are together. To get this last result,
+                    we considered all arrangements of the seven symbols AAAA (one symbol), S, S, S,M, U, G.
                 </p>
+            </div>
+            <div class="content" id="content-right">
+                    <p>
+                        CSS gradients let you display smooth transitions between two or more specified colors.
+                        CSS defines two types of gradients:
+                        Linear Gradients (goes down/up/left/right/diagonally)
+                        Radial Gradients (defined by their center)
+                    </p>
+            </div>
+    </div>
+    <div class="divider">
+        
+    </div>
+    <div id="introduction">
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <ul class="nav nav-tabs" style="width:100%;">
+                    <li class="nav-item" style="width:50%;">
+                        <a class="nav-link" id="register">註冊</a>
+                    </li>
+                    <li class="nav-item"  style="width:50%;">
+                        <a class="nav-link active" id="login">登入</a>
+                    </li>
+                </ul>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <form id="register-form" style="display:none;">
+                            <div class="form-group group1">
+                                <label for="Name">姓名</label>
+                                <input type="text" class="form-control" id="inputName"  placeholder="輸入姓名">
+                                <!-- <small id="" class="form-text text-muted">Your email need to be unique. Please make sure you email has not been regeistered</small> -->
+                            </div>
+                            <div class="form-group group1 right" id="ID">
+                                <label for="gameID">Game ID</label>
+                                <input type="text" class="form-control" id="inputID" placeholder="ID">
+                                <!-- <small id="idHint" class="form-text text-muted">ID必須要是唯一的！</small> -->
+                            </div>
+                            <div class="form-group">
+                                <label for="Email" id="Email">Email</label>
+                                <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="輸入email">
+                                <!-- <small id="emailHelp" class="form-text text-muted">Your email need to be unique. Please make sure you email has not been regeistered</small> -->
+                            </div>
+                            <div class="form-group group2">
+                                <label for="password">密碼</label>
+                                <input type="password" class="form-control" id="inputPassword" placeholder="密碼">
+                            </div>
+                            <div class="form-group group2 right" id="password-again">
+                                <label for="comfirmPassword">確認密碼</label>
+                                <input type="password" class="form-control" id="inputPasswordagain" placeholder="確認密碼">
+                            </div>
+                            <div class="form-group">
+                                <label for="chooseIdentity">選擇身份</label>
+                                <select class="form-control" id="inputIdentity">
+                                  <option value="none" selected>選擇身份</option>
+                                  <option value="student">學生</option>
+                                  <option value="teacher">老師</option>
+                                </select>
+                            </div>
+                            <div class="form-group group3">
+                                <label for="chooseIdentity">生日</label>
+                                <select class="form-control group3" id="inputYear">
+                                    
+                                </select>
+                            </div>
+                            <div class="form-group group3">
+                                <select class="form-control" id="inputMonth">
+                                
+                                </select>
+                            </div>
+                            <div class="form-group group3">
+                                <select class="form-control" id="inputDate">
+                                    
+                                </select>
+                            </div> 
+                    </form>
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label for="Email">Email address</label>
+                            <input type="email" class="form-control" id="login-email" aria-describedby="emailHelp" placeholder="Enter email">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Password</label>
+                            <input type="password" class="form-control" id="login-password" placeholder="Password">
+                        </div>
+                    </form>
+                        
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                <button type="button" class="btn btn-primary" id="login-button">登入</button>
+                <button type="button" class="btn btn-primary" id="register-button" style="display:none">註冊</button>
             </div>
         </div>
     </div>
+    </div>
+<footer>
+
+</footer>
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="../../static/header.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="../../static/index/login.js"></script>
 <script src="../../static/index/index.js"></script>
+
 </body>
+
 </html>
