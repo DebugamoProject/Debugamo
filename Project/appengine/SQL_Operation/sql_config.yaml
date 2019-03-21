@@ -1,0 +1,4 @@
+mysqlhost : localhost
+mysqluser : root
+mysqlpasswd : 
+mysqldb : 

@@ -51,17 +51,17 @@ function getUserData(){
        
     }
   });
-  console.log(data)
+  // console.log(data)
   return data;
 }
 // getUserData();
 
 function SetUserData(){
   var data = getUserData();
-  $('#info').html(
-    `<p id="ID">ID : <span>${data[1]}</span></p>
-    <p id="level" data-18n="[html]level"> Level : <span>${data[6]}</span></p>`
-  );
+  // $('#info').html(
+  //   `<p id="ID">ID : <span>${data[1]}</span></p>
+  //   <p id="level" data-18n="[html]level"> Level : <span>${data[6]}</span></p>`
+  // );
   $(`<span id="user-name" class="user-data" style="margin-right:10px;">${data[0]}</span>`).insertBefore('#name-edit')
   $(`<span id="user-id" class="user-data">${data[1]}</span>`).insertBefore('#ID-edit')
   $(`<span id="user-email" class="user-data">${data[3]}</span>`).insertBefore('#email-edit')

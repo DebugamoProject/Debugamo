@@ -67,19 +67,44 @@
     <div class="row" style="padding:0px;">
       <div id="left" class="col-4">
         <div id="info">
-
+          
+          <div class="infoSec">
+            <div id="photo">
+              photo
+            </div>
+          </div>
+          <div class="infoSec" id="infoText">
+            <div class="infoName">
+              <p class="infoNameText">
+                林友鈞
+              </p>
+            </div>
+            <div class="infoID">
+              <p class="infoIDText">
+                YuChun
+              </p>
+            </div>
+          </div>
+          <div class="infoSec" style="width:100%;">
+            <p style="text-align:left;">
+              等級 : 15
+            </p>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+            </div>
+          </div>
         </div>
       </div>
       <div id="right" class="col-8">
-        <div id="edit" style="display:none;">
+        <div id="edit" style="display:block;">
           <div id="edit-title">
-            <span style="font-size: 40px" data-i18n="edit.title.edit">Edit</span>
+            <span style="font-size: 40px" data-i18n="edit.title.edit">修改個人資料</span>
             <div style="border: 1px solid lightgrey"></div>
           </div>
           <div id="name-ID" class="item">
             <div id="name">
               <div style="display: inline">
-                <label for="user-name" data-i18n="edit.nameid.name.name">Name : </label>
+                <label for="user-name" data-i18n="edit.nameid.name.name">名字 : </label>
 
                 <i class="fas fa-pen edit" id="name-edit" style="color:grey"></i>
               </div>
@@ -191,7 +216,9 @@
           </div>
           <div id="taskRight" class="taskContent frameright">
             <div class="section sec hint">
-              請點選左邊側欄查看有哪些任務喔！
+                <p style="line-height:100px;">
+                    請點選左邊側欄查看有哪些任務喔！
+                  </p>
             </div>
             <div class="section sec" style="display:none">
                 <div class="name">
@@ -273,19 +300,19 @@
 
           </div>
 
-
-        
-
-          <div id="myTask" class="frame">
+          <div id="myTask" class="frame" style="display:none;">
             <div class="taskContent frameleft">
               <ul class="tasklist" id="userTaskList">
-                <li class="userTaskItem"><a href="javascript:void(0);">test</a></li>
+                <!-- <li class="userTaskItem"><a href="javascript:void(0);">test</a></li> -->
               </ul>
             </div>
             <div class="taskContent frameright">
 
                 <div class="section sec hint">
+                  <p style="line-height:100%;">
                     請點選左邊側欄查看有哪些任務喔！
+                  </p>
+
                   </div>
 
               <div class="section sec" style="display:none">
@@ -344,9 +371,6 @@
             
             </div>
 
-          <div id="test">
-            
-          </div>
         </div>
       </div>
     </div>
