@@ -58,15 +58,23 @@ function getUserData(){
 
 function SetUserData(){
   var data = getUserData();
+  document.getElementById('UserInfoName').innerHTML = data['name'];
+  document.getElementById('UserInfoID').innerHTML = data['id'];
+  document.getElementById('UserInfoLevel').innerHTML = '等級 : ' + data['level'];
+  var exp = data['exp'];
+  var expBar = document.getElementById('expBar');
+  expBar.innerText = exp;
+  expBar.style.width = `${exp}%`
+  
   // $('#info').html(
   //   `<p id="ID">ID : <span>${data[1]}</span></p>
   //   <p id="level" data-18n="[html]level"> Level : <span>${data[6]}</span></p>`
   // );
-  $(`<span id="user-name" class="user-data" style="margin-right:10px;">${data[0]}</span>`).insertBefore('#name-edit')
-  $(`<span id="user-id" class="user-data">${data[1]}</span>`).insertBefore('#ID-edit')
-  $(`<span id="user-email" class="user-data">${data[3]}</span>`).insertBefore('#email-edit')
-  $(`<span id="user-class" class="user-data">${data[4]}</span>`).insertBefore('#class-edit')
-  $(`<span id="user-birthday" class="user-data">${data[5]}</span>`).insertBefore('#birthday-edit')
+  $(`<span id="user-name" class="user-data" style="margin-right:10px;">${data['name']}</span>`).insertBefore('#name-edit')
+  $(`<span id="user-id" class="user-data">${data['id']}</span>`).insertBefore('#ID-edit')
+  $(`<span id="user-email" class="user-data">${data['email']}</span>`).insertBefore('#email-edit')
+  // $(`<span id="user-class" class="user-data">${data[4]}</span>`).insertBefore('#class-edit')
+  $(`<span id="user-birthday" class="user-data">${data['birthday']}</span>`).insertBefore('#birthday-edit')
 }
 SetUserData();
 

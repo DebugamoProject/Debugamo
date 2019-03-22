@@ -340,10 +340,16 @@ class Email(webapp2.RequestHandler):
         if self.request.cookies.get('login') == 'TRUE':
             db = connect_to_cloudsql()
             cursor = db.cursor()
-            cursor.execute("SELECT * FROM users WHERE email = '{}'".format(email))
-            sqlresult = cursor.fetchall()
-            userdata = [i for i in sqlresult[0]]
-            userdata[5] = '{}-{}-{}'.format(userdata[5].year,userdata[5].month,userdata[5].day)
+            cursor.execute("SELECT name, gameID, email, birthday, level, exp FROM users WHERE email = '{}'".format(email))
+            sqlresult = cursor.fetchall()[0]
+            
+            userdata = {}
+            userdata['name'] = sqlresult[0]
+            userdata['id'] = sqlresult[1]
+            userdata['email'] = sqlresult[2]
+            userdata['birthday'] = '{}-{}-{}'.format(sqlresult[3].year,sqlresult[3].month,sqlresult[3].day)
+            userdata['level'] = sqlresult[4]
+            userdata['exp'] = sqlresult[5]
             self.response.headers['Content-Type'] = 'application/json'
             self.response.out.write(json.dumps(userdata))
             return self.response.set_status(200)

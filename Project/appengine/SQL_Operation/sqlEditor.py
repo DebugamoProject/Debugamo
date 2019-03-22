@@ -101,12 +101,12 @@ otherwise, the browser will diplay ? to replace chinese text.
 
 mycursor.execute(
     """
-    SELECT courses FROM users WHERE email='%s';
-    """ % (555)
+    SELECT * FROM users WHERE email = '555';
+    """
 )
                 
-result = json.loads(mycursor.fetchall()[0][0])
-print(json.dumps(result,indent=4))
+# result = json.loads()
+print(mycursor.fetchall()[0])
 
 
 # result = mycursor.fetchall()

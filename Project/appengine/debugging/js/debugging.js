@@ -1078,7 +1078,7 @@ Scope.showHelp = function() {
  */
 Scope.startGame = function() {
     if (BlocklyDialogs.isDialogVisible_) {
-        BlocklyDialogs.hideDialog(false);
+        BlocklyDialogs.hideDialog(true);
     }
     localStorage.setItem('newPlayer', '0');
 
