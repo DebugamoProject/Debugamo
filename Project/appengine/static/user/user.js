@@ -1,7 +1,7 @@
 let LANGUAGE_API = '/language/user/'
 let UPDATE_API = '/user/'
 let REPEAT_CHEACK_API = '/record'
-let data = getClassData();
+var data = getClassData();
 var userCourseData = getUserTaskData();
 
 var language_package;
@@ -155,6 +155,8 @@ function taskContentModify(name){
     console.log(i["description"]);
     if(i['name'] == name){
       document.getElementById('taskDescription').innerText = i["description"];
+      document.getElementById('joinBonus').innerHTML = '解完任務的會得到經驗值 : ' + i['exp'] + ' exp'
+      document.getElementById('taskDescription').innerHTML = i['target'];
       break;
     }
   }
@@ -164,8 +166,11 @@ function userTaskContentModify(name){
   console.log('in userTaskContentModify name is ' + name);
 
   document.getElementById('userTaskName').innerHTML = name;
+
   for(var i of userCourseData){
     if(i['name'] == name){
+      document.getElementById('userTaskBonus').innerHTML = '解完任務的會得到經驗值 : ' + i['exp'] + ' exp'
+      document.getElementById('usertaskDescription').innerHTML = i['target'];
       $('#startMission').attr('href', `/debugging?lang=zh-hant&level=1${i['url']}&mode=gamming`);
       $('#backTrackMission').attr('href',`/debugging?lang=zh-hant&level=1${i['url']}&mode=backTrack`)
     }
@@ -215,8 +220,8 @@ function getUserTaskData(){
       userTaskData = response;
     }
   });
-  console.log('[load] user Task Data');
-  console.log(userTaskData);
+  // console.log('[load] user Task Data');
+  // console.log(userTaskData);
   return userTaskData;
 }
 

@@ -599,6 +599,43 @@ class Class(webapp2.RequestHandler):
         
         return tableColumns
 
+    def __getUserTaskData(self, coursesList):
+        userTask = []
+        for i in coursesList:
+            db = connect_to_cloudsql()
+            cursor = db.cursor()
+            cursor.execute(
+                """
+                SELECT * FROM classTB WHERE name="%s"
+                """%(i)
+            )
+            result = cursor.fetchall()
+            result = {
+                "name" : result[0][0],
+                "game" : result[0][1],
+                "developer" : result[0][2],
+                "target" : result[0][3],
+                "exp" : result[0][4],
+                "type" : result[0][5],
+                "public" : result[0][6]
+            }
+            userTask.append(result)
+        return userTask
+
+    def __searchCourse(self):
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        cursor.execute(
+            """
+            SELECT name FROM classTB;
+            """
+        )
+        result = cursor.fetchall()
+        courses = []
+        for i in result:
+           courses.append(i[0]) 
+        return courses
+
     def post(self,**kwargs):
         request = self.request
         arguments = request.arguments()
@@ -656,8 +693,8 @@ class Class(webapp2.RequestHandler):
             return self.response.out.write('successful')
                  
     def get(self,**kwargs):
-        print('\n\n---\n\n')
-        print(kwargs)
+        # print('\n\n---\n\n')
+        # print(kwargs)
         db = connect_to_cloudsql()
         cursor = db.cursor()
         if(len(kwargs.keys()) == 0):
@@ -668,7 +705,7 @@ class Class(webapp2.RequestHandler):
             SELECT *  FROM classTB WHERE public=1;
             """)
             result = cursor.fetchall()
-            print(result)
+            # print(result)
             self.response.headers['Content-Type'] = 'application/json'
             return self.response.out.write(json.dumps(result,indent=4))
 
@@ -680,13 +717,15 @@ class Class(webapp2.RequestHandler):
                 """ % user
             )
             result = cursor.fetchall()
-            print('\n\n---\n\n')
-            print(result[0][0])
-            print('\n\n')
+            # print('\n\n---\n\n')
+            # print(result[0][0])
+            # print('\n\n')
             userCourse = json.loads(result[0][0])
+            userCourse = self.__getUserTaskData(userCourse)
+            # print(userCourse)
             # userCourse = result[0][0]
             userID = result[0][1]
-            print(userCourse)
+            
             # return self.response.out.write('%s' % result)
             if kwargs['request'] == 'search':
                 """
@@ -694,19 +733,25 @@ class Class(webapp2.RequestHandler):
                 """
                 cursor.execute(
                     """
-                    SELECT name, description FROM classTB WHERE public=1;
-                    """
+                    SELECT courses FROM users WHERE email='%s';
+                    """ % (user)
                 )
-                Courseresult = cursor.fetchall()
+                
+                result = json.loads(cursor.fetchall()[0][0])
+                result = set(result)
+                coursesList = set(self.__searchCourse())
+                coursesList = list(coursesList.difference(result))
                 
                 
-                returnData = []
-                for i in Courseresult:
-                    if not i[0] in userCourse:
-                        returnData.append({
-                            "name": i[0],
-                            "description":i[1]
-                        })
+                
+                returnData = self.__getUserTaskData(coursesList)
+                
+                # for i in Courseresult:
+                #     if not i[0] in userCourse:
+                #         returnData.append({
+                #             "name": i[0],
+                #             "description":i[1]
+                #         })
                 # print(json.dumps(returnData,indent=4))
                 self.response.headers['Content-Type'] = 'application/json'
                 return self.response.out.write(json.dumps(returnData,indent=4))
@@ -714,12 +759,9 @@ class Class(webapp2.RequestHandler):
             elif kwargs['request'] == 'userTask':
                 courseData = []
                 for i in userCourse:
-                    courseData.append({
-                        "name" : i,
-                        "url" : "&user=%s&task=%s" %(userID,i)
-                    })
+                    i["url"] = "&user=%s&task=%s" %(userID,i["name"])
                 self.response.headers['Content-Type'] = 'application/json'
-                self.response.out.write(json.dumps(courseData,indent=4))
+                self.response.out.write(json.dumps(userCourse,indent=4))
                 pass
                 
 class GameBackendHandler(webapp2.RequestHandler):
