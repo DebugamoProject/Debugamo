@@ -2,9 +2,7 @@
 
 ## Python MYSQL Operation
 
-- Python Version
-
-Python3
+- Python Version : python3
 
 - requirements
 

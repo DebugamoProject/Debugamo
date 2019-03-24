@@ -55,30 +55,76 @@
         
         
     </div>
-    <div id="about">
-            <h1 class="display-4">關於</h1>
-            <div class="content" id="content-left">
-                <p>
-                    The MASSASAUGA is a brown and white venomous snake indigenous to North America. 
-                    Arranging all of the letters in MASSASAUGA, we find there are 25,200 possible arrangements.
-                    Among these are 840 in which all four A's are together. To get this last result,
-                    we considered all arrangements of the seven symbols AAAA (one symbol), S, S, S,M, U, G.
-                </p>
-            </div>
-            <div class="content" id="content-right">
-                    <p>
-                        CSS gradients let you display smooth transitions between two or more specified colors.
-                        CSS defines two types of gradients:
-                        Linear Gradients (goes down/up/left/right/diagonally)
-                        Radial Gradients (defined by their center)
-                    </p>
-            </div>
-    </div>
+    
     <div class="divider">
         
     </div>
-    <div id="introduction">
+    <div class="introTitle">
+        <p style="margin:auto;text-align: center;" id="introTitleText" class="mainText">
+            $學習程式邏輯再也不是枯燥乏味的在電腦桌前coding，而是以一塊一塊的拼圖完成。
+        </p>
     </div>
+    <div id="introContent" class="introSec">
+        <div id="introContent-left" class="introContent">
+            <img src="../../static/index/blocklyCode.png" alt="" width="100%">
+        </div>
+        <div id="introContent-right" class="introContent">
+            <p id="introBlockText" class="introText">
+                DebuGamO是由台大許佑群以Google所開發的blockly library來為基礎開發出來的遊戲。以方塊為主軸配合一整套的故事線，
+                讓程式的初學者能以快樂的心情學習及釐清程式的結構以及邏輯，帶著故事的主角demo完成一項項的任務
+            </p>
+        </div>
+    </div>
+
+    <div class="introTitle">
+        <p style="margin:auto;text-align: center;" id="introAnimationText" class="mainText">
+            $透過動畫來追蹤程式，讓程式更加生動。
+        </p>
+    </div>
+    <div class="introSec">
+        <div class="introContent">
+            <p class="introText">
+                DebuGamO最大的特色就是能以動畫來作為程式運作的呈現方式。
+                透過動畫讓初學者更能知道程式的運作流程，進而知道該如何除錯。
+            </p>
+        </div>
+        <div class="introContent">
+            <img src="../../static/index/animate.png" alt="" width="80%">
+        </div>
+    </div>
+
+    <div class="introTitle">
+        <p style="margin:auto;text-align: center;" id="introBackTrack" class="mainText">
+            $透過「回顧」，觀摩其他玩家的邏輯。
+        </p>
+    </div>
+    <div class="introSec">
+        <div class="introContent">
+                <img src="../../static/index/backTrack.png" alt="" width="80%">
+        </div>
+        <div class="introContent">
+            <p class="introText">
+                在學習的過程，如果能與同儕互相討論，效果肯定比獨自學習來的好。
+                但在虛擬的網路世界中呢？DebuGamO其中一項特色就是能看到其他玩家破關遊玩過程，感覺猶如與同儕互相討論。
+            </p>
+        </div>
+    </div>
+    <div id="about" class="section">
+        <h1 class="display-4">關於我們</h1>
+        <div class="introContent content-left" style="font-size:1.3em;line-height:2em;">
+            <p>
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspDebuGamO是繼原先台大葉丙成教授PaGamO的核心概念，匯集不同題目而組成關卡，藉由完成任務需求、邏輯思考等方式，吸引學生學習，此外，老師和學生都可以彼此分享解法，也可以藉此訓練學生表達能力，讓學生們從遊戲中體驗學習。
+            </p>
+            <br>
+            <p>
+                目前主要的遊戲是由台大的許佑群所開發，未來將會推出多款遊戲及劇情，同時也歡迎您的加入！
+            </p>
+        </div>
+        <div class="introContent contentRight" style="float:right;">
+            <img src="../../static/index/robot.happy.png" alt="" srcset="" width="60%">
+        </div>
+    </div>
+
     
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -100,22 +146,22 @@
             <div class="modal-body">
                     <form id="register-form" style="display:none;">
                             <div class="form-group group1">
-                                <label for="Name">姓名</label>
+                                <label for="Name">姓名<small class="registerRules">&nbsp;中英文姓名都可</small></label>
                                 <input type="text" class="form-control" id="inputName"  placeholder="輸入姓名">
                                 <!-- <small id="" class="form-text text-muted">Your email need to be unique. Please make sure you email has not been regeistered</small> -->
                             </div>
                             <div class="form-group group1 right" id="ID">
-                                <label for="gameID">Game ID</label>
+                                <label for="gameID">Game ID<small class="registerRules">&nbsp;ID不能與其他人的重複喔！</small></label>
                                 <input type="text" class="form-control" id="inputID" placeholder="ID">
                                 <!-- <small id="idHint" class="form-text text-muted">ID必須要是唯一的！</small> -->
                             </div>
                             <div class="form-group">
-                                <label for="Email" id="Email">Email</label>
+                                <label for="Email" id="Email">Email<small class="registerRules">&nbsp;email不能與其他人的重複喔！</small></label>
                                 <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="輸入email">
                                 <!-- <small id="emailHelp" class="form-text text-muted">Your email need to be unique. Please make sure you email has not been regeistered</small> -->
                             </div>
                             <div class="form-group group2">
-                                <label for="password">密碼</label>
+                                <label for="password">密碼<small class="registerRules">&nbsp;須由8-16位以上英文及數字組成</small></label>
                                 <input type="password" class="form-control" id="inputPassword" placeholder="密碼">
                             </div>
                             <div class="form-group group2 right" id="password-again">
@@ -149,12 +195,12 @@
                     </form>
                     <form id="login-form">
                         <div class="form-group">
-                            <label for="Email">Email address</label>
-                            <input type="email" class="form-control" id="login-email" aria-describedby="emailHelp" placeholder="Enter email">
+                            <label for="Email">Email</label>
+                            <input type="email" class="form-control" id="login-email" aria-describedby="emailHelp" placeholder="輸入您的email">
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputPassword1">Password</label>
-                            <input type="password" class="form-control" id="login-password" placeholder="Password">
+                            <label for="exampleInputPassword1">密碼</label>
+                            <input type="password" class="form-control" id="login-password" placeholder="輸入您的密碼">
                         </div>
                     </form>
                         
@@ -168,7 +214,6 @@
     </div>
     </div>
 <footer>
-
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>

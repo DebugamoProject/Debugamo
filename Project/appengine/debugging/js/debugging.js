@@ -327,7 +327,7 @@ Scope.setOptionItemEventListener = function(){
     BlocklyGames.bindClick('Restart', Scope.restartGameButtonClick);
     BlocklyGames.bindClick('Help', Scope.showHelp);
     BlocklyGames.bindClick('Guide', Scope.startIntro);
-    BlocklyGames.bindClick('Solution', Scope.loadSolution);
+    // BlocklyGames.bindClick('Solution', Scope.loadSolution);
 }
 
 /**
@@ -1199,6 +1199,15 @@ Scope.studentsbackTrackUIInit = function (){
         checkLevelSuccess : Scope.checkCurrentLevelComplete,
     }
 
+    var zhCommand = {
+        "run":"運行",
+        "reset" : "重置",
+        "step" : "步進",
+        "userCheckTarget":"遊戲目標提示",
+        "editBlock": "修改方塊",
+        "checkLevelSuccess" : "檢查是否達成目標"
+    }
+
     var backTrackContainer = document.getElementById('backTrackContainer');
     var codeEditorContainer = document.getElementById('debugamo-code-editor-container');
     codeEditorContainer.style.width = '70%';
@@ -1214,7 +1223,7 @@ Scope.studentsbackTrackUIInit = function (){
     for(var i = 0; i < data.length; i++){
         var acitem = document.createElement('div');
         acitem.className = 'acItem'
-        acitem.innerHTML = '<span class="acorder">'+ (i + 1) + '. ' +  Object.keys(data[i])[0] + '</span>'
+        acitem.innerHTML = '<span class="acorder">'+ (i + 1) + '. ' +  zhCommand[Object.keys(data[i])[0]] + '</span>'
         var funcName = 'Scope.actionPlay(' + i + ');';
         $(acitem).attr('onclick',funcName);
 
@@ -1263,7 +1272,7 @@ function actionListCreate(){
     subTitle.id = 'actionTitle';
     subTitle.className = 'backTrackContainerTiTle';
     subTitle.innerText = '動作列表';
-    $(subTitle).append('<!-- <div id="stop" class="backTrackButton">| | 暫停</div> --><div id="play" class="backTrackButton">►| | 下一步</div>')
+    // $(subTitle).append('<!-- <div id="stop" class="backTrackButton">| | 暫停</div> --><div id="play" class="backTrackButton">►| | 下一步</div>')
     aclist.append(subTitle);
 
     var list = document.createElement('div');

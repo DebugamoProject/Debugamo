@@ -47,7 +47,7 @@
 	"Games.congratulations": "恭喜！",
 	"Games.restoreCode": "你確定要回復到最初的程式積木嗎？注意你無法復原這個動作。",
 	"Games.restartGame": "你確定要清除進度嗎？注意這個動作不可回復並會回到第一關。",
-	"Games.dialogRestartLogin": "回登入頁面",
+	"Games.dialogRestartLogin": "回家",
 	"Games.dialogRestartLevelOne": "回第一關",
 	"Games.submitAnswer1": "你確定這是錯誤的積木嗎？你還有",
 	"Games.submitAnswer2": "次機會",

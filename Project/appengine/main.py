@@ -444,12 +444,24 @@ class GameData(webapp2.RequestHandler):
         """
 
         """
-        tupleLength = len(result)
-        for i in range(1,tupleLength) : 
-            print(type(result[i]))
-            if result[i] != None:
-                return 0
-        return 1
+        print('\n\n\nself.__getCurrntLevel\n\n')
+        start = 0
+        for i in result:
+            if i != None:
+                data = json.loads(i)
+                for j in data:
+                    try:
+                        if (j['action'] == 'checkLevelSuccess'):
+                            start += 1
+                    except:
+                        pass
+            # if i != None:
+            #     a = json.loads(i)
+            #     print(json.dumps(a,indent=4))
+            # else:
+            #     print(i)
+            # print('\n\n')
+        return start
 
     def levelInfo(self,userLevelData):
         """
@@ -512,14 +524,23 @@ class GameData(webapp2.RequestHandler):
             SELECT * FROM %s WHERE ID='%s'
             """ % (data['task'],data['user'])
         )  
-        
-        result = cursor.fetchall()
-        print('\n\n\n------')
-        print(result)
-
-        newUser = self.__getCurrentLevel(result)
+        try:
+            result = list(cursor.fetchall()[0])
+            del result[0]
+        except:
+            pass
+        # print('\n\n\n------')
+        # print(result)
+        newUser = 1
+        for i in result:
+            print(i)
+            if i != None:
+                newUser = 0
+                break
+        startLevel = self.__getCurrentLevel(result)
         
         print('newUser is %s ' % newUser)
+        print('startLevle is %d ' % startLevel)
         
         self.response.headers['Content-Type'] = 'application/json' 
         return self.response.out.write(json.dumps({
@@ -527,7 +548,7 @@ class GameData(webapp2.RequestHandler):
     "startLevel":selectedLevels[0],
     "selectedLevel":selectedLevels,
     "newPlayer" : newUser
-    })) 
+    }))
 
 class Class(webapp2.RequestHandler):
 

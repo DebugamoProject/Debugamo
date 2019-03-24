@@ -45,39 +45,70 @@
 }
 
 @media only screen and (max-width :500px){
-    #about{
+    .section{
         margin-top: 5px;
         padding: 30px;
     }
 }
 
 @media only screen and (min-width:501px){
-    #about{
+    .section{
         margin-top: 5px;
         padding: 100px;
     }
     .content{
         display: inline-block;
-        width: 48%;
+        /* width: 48%; */
         padding: 10px 5px 0px 10px;
         margin-top: 50px;
         transition: .8s ease;
         margin-top: 5px;
     }
-    #content-left{
+    /* .content-left{
         border-right: 1px solid lightgrey;
-    }
+    } */
+}
+
+.introContent{
+    display: inline-block;
+    /* border: 1px solid black; */
+    width: 48%;
 }
 
 
+.introTitle{
+    margin: auto;
+    padding: 5em 15em 5em 15em;
+}
+
+.introText{
+    font-size: 1.5em;
+    margin: 5em 0em auto;
+    line-height: 2em;
+}
 
 
-#content-right{
+.mainText{
+    height: 5em;
+    font-size: 1.5em;
+    background-color: rgb(233, 233, 233);
+    line-height: 5em;
+    color: rgb(131, 127, 127);
+    border-radius: 5px;
+    font-style: italic;
+}
+
+.introSec{
+    padding: 3em 5em 3em 5em;
+}
+
+.content-right{
     float: right;
 }
 
 .content p{
-    line-height: 30px;
+    line-height: 1.5em;
+    font-size: 1.5em;
 }
 
 .group1,.group2{
@@ -103,6 +134,6 @@
     height: 100px;
 }
 
-/* div#header nav#nvBar{
-    background-color: inherit !important;
-} */
+.registerRules{
+    color: grey;
+}
