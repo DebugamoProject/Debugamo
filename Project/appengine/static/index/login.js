@@ -172,6 +172,7 @@ $('#inputYear').on('change',function (e) {
     console.log(dt);
     $('#inputDate').append(dt);
 });
+
 $('#inputMonth').on('change',function(e){
     ChooseMonth = $(this).children('option:selected').text();
     console.log(ChooseMonth)
@@ -179,6 +180,7 @@ $('#inputMonth').on('change',function(e){
     $('.date').remove();
     $('#inputDate').append(dt);
 })
+
 $('#inputEmail').change(function (e) {
     e.preventDefault();
     if(this.value)
@@ -190,12 +192,14 @@ $('#inputEmail').change(function (e) {
         console.log('connot be zero')
     }
 });
+
 $('#inputPassword').change(function(e){
     if($('#inputPasswordagain').val() != 0 && $('#inputPasswordagain').val() != this.value){
         IsnotAvailable('#password-again','password','#inputPasswordagain','兩組密碼不一樣喔！')
     }else
         IsAvailable('password','#inputPasswordagain')
 });
+
 $('#inputPasswordagain').change(function(e){
     var value = $('#inputPassword').val()
     if(value != this.value){
@@ -207,6 +211,7 @@ $('#inputPasswordagain').change(function(e){
         IsAvailable('password','#inputPasswordagain')
     }
 });
+
 $('#inputID').change(function(e){
     if(this.value)
     RepeatCheck({
@@ -222,7 +227,7 @@ $('#inputID').change(function(e){
 $('#register-button').click(function (e) {
     var data = getformData();
 
-    if(emptyCheck(data)){
+    if(emptyCheck(data) && check(data)){
         if(!LoginOrRegister('./register',data))alert('Fail to register')
         else{
             Cookies.set('login','TRUE')
@@ -230,7 +235,7 @@ $('#register-button').click(function (e) {
             window.location.replace('/user');
         }
     }else{
-        alert("不可以為空")
+        alert("不可以有欄位為空喔");
     }
 })
 
@@ -282,4 +287,25 @@ var registerFormInit = function(){
     $('#inputYear').append(yearHTML);
     $('#inputMonth').append(monthHTML);
     $('#inputDate').append(DateHTML);
+}
+
+//----------------------------------------//
+function check(data){
+    // check password
+    if(data['password'].length < 8 || data['password'].length > 16){
+        alert('密碼長度不對喔！');
+        return false;
+    }
+
+    if(!$('.id-warning').length){
+        alert('ID不對喔');
+        return false;
+    }
+
+    if(!!$('email-warning').length){
+        alert('Email不對喔');
+        return false;
+    }
+
+    return true;
 }
