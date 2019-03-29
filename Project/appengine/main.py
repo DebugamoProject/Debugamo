@@ -862,7 +862,7 @@ class GameBackendHandler(webapp2.RequestHandler):
             db.commit()
             db.close()
 
-            return self.response.out.write(template.render('templates/backend/teacher.html',''))
+            return self.response.out.write(template.render('templates/backend/teacher1.html',''))
 
     def post(self,**kwargs):
 
@@ -943,6 +943,10 @@ class GameBackendHandler(webapp2.RequestHandler):
                 print('none')
             db.commit()
 
+class StatisticHandler(webapp2.RequestHandler):
+    def get(self, **kwargs):
+        pass
+        
 class backTrack(webapp2.RequestHandler):
 
     def fillXML(self,xmlJson):
@@ -1066,6 +1070,7 @@ app = webapp2.WSGIApplication([
     webapp2.Route(r'/token',handler=dataEncryption,name='encryptopn'),
     webapp2.Route(r'/GameRecord',handler=GameData,name='gameRecord'),
     webapp2.Route(r'/GameRecord/<user>',handler=GameData,name='gameRecord'),
+    webapp2.Route(r'/backend/statistic/<user>',handler=StatisticHandler,name='statistic'),
     webapp2.Route(r'/backend/<user>',handler=GameBackendHandler,name='Game'),
     webapp2.Route(r'/backend/<user>/<request>',handler=GameBackendHandler,name='GameCourses'),
     webapp2.Route(r'/backend/<user>/<request>/<course_id>',handler=GameBackendHandler,name='MemberHandler'),

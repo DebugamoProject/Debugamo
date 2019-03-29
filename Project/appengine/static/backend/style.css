@@ -96,25 +96,25 @@ a{
     padding-top: 50px;
 }
 
-.classItem{
+/* .classItem{
     display:inline-block;
     margin-left: 5px;
     margin-right: 5px;
     width: 100px;
     text-align: center;
-}
+} */
 
-.classItem a{
+/* .classItem a{
     color: black;
-}
+} */
 
-#courses{
-    /* margin-right: 250px; */
+/* #courses{
+    margin-right: 250px;
     border: 1px solid black;
-}
+} */
 
 .dropdownContent{
-    position: absolute;
+    /* position: absolute; */
     display: none;
     background-color: #f1f1f1;
     /* min-width: 160px; */
@@ -166,12 +166,12 @@ a{
     box-sizing: border-box;
 }
 
-.member_item{
+/* .member_item{
     height: 20px;
     display: block;
     padding: .75rem 1.25rem;
     border: 1px solid rgba(0,0,0,.125);
-}
+} */
 
 .member div{
     display: inline-block;

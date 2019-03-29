@@ -6,7 +6,7 @@ function getPublicClass(URL) {
         async: false,
         success: function (response) {
             console.log('Post successful')
-            console.log(response)
+            // console.log(response)
             courses = response;
             // return response
         }

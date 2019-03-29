@@ -64,9 +64,14 @@ function addNewClass(SelectCoures){
 }
 
 function generateBackendLink() {
-    var user = Cookies.get('user');
-    var link = '/backend/' + user; 
-    $("#information").attr("href", link);
+    // var user = Cookies.get('user');
+    // var link = '/backend/' + user; 
+    // $("#information").attr("href", link);
+    // $("#course-setting").attr("href", link);
+
+    // let statistic_link = '/backend/' + 'statistic/' + user; 
+    // console.log(statistic_link);
+    // $("#course-statistic").attr("href", statistic_link);
 }
 
 // generate backend link

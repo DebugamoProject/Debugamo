@@ -85,3 +85,31 @@ button{
 .class{
     margin:10px;
 }
+
+/* new css */
+#t-left-panel{
+    box-shadow: rgba(0,0,0,0) 0 3px 10px, rgba(0,0,0,0.7) 0 3px 10px;
+    padding-top: 30px;
+    text-align: center;
+    min-height: 800px;
+    overflow-y: hidden;
+    background-color: white;
+}
+
+/* html, body{
+    height: 100%
+} */
+.coach-navbar .navbar {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    margin: 0;
+    width: 100%;
+    min-height: 50px;
+    line-height: 50px;
+    font-size: 1.4em;
+    text-align: center;
+    border: 0;
+    border-radius: 0;
+}

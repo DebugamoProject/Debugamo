@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../../static/backend/style.css">
+    <link rel="stylesheet" href="../../static/user/teacher.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-i18next/1.2.0/jquery-i18next.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <!-- <div id="classSideNav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav();">Close</a>
+        <a href="#">Class1</a>
+        <a href="#">Class2</a>
+    </div> -->
+    <div id="main">
+
+        <div id="teacher-header">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                        <a class="navbar-brand" href="#">Debugamo</a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                          <span class="navbar-toggler-icon"></span>
+                        </button>
+                      
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                          <ul class="navbar-nav mr-auto">
+                            <li class="nav-item active">
+                              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                            </li>
+                          </ul>
+                          <!-- <a class="nav-link" href="#" data-toggle="modal" data-target="#exampleModal">登入與註冊</a> -->
+                          <!-- <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent"> -->
+                          <ul class="nav navbar-nav navbar-right">
+                                <li class="nav-item">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    帳戶管理
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="#">Action</a>
+                                    <a class="dropdown-item" href="#">Another action</a>
+                                    <div class="dropdown-divider"></div>
+                                    <div class="dropdown-item"><a id="log-out">登出</a></div>
+                                    </div>
+                                </li>
+                          </ul>
+                          <!-- </div> -->
+
+                        </div>
+                      </nav>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-2" id="t-left-panel" style="min-height: 830px; height: 850px;">
+                    <div class="row">
+                        <div class="col-12">           
+                            <li id="add-class-trigger" class="list-group-item" style="background-color: rgba(0,0,0,.03);; margin-bottom: 10px; border-bottom-right-radius: .25rem;
+                            border-bottom-left-radius: .25rem;">
+                                <a>新增課程</a>
+                            </li>
+                            <div class="card">
+                                <div class="card-header">
+                                    課程列表
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <ul class="list-group">
+                                <div id="courses"></div>
+                            </ul>
+                        </div>
+                    </div>
+                  
+                </div>
+                <!-- <div class="col-9 coach-navbar ">
+                    <ul class="navbar">
+                        <li>
+                            <a href="#">課程設定</a>
+                        </li>
+                        <li>
+                            <a href="#">課程設定</a>
+                        </li>
+                        <li>
+                            <a href="#">課程設定</a>
+                        </li>
+                    </ul>
+                </div> -->
+                <div id="side-selector" class="col-10">
+                    <div class="row">
+                        <div class="col-2 course-data">
+                            <div class="row">
+                                <div class="col-9">
+                                    <div class="card" style="margin-top:20px">
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item text-center" id="course-setting">課程設定</li>
+                                            <li class="list-group-item text-center" id="course-statistic">課程數據</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-4" style="margin-top:20px">
+                            <div class="card-header text-center">
+                                學生列表
+                            </div>
+                                <ul class="list-group student-list course-data text-center"></ul>
+                        </div>
+                        <div class="col-4" style="margin-top: 20px">
+                                <div class="card-header text-center">
+                                        關卡列表
+                                </div>
+                                <div class="text-center task-list course-data"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- <div class="selector">
+            
+        </div> -->
+
+
+        <!-- <div id="content">
+            <div id="courses">
+                
+            </div>
+            <div id="task">
+                <div class="membersOverview">
+                    <div class="statistics">
+                        <h1>The Statistics Will Be Here</h1>
+                    </div>
+                    <div style="border-top: 1px solid grey;"></div>
+                    <div class="dropdownBar">
+                        <i class="fas fa-angle-down"></i>
+                    </div>
+                    <div class="current_course">
+                        <div class="members">
+                            <div class="up">
+                                <i class="fas fa-angle-up"></i>
+                            </div>
+                            <div style="border-top: 1px solid grey;"></div>
+                            <div class="methods">
+                                <a href="javascript:void(0);">調整排序順序</a>
+                                <a href="javascript:void(0);" class="new_member">新增成員</a>
+                                <i class="fas fa-ellipsis-h"></i>
+                            </div>
+                            <div class="row">
+                            <ul class="member">
+                            </ul>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+            <div id="addclass" style="display:none">
+                <div id="add-title">
+                    <span style="font-size: 40px;">新增任務</span>
+                    <div style="border: 1px solid lightgrey"></div>
+                </div>
+                <div id="name" class='item'>
+                  <label for="className">任務名稱</label>
+                  <input type="text" id="inputName">
+                </div>
+                <!-- <div id="number" class='item'>
+                  <label for="classNumber">任務代碼</label>
+                  <input type="text" id="inputNumber">
+                </div> -->
+                <div id="private" class="item">
+                  <label for="classPrivate">私人任務</label>
+                  <select name="mode-selector" id="mode">
+                      <option selected>選擇任務型態</option>
+                      <option value="1">公開</option>
+                      <option value="0">保護</option>
+                      <option value="-1">私人</option>
+                  </select>
+                  <!-- <label for="yes">是</label> -->
+                  <!-- <button id="yes" value="true">是</button> -->
+                  <!-- <input type="checkbox" name="privateYes" id="yesBox"> -->
+                  <!-- <label for="yes">否</label> -->
+                  <!-- <button id="no" value="false">否</button> -->
+                  <!-- <input type="checkbox" name="privateNo" id="noBox"> -->
+                </div>
+                <div id="discription" class="">
+                  <p>任務描述</p>
+                  <textarea name="taskDiscription" id="inputDiscription" cols="100" rows="10"></textarea>
+                </div>
+                <div id="inherit">
+                  <label>加入任務</label>
+                  <div id="publicClass">
+                  </div>
+                  <button id="submitClasses">送出</button>
+                </div>
+              </div>
+        
+
+        </div>
+
+         <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <ul class="nav nav-tabs" style="width:100%;">
+                            <li class="nav-item" style="width:50%;">
+                                <a class="nav-link" id="register">註冊</a>
+                            </li>
+                            <li class="nav-item"  style="width:50%;">
+                                <a class="nav-link active" id="login">登入</a>
+                            </li>
+                        </ul>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                            <form id="register-form" style="display:none;">
+                                    <div class="form-group group1">
+                                        <label for="Name">姓名<small class="registerRules">&nbsp;中英文姓名都可</small></label>
+                                        <input type="text" class="form-control" id="inputName"  placeholder="輸入姓名">
+                                        <!-- <small id="" class="form-text text-muted">Your email need to be unique. Please make sure you email has not been regeistered</small> -->
+                                    </div>
+                                    <div class="form-group group1 right" id="ID">
+                                        <label for="gameID">Game ID<small class="registerRules">&nbsp;ID不能與其他人的重複喔！</small></label>
+                                        <input type="text" class="form-control" id="inputID" placeholder="ID">
+                                        <!-- <small id="idHint" class="form-text text-muted">ID必須要是唯一的！</small> -->
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Email" id="Email">Email<small class="registerRules">&nbsp;email不能與其他人的重複喔！</small></label>
+                                        <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="輸入email">
+                                        <!-- <small id="emailHelp" class="form-text text-muted">Your email need to be unique. Please make sure you email has not been regeistered</small> -->
+                                    </div>
+                                    <div class="form-group group2">
+                                        <label for="password">密碼<small class="registerRules">&nbsp;須由8-16位以上英文及數字組成</small></label>
+                                        <input type="password" class="form-control" id="inputPassword" placeholder="密碼">
+                                    </div>
+                                    <div class="form-group group2 right" id="password-again">
+                                        <label for="comfirmPassword">確認密碼</label>
+                                        <input type="password" class="form-control" id="inputPasswordagain" placeholder="確認密碼">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="chooseIdentity">選擇身份</label>
+                                        <select class="form-control" id="inputIdentity">
+                                          <option value="none" selected>選擇身份</option>
+                                          <option value="student">學生</option>
+                                          <option value="teacher">老師</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group group3">
+                                        <label for="chooseIdentity">生日</label>
+                                        <select class="form-control group3" id="inputYear">
+                                            
+                                        </select>
+                                    </div>
+                                    <div class="form-group group3">
+                                        <select class="form-control" id="inputMonth">
+                                        
+                                        </select>
+                                    </div>
+                                    <div class="form-group group3">
+                                        <select class="form-control" id="inputDate">
+                                            
+                                        </select>
+                                    </div> 
+                            </form>
+                            <form id="login-form">
+                                <div class="form-group">
+                                    <label for="Email">Email</label>
+                                    <input type="email" class="form-control" id="login-email" aria-describedby="emailHelp" placeholder="輸入您的email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">密碼</label>
+                                    <input type="password" class="form-control" id="login-password" placeholder="輸入您的密碼">
+                                </div>
+                            </form>
+                                
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                        <button type="button" class="btn btn-primary" id="login-button">登入</button>
+                        <button type="button" class="btn btn-primary" id="register-button" style="display:none">註冊</button>
+                    </div>
+                </div>
+            </div>
+            </div>
+        
+    </div>
+</body>
+<script src="../../static/user/class.js"></script>
+<script src="../../static/backend/UI.js"></script>
+<script src="../../static/backend/backend.js"></script>
+<script src="../../static/user/teacher.js"></script>
+<!-- <script src="../../static/user/user.js"></script> -->
+
+<script>
+    // var courses = courseProcess('/backend/123/mycourse');
+    // courses = coursesSetup(courses);
+    // var task = document.getElementById('task');
+    
+</script>
+<script src="../../static/backend/coursesManager1.js"></script>
+<script src="../../static/backend/courseDisplay.js"></script>
+<script src="../../static/backend/charts.js"></script>
+<script src="../../static/user/classEventListener.js"></script>
+</html>

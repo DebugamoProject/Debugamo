@@ -58,6 +58,7 @@ function getUserData(){
 
 function SetUserData(){
   var data = getUserData();
+  console.log(data);
   document.getElementById('UserInfoName').innerHTML = data['name'];
   document.getElementById('UserInfoID').innerHTML = data['id'];
   document.getElementById('UserInfoLevel').innerHTML = '等級 : ' + data['level'];
