@@ -166,6 +166,8 @@ function taskContentModify(name){
       document.getElementById('taskDescription').innerText = i["description"];
       document.getElementById('joinBonus').innerHTML = '解完任務的會得到經驗值 : ' + i['exp'] + ' exp'
       document.getElementById('taskDescription').innerHTML = i['target'];
+      // document.getElementById('getCourse').onclick = `addCourse('${name}');`
+      $('#getCourse').attr('onclick',`addCourse('${name}');`);
       break;
     }
   }
@@ -181,7 +183,13 @@ function userTaskContentModify(name){
       document.getElementById('userTaskBonus').innerHTML = '解完任務的會得到經驗值 : ' + i['exp'] + ' exp'
       document.getElementById('usertaskDescription').innerHTML = i['target'];
       $('#startMission').attr('href', `/debugging?lang=zh-hant&level=1${i['url']}&mode=gamming`);
-      $('#backTrackMission').attr('href',`/debugging?lang=zh-hant&level=1${i['url']}&mode=backTrack`)
+      $('#backTrackMission').attr('href',`/debugging?lang=zh-hant&level=1${i['url']}&mode=backTrack`);
+      var rate = i['rate'] * 100 + '%';
+      $('#progressBar').css('width',rate);
+      $('#progressBar').text(rate);
+      
+      // document.getElementById('getCourse').onclick = `addCourse('${name}');`
+      // $('#getCourse').attr('onclick',`addCourse('${name}');`);
     }
   }
 }

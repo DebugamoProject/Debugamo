@@ -8,6 +8,7 @@ import json
 import random
 import re
 import math
+import datetime
 import xml.etree.ElementTree as ET
 from Crypto.Cipher import AES
 from Crypto import Random
@@ -53,6 +54,88 @@ def connect_to_cloudsql():
         db = MySQLdb.connect(
             host='127.0.0.1', user=CLOUDSQL_USER, passwd=CLOUDSQL_PASSWORD, db=CLOUDSQL_DATABASE)
     return db
+
+def finishOrNot(courseName, userID):
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+
+    #part 1
+    #extract all of levels of course from classTB 
+    cursor.execute(
+        """
+        SELECT levels FROM classTB WHERE name='%s'
+        """ % courseName
+    )
+    result = json.loads(cursor.fetchall()[0][0])
+    # print(json.dumps(result,indent=4))
+    taskList = {}
+    keys = result.keys()
+    for i in keys:
+        taskList[i] = []
+        sec = result[i].keys()
+        for j in sec : 
+            tasks = result[i][j].keys()
+            for k in tasks:
+                taskList[i].append(i + str(j) + '_' + str(k))
+    print(json.dumps(taskList))
+
+    # part 2
+    # judge the task if it has been completed.
+
+    taskScopeKeys = taskList.keys()
+
+    taskSQLQuery = {}
+    
+    for i in taskScopeKeys:
+        sqlInstruction = 'SELECT '
+        col = ', '.join(taskList[i])
+        sqlInstruction += col + ' FROM ' + i + " WHERE ID='%s';" % userID
+        taskSQLQuery[i]= sqlInstruction
+    print(json.dumps(taskList,indent=4))
+
+    taskResult = {}
+    for i in taskScopeKeys:
+        cursor.execute(
+            taskSQLQuery[i]
+        )
+        result = cursor.fetchall()[0]
+        taskResult[i] = {}
+        taskResult[i]['finish'] = []
+        taskResult[i]['failed'] = []
+        
+        for j in range(len(taskList[i])) :
+            # print(type(result[j])) 
+            if(result[j] is not None):
+                # print(len(result[j]))
+                if (finishOrNotJsonProcess(json.loads(result[j])) == 1):
+                    taskResult[i]['finish'].append(taskList[i][j])
+                else:
+                    taskResult[i]['failed'].append(taskList[i][j])
+            # taskResult[i][taskList[i][j]] = json.loads(result[j])
+            else : 
+                taskResult[i]['failed'].append(taskList[i][j])
+                # taskResult[i][taskList[i][j]] = 0
+    # print(json.dumps(taskResult,indent=4))
+    return taskResult
+
+
+    # part 3 
+    # sort the finish tasks and unfinish task
+    
+    pass
+
+def finishOrNotJsonProcess(data):
+    for i in data:
+        try:
+            # print(re.search(r'Success',i['action']))
+            # print(i['action'])
+            if(re.search(r'Success',i['action']) != None):
+                # print('return 1')
+                return 1
+        except KeyError as e:
+            pass
+    
+    return -1
 
 class Encryption():
 
@@ -196,9 +279,6 @@ class Encryption():
         self.Reset()
         return result.rstrip('\0')
         
-
-
-
 class dataEncryption(webapp2.RequestHandler):
     def get(self):
         ip = self.request.remote_addr
@@ -250,22 +330,23 @@ class LogPage(webapp2.RequestHandler):
 
 class TestPage(webapp2.RequestHandler):
     def get(self):
-        """Simple request handler that shows all of the MySQL variables."""
-        self.response.headers['Content-Type'] = 'text/plain'
-        db = connect_to_cloudsql()
-        cursor = db.cursor()
-        a = """
-            {"Debugging": {"1": {"1": "Learn Move", "2": "Learn Grab and Drop"}, "2": {"1": "Learn Goto", "3": "Evaluation"}, "3": {"3": "Evaluation"}, "4": {"2": "Learn Function"}, "5": {"1": "Learn If-Then"}, "6": {"1": "Learn For Loop", "3": "Evaluation"}}}
-            """
-        a = json.loads(a)
+        finishOrNot('Debugging','321')
+        # """Simple request handler that shows all of the MySQL variables."""
+        # self.response.headers['Content-Type'] = 'text/plain'
+        # db = connect_to_cloudsql()
+        # cursor = db.cursor()
+        # a = """
+        #     {"Debugging": {"1": {"1": "Learn Move", "2": "Learn Grab and Drop"}, "2": {"1": "Learn Goto", "3": "Evaluation"}, "3": {"3": "Evaluation"}, "4": {"2": "Learn Function"}, "5": {"1": "Learn If-Then"}, "6": {"1": "Learn For Loop", "3": "Evaluation"}}}
+        #     """
+        # a = json.loads(a)
 
-        cursor.execute("""
-            UPDATE classTB SET levels = '%s' WHERE name="Debugging"
-            """ % json.dumps(a))
-        db.commit()
-        db.close()
-        for r in cursor.fetchall():
-            self.response.write('{}\n'.format(r))
+        # cursor.execute("""
+        #     UPDATE classTB SET levels = '%s' WHERE name="Debugging"
+        #     """ % json.dumps(a))
+        # db.commit()
+        # db.close()
+        # for r in cursor.fetchall():
+        #     self.response.write('{}\n'.format(r))
                 
 class MainPage(webapp2.RequestHandler):
 
@@ -295,15 +376,6 @@ class LangPage(webapp2.RequestHandler):
         except:
            return self.response.set_status(404)
 
-class Login_Register(webapp2.RequestHandler):
-    def get(self):
-        if self.request.cookies.get('login') == 'TRUE':
-            return self.redirect('/user')
-        else:
-            path = 'templates/login/index.html'
-            template_values = ''
-            return self.response.out.write(template.render(path, template_values))
-            
 class UserPage(webapp2.RequestHandler):
     def get(self):
         if self.request.cookies.get('login') == 'TRUE':
@@ -634,9 +706,10 @@ class Class(webapp2.RequestHandler):
             cursor.execute(
                 """
                 SELECT * FROM classTB WHERE name="%s"
-                """%(i)
+                """ % (i)
             )
             result = cursor.fetchall()
+
             result = {
                 "name" : result[0][0],
                 "game" : result[0][1],
@@ -679,7 +752,7 @@ class Class(webapp2.RequestHandler):
 
             print('chapterLevelData',json.dumps(chapterLevelData))
             # games = data['games'].split(',')
-            print('games is ',games)
+            # print('games is ',games)
 
             cursor.execute(
                 """INSERT INTO classTB(name, levels, developer, description, public) 
@@ -772,7 +845,6 @@ class Class(webapp2.RequestHandler):
                 
                 
                 returnData = self.__getUserTaskData(coursesList)
-                
                 # for i in Courseresult:
                 #     if not i[0] in userCourse:
                 #         returnData.append({
@@ -785,8 +857,17 @@ class Class(webapp2.RequestHandler):
 
             elif kwargs['request'] == 'userTask':
                 courseData = []
+                
                 for i in userCourse:
-                    i["url"] = "&user=%s&task=%s" %(userID,i["name"])
+                    finish = 0
+                    failed = 0
+                    result = finishOrNot(i['name'],userID)
+                    gameKeys = result.keys()
+                    for j in gameKeys:
+                        finish += len(result[j]['finish'])
+                        failed += len(result[j]['failed'])
+                    i["url"] = "&user=%s&task=%s" %(str(userID),i["name"])
+                    i["rate"] = round((float(finish) / float(failed + finish)), 3)
                 self.response.headers['Content-Type'] = 'application/json'
                 self.response.out.write(json.dumps(userCourse,indent=4))
                 pass
@@ -1038,16 +1119,33 @@ class backTrack(webapp2.RequestHandler):
     def post(self):
         pass
 
-# class GameData(webapp2.RequestHandler):
-#     def get(self,user):
-        
-#         return self.response.out.write('user is %s' % user)
+class Notice(webapp2.RequestHandler):
+    def get(self,**kwargs):
+        """
+        GET the user's notice
+        """
+        # if self.request.cookies.get('login') == 'TRUE':
 
-#     def post(self):
-#         request = self.request
+        pass
 
-#         arguments = request.arguments()
-#         print(arguments)
+    def post(self,**kwargs):
+        print(kwargs)
+        if(kwargs['mode'] == 'invite'):
+            # print(datetime.datetime.now().date())
+            requestData = json.loads(self.request.body)
+            requestData['date'] = str(datetime.datetime.now().date())
+            requestData['show'] = 'false'
+            print(json.dumps(requestData,indent=4))
+            db = connect_to_cloudsql()
+            cursor = db.cursor()
+            cursor.execute(
+                """
+                UPDATE users SET notice=JSON_ARRAY_APPEND(notice, '$', '%s');
+                """
+                % json.dumps(requestData)
+            )
+            db.commit()
+        pass
 
 
 
@@ -1060,7 +1158,6 @@ app = webapp2.WSGIApplication([
     webapp2.Route(r'/user/<email>/<item>', handler=Email_Item, name='email_item'),
     webapp2.Route(r'/test', handler=TestPage, name='test'),
     webapp2.Route(r'/language/<page>/<lang>', handler=LangPage, name='lang'),
-    webapp2.Route(r'/login-register', handler=Login_Register, name='login_register'),
     webapp2.Route(r'/register', handler=Register, name='register'),
     webapp2.Route(r'/login', handler=Login, name='login'),
     webapp2.Route(r'/t/<a1>/<a2>', handler=UrlTest, name='t'),
@@ -1079,7 +1176,8 @@ app = webapp2.WSGIApplication([
     webapp2.Route(r'/class/<user>',handler=Class,name='ParticipateCourse'),
     webapp2.Route(r'/class/<user>/<request>',handler=Class,name='CourseRequest'),
     webapp2.Route(r'/userGameData/<user>/<task>',handler=GameBackendHandler,name='userGameData'),
-    webapp2.Route(r'/backTrack/<user>/<task>/<level>',handler=backTrack,name="backTrackData")
+    webapp2.Route(r'/backTrack/<user>/<task>/<level>',handler=backTrack,name="backTrackData"),
+    webapp2.Route(r'/notice/<mode>/<user>',handler=Notice,name="notice"),
     # webapp2.Route(r'/debugging/public', handler=DebugPublic, name='debuuging_punlic'),
     # webapp2.Route(r'/debugging/js', handler=LogPage, name='log'),
 

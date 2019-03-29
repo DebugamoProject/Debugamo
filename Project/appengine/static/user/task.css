@@ -28,6 +28,7 @@
     width: 55%;
     float: right;
     padding-top: 1.5em;
+    padding-right: 1.5em;
 }
 
 .tasktype{
@@ -183,7 +184,11 @@ ul#mainTasklist,.tasklist{
 
 .section{
     width: 100%;
-    height: 30%;
+    height: 20%;
+}
+
+.progressText{
+
 }
 
 .section.sec.hint{

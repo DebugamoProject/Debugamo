@@ -88,10 +88,6 @@ for(var i = 0; i < component.length; i++){
 
 window.addEventListener('load',init);
 
-console.log('nav show');
-console.log(document.getElementById('navbarNavDropdown').className);
-;
-
 var generateYear = function(){
     var year = '';
     for(var i = 2019; i >= 1911; i--){
