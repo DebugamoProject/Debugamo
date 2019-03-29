@@ -62,14 +62,14 @@
 }
 
 
-button{
+#edit button{
     outline: none;
     height: 30px;
     font-size:14px;
     border-radius: 3px;
 }
 
-button:hover{
+#edit button:hover{
     transition: 0.5s;
     background-color: rgb(232, 226, 226);
 }

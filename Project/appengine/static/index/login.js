@@ -297,7 +297,7 @@ function check(data){
         return false;
     }
 
-    if(!$('.id-warning').length){
+    if(!!$('.id-warning').length){
         alert('ID不對喔');
         return false;
     }

@@ -99,14 +99,37 @@ otherwise, the browser will diplay ? to replace chinese text.
 #     """
 # )
 
-mycursor.execute(
-    """
-    SELECT * FROM users WHERE email = '555';
-    """
-)
-                
-# result = json.loads()
-print(mycursor.fetchall()[0])
+# Step 8.
+"""
+add special task col for users;
+"""
+# mycursor.execute(
+#     """
+#     ALTER TABLE users
+#     ADD COLUMN specialTask JSON AFTER courses;
+#     """
+# )
+
+# Step 9.
+"""
+add notice column for users;
+"""
+# mycursor.execute(
+#     """
+#     ALTER TABLE users
+#     ADD COLUMN notice JSON AFTER specialTask;
+#     """
+# )
+
+
+# mycursor.execute(
+   
+#     """
+#     UPDATE users SET notice = JSON_ARRAY_APPEND(notice, '$', '[3,2,2]') WHERE name='321';
+#     """
+# )
+
+
 
 
 # result = mycursor.fetchall()
