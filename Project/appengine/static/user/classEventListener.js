@@ -86,7 +86,7 @@ $('#add-class-trigger').on('click', function (e) {
         <button id="submitClasses">送出</button>
         </div>
         </div>`;
-    $("#add-class").append(form);
+    $("#side-selector").append(form);
 })
 
 /**
