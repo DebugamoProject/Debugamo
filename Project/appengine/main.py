@@ -736,35 +736,69 @@ class Class(webapp2.RequestHandler):
            courses.append(i[0]) 
         return courses
 
+    def __CourseToJSON(self, data):
+        JSONdata = []
+        for i in data:
+            course = {}
+            course['name'] = i[0]
+            course['tasks'] = i[1]
+            course['developers'] = i[2]
+            course['description'] = i[3]
+            course['exp'] = i[4]
+            course['type'] = i[5]
+            JSONdata.append(course)
+        return JSONdata
+
+    def __creatCourse(self, courseData) : 
+        # part 1 get the level content
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+
+        scopes = courseData['levels'].keys()
+        for i in scopes:
+            cursor.execute(
+                """
+                SELECT levels FROM classTB WHERE name='%s'
+                """ % i
+            )
+            result = json.loads(cursor.fetchall()[0][0])
+            print(json.dumps(result,indent=4))
+
+            selectedLevel = courseData['levels'][i]
+            courseData['levels'][i] = {}
+            
+            for j in selectedLevel:
+                if courseData['levels'][i].has_key(j[0]):
+                    courseData['levels'][i][j[0]][j[2]] = result[i][j[0]][j[2]]
+                else : 
+                    courseData['levels'][i][j[0]] = {}
+                    courseData['levels'][i][j[0]][j[2]] = result[i][j[0]][j[2]]
+        
+        # part 2 insert level into classTB
+        pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        a = json.dumps(courseData['levels'])
+        print(a)
+        # print('randomChoice')
+        # print(random.sample(pool,5))
+    
+        ################# HERE occure BUG!
+        cursor.execute(
+            """
+            INSERT INTO classTB(name, levels, description, exp, type, public, NO)
+            VALUES(%s, '%s', '%s', %s, %s, %s, %s)
+            """ % (courseData['name'], json.dumps(courseData['levels']), courseData['description'], '0', 'custom', '0' , ''.join(random.sample(pool, 5)))
+        )
+        
+
+        pass
+
     def post(self,**kwargs):
         request = self.request
         arguments = request.arguments()
         db = connect_to_cloudsql()
         cursor = db.cursor()
-        if len(kwargs.keys()) == 0:
-            data = {}
-            for i in arguments:
-                data[i] = request.get(i)
-            
-            # print(json.dumps(data,ensure_ascii=False,indent=4))
-            gamesData,games = self.__ClassProcess(data)
-            chapterLevelData = self.__getLevelContent(gamesData)
 
-            print('chapterLevelData',json.dumps(chapterLevelData))
-            # games = data['games'].split(',')
-            # print('games is ',games)
-
-            cursor.execute(
-                """INSERT INTO classTB(name, levels, developer, description, public) 
-                VALUES(%s, %s, %s, %s, %s)
-                """,(re.sub(r' ','_',data['name']),json.dumps(chapterLevelData),self.request.cookies.get('user'),data[u'description'],data[u'mode'])
-            )
-            db.commit()
-            newTableInstruction = self.__newTableProcess(data,games)
-            cursor.execute(newTableInstruction)
-            db.commit()
-            db.close()
-        else:
+        if len(kwargs) == 1 : 
             print("request.get('user')",request.get('user'))
             cursor.execute(
                 """
@@ -788,9 +822,16 @@ class Class(webapp2.RequestHandler):
                 """
                 % (request.get('course'), GameID)
             )
-            db.commit()
+            # db.commit()
             db.close()
             return self.response.out.write('successful')
+        elif len(kwargs) == 2 : 
+            print(json.dumps(kwargs, indent=4))
+            courseData = json.loads(self.request.body)
+            courseData['developer'] = kwargs['user']
+            print(json.dumps(courseData, indent=4))
+            self.__creatCourse(courseData)
+            pass
                  
     def get(self,**kwargs):
         # print('\n\n---\n\n')
@@ -802,10 +843,10 @@ class Class(webapp2.RequestHandler):
             if kwargs has no keys, the request is send query to server for public course
             """
             cursor.execute("""
-            SELECT *  FROM classTB WHERE public=1;
+            SELECT *  FROM classTB WHERE type='official';
             """)
             result = cursor.fetchall()
-            # print(result)
+            result = self.__CourseToJSON(result)
             self.response.headers['Content-Type'] = 'application/json'
             return self.response.out.write(json.dumps(result,indent=4))
 
