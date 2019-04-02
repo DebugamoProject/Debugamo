@@ -874,6 +874,62 @@ class Class(webapp2.RequestHandler):
                 
 class GameBackendHandler(webapp2.RequestHandler):
 
+    def checkFinishTask(self, task, user, actionList, level):
+        """
+        if time allow, it should using sql JSON function to update value
+        """
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        cursor.execute(
+            """
+            SELECT finished FROM %s WHERE ID='%s';
+            """
+            % (task, user)
+        )
+    
+        result = json.loads(cursor.fetchall()[0][0])
+        finishedTask = set(result.keys())
+        
+        sortedList = sorted(actionList, key=lambda x : x['time'],)
+        
+        endOfTaskAction = 0
+        for i in range(len(sortedList)):
+            if(re.search(r'Success',sortedList[i]['action']) != None):
+                endOfTaskAction = i
+        
+        if(not endOfTaskAction):
+            return
+
+        deltaTime = actionList[endOfTaskAction]['time'] - actionList[0]['time']
+        print(deltaTime)
+        
+        if(level in finishedTask):
+            if result[level] < deltaTime:
+                result[level] = deltaTime
+                cursor.execute(
+                    """
+                    UPDATE %s SET finished='%s' WHERE ID='%s';
+                    """
+                    % (task, json.dumps(result), user)
+                )
+                db.commit()
+                return True
+        else:
+            result[level] = deltaTime
+            cursor.execute(
+            """
+            UPDATE %s SET finished='%s' WHERE ID='%s';
+            """
+            % (task, json.dumps(result), user)
+            )
+            db.commit()
+            return True
+
+        
+        
+        return False
+        
+
     def extractXML(self,xmlStr):
         pattern = r'\sxmlns=\\?"http://www.w3.org/1999/xhtml\\?"'
         xmlStr = re.sub(pattern,'',xmlStr)
@@ -951,37 +1007,45 @@ class GameBackendHandler(webapp2.RequestHandler):
             request = self.request
             task = kwargs['task']
             user = kwargs['user']
+            
             gamedata = json.loads(request.body)
-            print(json.dumps(gamedata,indent=4,encoding='utf'))
-            print('-'*50)
-            print('*' * 30 + 'Action' + '*'*30)
+            # print(json.dumps(gamedata,indent=4,encoding='utf'))
+            # print('-'*50)
+            # print('*' * 30 + 'Action' + '*'*30)
             action = json.loads(gamedata["rows"][0]["json"]["action"])
-            print(json.dumps(action,indent=4))
-            print('-'*50)
-            print('*' * 30 + 'Action' + '*'*30)
+            
+            # print(action)
+            # print(json.dumps(action,indent=4))
+            # print('-'*50)
+            # print('*' * 30 + 'Action' + '*'*30)
             code = json.loads(gamedata["rows"][0]["json"]["blockVersion"])
-            print(json.dumps(code,indent=4))
+            # print(json.dumps(code,indent=4))
             level = int(gamedata["rows"][0]["json"]["level"])
             # here fix the level bug
             level = (str(int(math.ceil(float(level) / 3))) + '_' + str(int(float(level) - math.ceil(float(level) / 3) * 3 + 3 )))
+            update = self.checkFinishTask(task, user, action, 'Debugging%s' % level)
+
             # level = (str(level // 3 + 1) + '_' + str(level - (level//3 * 3)))
             # print('level is ',level)
-            db = connect_to_cloudsql()
-            ######################################################
-            # Please Do Not fix this conflict while you merge or pull the git repo
-            # Here is to store the blockly code of user 
-            for i in code:
-                i['xml'] = self.extractXML(i['xml']) # transfer xml to json
-                action.append(i)
-            ######################################################
-            cursor = db.cursor()
-            cursor.execute(
-                """
-                UPDATE %s SET Debugging%s = '%s' WHERE ID='%s'
-                """
-                % (task,level,json.dumps(action),user)
-            )
-            db.commit()
+            print('update is ', update)
+            if update:
+                db = connect_to_cloudsql()
+                ######################################################
+                # Please Do Not fix this conflict while you merge or pull the git repo
+                # Here is to store the blockly code of user 
+                for i in code:
+                    i['xml'] = self.extractXML(i['xml']) # transfer xml to json
+                    action.append(i)
+                ######################################################
+                cursor = db.cursor()
+                cursor.execute(
+                    """
+                    UPDATE %s SET Debugging%s = '%s' WHERE ID='%s'
+                    """
+                    % (task,level,json.dumps(action),user)
+                )
+                db.commit()
+            
         if(kwargs.has_key('user_name')):
             db = connect_to_cloudsql()
             cursor = db.cursor()

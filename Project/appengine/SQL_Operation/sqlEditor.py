@@ -122,6 +122,32 @@ add notice column for users;
 # )
 
 
+###########################################################################
+###########################################################################
+
+
+# Step 10.
+"""
+add finished col
+"""
+mycursor.execute(
+    """
+    ALTER TABLE Debugging
+    ADD COLUMN finished JSON;
+    """
+)
+
+# Step 11.
+"""
+add course num
+"""
+mycursor.execute(
+    """
+    ALTER TABLE classTB
+    ADD COLUMN NO CHAR(11);
+    """
+)
+
 # mycursor.execute(
    
 #     """
