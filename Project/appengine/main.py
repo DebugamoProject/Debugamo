@@ -332,7 +332,56 @@ class LogPage(webapp2.RequestHandler):
 
 class TestPage(webapp2.RequestHandler):
     def get(self):
-        finishOrNot('Debugging','321')
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        a = """
+{
+    "Debugging": {
+        "1": {
+            "1": "Learn Move",
+            "2": "Learn Grab and Drop",
+            "3": "Evaluation"
+        },
+        "2": {
+            "1": "Learn Goto",
+            "2": "Learn List",
+            "3": "Evaluation"
+        },
+        "3": {
+            "1": "Learn List",
+            "2": "Learn List",
+            "3": "Evaluation"
+        },
+        "4": {
+            "1": "Learn Function",
+            "2": "Learn Function",
+            "3": "Evaluation"
+        },
+        "5": {
+            "1": "Learn If-Then",
+            "2": "Learn If-Then-Else",
+            "3": "Evaluation"
+        },
+        "6": {
+            "1": "Learn For Loop",
+            "2": "Learn While Loop",
+            "3": "Evaluation"
+        }
+    }
+}
+"""
+        a = json.loads(a)
+        cursor.execute(
+            """
+            UPDATE classTB SET levels = '%s' WHERE name="Debugging"
+            """
+            % json.dumps(a)
+        )
+        # db.commit()
+        # db.close()
+
+
+        # finishOrNot('Debugging','321')
         # """Simple request handler that shows all of the MySQL variables."""
         # self.response.headers['Content-Type'] = 'text/plain'
         # db = connect_to_cloudsql()
@@ -757,6 +806,7 @@ class Class(webapp2.RequestHandler):
         cursor = db.cursor()
 
         scopes = courseData['levels'].keys()
+        courseData['tableLevels'] = []
         for i in scopes:
             cursor.execute(
                 """
@@ -768,8 +818,10 @@ class Class(webapp2.RequestHandler):
 
             selectedLevel = courseData['levels'][i]
             courseData['levels'][i] = {}
+
             
             for j in selectedLevel:
+                courseData['tableLevels'].append(i+j)
                 if courseData['levels'][i].has_key(j[0]):
                     courseData['levels'][i][j[0]][j[2]] = result[i][j[0]][j[2]]
                 else : 
@@ -778,21 +830,38 @@ class Class(webapp2.RequestHandler):
         
         # part 2 insert level into classTB
         pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-        a = json.dumps(courseData['levels'])
-        print(a)
+        # a = json.dumps(courseData['levels'])
+        
         # print('randomChoice')
         # print(random.sample(pool,5))
     
         ################# HERE occure BUG!
+        print(json.dumps(courseData,indent=4))
+    
         cursor.execute(
-            """
-            INSERT INTO classTB(name, levels, description, exp, type, public, NO)
-            VALUES(%s, '%s', '%s', %s, %s, %s, %s)
-            """ % (courseData['name'], json.dumps(courseData['levels']), courseData['description'], '0', 'custom', '0' , ''.join(random.sample(pool, 5)))
-        )
-        
+            """  
+            INSERT INTO classTB(name, levels ,description, exp, type, public, NO, developer)
+            VALUES('%s', '%s','%s', %s, '%s', %s, '%s', '%s')
+            """ % (courseData['name'], json.dumps(courseData['levels']),courseData['description'], '0', 'custom', '0' , ''.join(random.sample(pool, 5)), courseData['developer'])
 
-        pass
+        )
+
+        # db.commit()
+
+        # part 3 create course table
+
+        tableInstruction = []
+
+        for i in courseData['tableLevels']:
+            tableInstruction.append(i + ' JSON')
+        tableInstruction = ' , '.join(tableInstruction) 
+
+        cursor.execute("""create table %s(%s);""" % (courseData['name'],tableInstruction))
+
+
+        db.commit()
+        db.close()
+
 
     def post(self,**kwargs):
         request = self.request
