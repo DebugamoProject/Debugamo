@@ -45,6 +45,7 @@ $('.userTaskItem').on('click', function (e) {
     userTaskContentModify(this.id)
 })
 
+/*
 $('#add-class-trigger').on('click', function (e) {
     e.preventDefault();
     $(".course-data").empty();
@@ -88,6 +89,8 @@ $('#add-class-trigger').on('click', function (e) {
         </div>`;
     $("#side-selector").append(form);
 })
+*/
+
 
 /**
  * The function can run but it seems weird

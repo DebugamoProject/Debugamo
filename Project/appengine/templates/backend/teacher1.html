@@ -11,10 +11,10 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
     crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-i18next/1.2.0/jquery-i18next.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
@@ -67,9 +67,9 @@
                 <div class="col-2" id="t-left-panel" style="min-height: 830px; height: 850px;">
                     <div class="row">
                         <div class="col-12">           
-                            <li id="add-class-trigger" class="list-group-item" style="background-color: rgba(0,0,0,.03);; margin-bottom: 10px; border-bottom-right-radius: .25rem;
-                            border-bottom-left-radius: .25rem;">
-                                <a>新增課程</a>
+                            <li id="add-class-trigger" class="list-group-item" style="background-color: rgba(59, 207, 14, 0.5); margin-bottom: 10px; border-bottom-right-radius: .25rem;
+                            border-bottom-left-radius: .25rem; cursor: pointer" data-toggle="modal" data-target="#createClassModal">
+                                新增課程
                             </li>
                             <div class="card">
                                 <div class="card-header">
@@ -129,7 +129,61 @@
                 </div>
             </div>
         </div>
-        
+
+
+            <!-- createClassModal -->
+        <div class="modal fade" id="createClassModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <ul class="nav nav-tabs" style="width:100%;">
+                            <li class="nav-item" style="width:50%;">
+                                <a class="nav-link" id="register">新增課程</a>
+                            </li>
+                        </ul>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                            <form id="register-form">
+                                    <div class="form-group group1" id="name">
+                                        <label for="inputCourseName">課程名稱<small class="registerRules"></small></label>
+                                        <input type="text" class="form-control" id="inputCourseName"  placeholder="">
+                                    </div>
+                                    <div class="form-group group1 right" id="description">
+                                        <label for="inputDescription">課程描述<small class="registerRules"></small></label>
+                                        <input type="text" class="form-control" id="inputDescription" placeholder="">
+                                    </div>
+
+
+                                    <div id="private" class="form-group">
+                                        <label for="classPrivate">公開狀態</label>
+                                        <br />
+                                        <select class="form-group"name="mode-selector" id="mode" style="height: 30px">
+                                            <option selected>選擇公開狀態...</option>
+                                            <option value="1">公開</option>
+                                            <option value="0">保護</option>
+                                            <option value="-1">私人</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <p>選擇關卡</p>
+                                        <div class="select-course-item">
+                                        </div>
+                                    </div>
+                            </form>
+                                
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                        <button type="button" class="btn btn-primary" id="submitClasses">送出</button>
+                    </div>
+                </div>
+            </div>
+            </div>
+
         <!-- <div class="selector">
             
         </div> -->
