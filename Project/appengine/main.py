@@ -58,7 +58,7 @@ def connect_to_cloudsql():
 def finishOrNot(courseName, userID):
     db = connect_to_cloudsql()
     cursor = db.cursor()
-
+    
     #part 1
     #extract all of levels of course from classTB 
     cursor.execute(
@@ -66,6 +66,7 @@ def finishOrNot(courseName, userID):
         SELECT levels FROM classTB WHERE name='%s'
         """ % courseName
     )
+    
     result = json.loads(cursor.fetchall()[0][0])
     # print(json.dumps(result,indent=4))
     taskList = {}
@@ -91,8 +92,9 @@ def finishOrNot(courseName, userID):
         col = ', '.join(taskList[i])
         sqlInstruction += col + ' FROM ' + i + " WHERE ID='%s';" % userID
         taskSQLQuery[i]= sqlInstruction
-    print(json.dumps(taskList,indent=4))
-
+    print(json.dumps(taskList,indent=4))    
+    print('\n\n\nSQLquery')
+    print(taskSQLQuery)
     taskResult = {}
     for i in taskScopeKeys:
         cursor.execute(
@@ -898,7 +900,9 @@ class Class(webapp2.RequestHandler):
 
             elif kwargs['request'] == 'userTask':
                 courseData = []
-                
+                print('\n\n\nuserCourse')
+                print(json.dumps(userCourse,indent=4))
+                print('\n\n\n')
                 for i in userCourse:
                     finish = 0
                     failed = 0
