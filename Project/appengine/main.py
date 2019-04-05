@@ -58,7 +58,7 @@ def connect_to_cloudsql():
 def finishOrNot(courseName, userID):
     db = connect_to_cloudsql()
     cursor = db.cursor()
-
+    
     #part 1
     #extract all of levels of course from classTB 
     cursor.execute(
@@ -66,6 +66,7 @@ def finishOrNot(courseName, userID):
         SELECT levels FROM classTB WHERE name='%s'
         """ % courseName
     )
+    
     result = json.loads(cursor.fetchall()[0][0])
     # print(json.dumps(result,indent=4))
     taskList = {}
@@ -91,8 +92,9 @@ def finishOrNot(courseName, userID):
         col = ', '.join(taskList[i])
         sqlInstruction += col + ' FROM ' + i + " WHERE ID='%s';" % userID
         taskSQLQuery[i]= sqlInstruction
-    print(json.dumps(taskList,indent=4))
-
+    print(json.dumps(taskList,indent=4))    
+    print('\n\n\nSQLquery')
+    print(taskSQLQuery)
     taskResult = {}
     for i in taskScopeKeys:
         cursor.execute(
@@ -330,7 +332,56 @@ class LogPage(webapp2.RequestHandler):
 
 class TestPage(webapp2.RequestHandler):
     def get(self):
-        finishOrNot('Debugging','321')
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        a = """
+{
+    "Debugging": {
+        "1": {
+            "1": "Learn Move",
+            "2": "Learn Grab and Drop",
+            "3": "Evaluation"
+        },
+        "2": {
+            "1": "Learn Goto",
+            "2": "Learn List",
+            "3": "Evaluation"
+        },
+        "3": {
+            "1": "Learn List",
+            "2": "Learn List",
+            "3": "Evaluation"
+        },
+        "4": {
+            "1": "Learn Function",
+            "2": "Learn Function",
+            "3": "Evaluation"
+        },
+        "5": {
+            "1": "Learn If-Then",
+            "2": "Learn If-Then-Else",
+            "3": "Evaluation"
+        },
+        "6": {
+            "1": "Learn For Loop",
+            "2": "Learn While Loop",
+            "3": "Evaluation"
+        }
+    }
+}
+"""
+        a = json.loads(a)
+        cursor.execute(
+            """
+            UPDATE classTB SET levels = '%s' WHERE name="Debugging"
+            """
+            % json.dumps(a)
+        )
+        # db.commit()
+        # db.close()
+
+
+        # finishOrNot('Debugging','321')
         # """Simple request handler that shows all of the MySQL variables."""
         # self.response.headers['Content-Type'] = 'text/plain'
         # db = connect_to_cloudsql()
@@ -736,35 +787,89 @@ class Class(webapp2.RequestHandler):
            courses.append(i[0]) 
         return courses
 
+    def __CourseToJSON(self, data):
+        JSONdata = []
+        for i in data:
+            course = {}
+            course['name'] = i[0]
+            course['tasks'] = i[1]
+            course['developers'] = i[2]
+            course['description'] = i[3]
+            course['exp'] = i[4]
+            course['type'] = i[5]
+            JSONdata.append(course)
+        return JSONdata
+
+    def __creatCourse(self, courseData) : 
+        # part 1 get the level content
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+
+        scopes = courseData['levels'].keys()
+        courseData['tableLevels'] = []
+        for i in scopes:
+            cursor.execute(
+                """
+                SELECT levels FROM classTB WHERE name='%s'
+                """ % i
+            )
+            result = json.loads(cursor.fetchall()[0][0])
+            print(json.dumps(result,indent=4))
+
+            selectedLevel = courseData['levels'][i]
+            courseData['levels'][i] = {}
+
+            
+            for j in selectedLevel:
+                courseData['tableLevels'].append(i+j)
+                if courseData['levels'][i].has_key(j[0]):
+                    courseData['levels'][i][j[0]][j[2]] = result[i][j[0]][j[2]]
+                else : 
+                    courseData['levels'][i][j[0]] = {}
+                    courseData['levels'][i][j[0]][j[2]] = result[i][j[0]][j[2]]
+        
+        # part 2 insert level into classTB
+        pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        # a = json.dumps(courseData['levels'])
+        
+        # print('randomChoice')
+        # print(random.sample(pool,5))
+    
+        ################# HERE occure BUG!
+        print(json.dumps(courseData,indent=4))
+    
+        cursor.execute(
+            """  
+            INSERT INTO classTB(name, levels ,description, exp, type, public, NO, developer)
+            VALUES('%s', '%s','%s', %s, '%s', %s, '%s', '%s')
+            """ % (courseData['name'], json.dumps(courseData['levels']),courseData['description'], '0', 'custom', '0' , ''.join(random.sample(pool, 5)), courseData['developer'])
+
+        )
+
+        # db.commit()
+
+        # part 3 create course table
+
+        tableInstruction = []
+
+        for i in courseData['tableLevels']:
+            tableInstruction.append(i + ' JSON')
+        tableInstruction = ' , '.join(tableInstruction) 
+
+        cursor.execute("""create table %s(%s);""" % (courseData['name'],tableInstruction))
+
+
+        db.commit()
+        db.close()
+
+
     def post(self,**kwargs):
         request = self.request
         arguments = request.arguments()
         db = connect_to_cloudsql()
         cursor = db.cursor()
-        if len(kwargs.keys()) == 0:
-            data = {}
-            for i in arguments:
-                data[i] = request.get(i)
-            
-            # print(json.dumps(data,ensure_ascii=False,indent=4))
-            gamesData,games = self.__ClassProcess(data)
-            chapterLevelData = self.__getLevelContent(gamesData)
 
-            print('chapterLevelData',json.dumps(chapterLevelData))
-            # games = data['games'].split(',')
-            # print('games is ',games)
-
-            cursor.execute(
-                """INSERT INTO classTB(name, levels, developer, description, public) 
-                VALUES(%s, %s, %s, %s, %s)
-                """,(re.sub(r' ','_',data['name']),json.dumps(chapterLevelData),self.request.cookies.get('user'),data[u'description'],data[u'mode'])
-            )
-            db.commit()
-            newTableInstruction = self.__newTableProcess(data,games)
-            cursor.execute(newTableInstruction)
-            db.commit()
-            db.close()
-        else:
+        if len(kwargs) == 1 : 
             print("request.get('user')",request.get('user'))
             cursor.execute(
                 """
@@ -788,9 +893,16 @@ class Class(webapp2.RequestHandler):
                 """
                 % (request.get('course'), GameID)
             )
-            db.commit()
+            # db.commit()
             db.close()
             return self.response.out.write('successful')
+        elif len(kwargs) == 2 : 
+            print(json.dumps(kwargs, indent=4))
+            courseData = json.loads(self.request.body)
+            courseData['developer'] = kwargs['user']
+            print(json.dumps(courseData, indent=4))
+            self.__creatCourse(courseData)
+            pass
                  
     def get(self,**kwargs):
         # print('\n\n---\n\n')
@@ -802,10 +914,10 @@ class Class(webapp2.RequestHandler):
             if kwargs has no keys, the request is send query to server for public course
             """
             cursor.execute("""
-            SELECT *  FROM classTB WHERE public=1;
+            SELECT *  FROM classTB WHERE type='official';
             """)
             result = cursor.fetchall()
-            # print(result)
+            result = self.__CourseToJSON(result)
             self.response.headers['Content-Type'] = 'application/json'
             return self.response.out.write(json.dumps(result,indent=4))
 
@@ -857,7 +969,9 @@ class Class(webapp2.RequestHandler):
 
             elif kwargs['request'] == 'userTask':
                 courseData = []
-                
+                print('\n\n\nuserCourse')
+                print(json.dumps(userCourse,indent=4))
+                print('\n\n\n')
                 for i in userCourse:
                     finish = 0
                     failed = 0
@@ -873,6 +987,62 @@ class Class(webapp2.RequestHandler):
                 pass
                 
 class GameBackendHandler(webapp2.RequestHandler):
+
+    def checkFinishTask(self, task, user, actionList, level):
+        """
+        if time allow, it should using sql JSON function to update value
+        """
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        cursor.execute(
+            """
+            SELECT finished FROM %s WHERE ID='%s';
+            """
+            % (task, user)
+        )
+    
+        result = json.loads(cursor.fetchall()[0][0])
+        finishedTask = set(result.keys())
+        
+        sortedList = sorted(actionList, key=lambda x : x['time'],)
+        
+        endOfTaskAction = 0
+        for i in range(len(sortedList)):
+            if(re.search(r'Success',sortedList[i]['action']) != None):
+                endOfTaskAction = i
+        
+        if(not endOfTaskAction):
+            return
+
+        deltaTime = actionList[endOfTaskAction]['time'] - actionList[0]['time']
+        print(deltaTime)
+        
+        if(level in finishedTask):
+            if result[level] < deltaTime:
+                result[level] = deltaTime
+                cursor.execute(
+                    """
+                    UPDATE %s SET finished='%s' WHERE ID='%s';
+                    """
+                    % (task, json.dumps(result), user)
+                )
+                db.commit()
+                return True
+        else:
+            result[level] = deltaTime
+            cursor.execute(
+            """
+            UPDATE %s SET finished='%s' WHERE ID='%s';
+            """
+            % (task, json.dumps(result), user)
+            )
+            db.commit()
+            return True
+
+        
+        
+        return False
+        
 
     def extractXML(self,xmlStr):
         pattern = r'\sxmlns=\\?"http://www.w3.org/1999/xhtml\\?"'
@@ -951,37 +1121,45 @@ class GameBackendHandler(webapp2.RequestHandler):
             request = self.request
             task = kwargs['task']
             user = kwargs['user']
+            
             gamedata = json.loads(request.body)
-            print(json.dumps(gamedata,indent=4,encoding='utf'))
-            print('-'*50)
-            print('*' * 30 + 'Action' + '*'*30)
+            # print(json.dumps(gamedata,indent=4,encoding='utf'))
+            # print('-'*50)
+            # print('*' * 30 + 'Action' + '*'*30)
             action = json.loads(gamedata["rows"][0]["json"]["action"])
-            print(json.dumps(action,indent=4))
-            print('-'*50)
-            print('*' * 30 + 'Action' + '*'*30)
+            
+            # print(action)
+            # print(json.dumps(action,indent=4))
+            # print('-'*50)
+            # print('*' * 30 + 'Action' + '*'*30)
             code = json.loads(gamedata["rows"][0]["json"]["blockVersion"])
-            print(json.dumps(code,indent=4))
+            # print(json.dumps(code,indent=4))
             level = int(gamedata["rows"][0]["json"]["level"])
             # here fix the level bug
             level = (str(int(math.ceil(float(level) / 3))) + '_' + str(int(float(level) - math.ceil(float(level) / 3) * 3 + 3 )))
+            update = self.checkFinishTask(task, user, action, 'Debugging%s' % level)
+
             # level = (str(level // 3 + 1) + '_' + str(level - (level//3 * 3)))
             # print('level is ',level)
-            db = connect_to_cloudsql()
-            ######################################################
-            # Please Do Not fix this conflict while you merge or pull the git repo
-            # Here is to store the blockly code of user 
-            for i in code:
-                i['xml'] = self.extractXML(i['xml']) # transfer xml to json
-                action.append(i)
-            ######################################################
-            cursor = db.cursor()
-            cursor.execute(
-                """
-                UPDATE %s SET Debugging%s = '%s' WHERE ID='%s'
-                """
-                % (task,level,json.dumps(action),user)
-            )
-            db.commit()
+            print('update is ', update)
+            if update:
+                db = connect_to_cloudsql()
+                ######################################################
+                # Please Do Not fix this conflict while you merge or pull the git repo
+                # Here is to store the blockly code of user 
+                for i in code:
+                    i['xml'] = self.extractXML(i['xml']) # transfer xml to json
+                    action.append(i)
+                ######################################################
+                cursor = db.cursor()
+                cursor.execute(
+                    """
+                    UPDATE %s SET Debugging%s = '%s' WHERE ID='%s'
+                    """
+                    % (task,level,json.dumps(action),user)
+                )
+                db.commit()
+            
         if(kwargs.has_key('user_name')):
             db = connect_to_cloudsql()
             cursor = db.cursor()
