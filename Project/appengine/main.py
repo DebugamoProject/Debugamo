@@ -451,10 +451,14 @@ class UserPage(webapp2.RequestHandler):
                     self.response.location = '/'
                 return self.response
             
-            path = path.format(result)
-            # return webapp2.redirect('/')
-            template_values = ''
-            return self.response.write(template.render(path, template_values))
+            if result == 'teacher':
+                backend_url = '/backend/' + self.request.cookies.get('user')
+                return webapp2.redirect(backend_url)
+            else:
+                path = path.format(result)
+                # return webapp2.redirect('/')
+                template_values = ''
+                return self.response.write(template.render(path, template_values))
         else:
             return webapp2.redirect('/')
 
