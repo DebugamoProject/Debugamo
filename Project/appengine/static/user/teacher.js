@@ -1,4 +1,10 @@
 
+$('#log-out').click(function(e){
+    Cookies.set('login','FALSE');
+    Cookies.remove('user');
+    window.location.replace('/');
+  })
+
 $('#submitClasses').click(function(e){
     e.preventDefault();
     
@@ -70,11 +76,18 @@ $('#submitClasses').click(function(e){
 })
 
 function addNewClass(new_course_data){
+    let user = Cookies.get('user');
+    let url = '/class/' + user + '/creating';
     $.ajax({
         type: "POST",
-        url: "/class",
-        data: new_course_data,
+        url: url,
+        contentType: "application/json",
+        dataType: "json",
+        data: JSON.stringify(new_course_data),
         success: function (response) {
+            console.log(response);
+        },
+        error: function(response) {
             console.log(response);
         }
     });
@@ -112,8 +125,7 @@ let course_item = getDebuggingItem();
 
 function addSelectItemOption() {
     // let task_description = ['基本指令', '判斷式, ...];
-    let course_item_json = JSON.parse(course_item[1]);
-    // console.log(course_item_json);
+    let course_item_json = JSON.parse(course_item['tasks']);
     let debugging_item = course_item_json['Debugging'];
     let form = ``;
     for(var items of Object.keys(debugging_item)) {
