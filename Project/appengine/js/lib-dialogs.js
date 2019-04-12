@@ -366,8 +366,8 @@ BlocklyDialogs.abortOffer = function() {
 BlocklyDialogs.congratulations = function() {
 
   // send log back to server
-  if(BlocklyGames.MODE == 'gamming')
-    Debugging.bigQueryLogSend();
+  // if(BlocklyGames.MODE == 'gamming')
+    // Debugging.bigQueryLogSend();
 
   $('#congratHeader').show();
   $('#containerCode').show();

@@ -29,6 +29,13 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
+def multikeySort(sameNamespaceTask, namespace):
+    
+    return sorted(sameNamespaceTask, key = lambda x : ((re.sub(namespace,'',x)[0],re.sub(namespace,'',x)[2])))
+    
+
+
+
 def connect_to_cloudsql():
     # When deployed to App Engine, the `SERVER_SOFTWARE` environment variable
     # will be set to 'Google App Engine/version'.
@@ -334,70 +341,17 @@ class TestPage(webapp2.RequestHandler):
     def get(self):
         db = connect_to_cloudsql()
         cursor = db.cursor()
-        a = """
-{
-    "Debugging": {
-        "1": {
-            "1": "Learn Move",
-            "2": "Learn Grab and Drop",
-            "3": "Evaluation"
-        },
-        "2": {
-            "1": "Learn Goto",
-            "2": "Learn List",
-            "3": "Evaluation"
-        },
-        "3": {
-            "1": "Learn List",
-            "2": "Learn List",
-            "3": "Evaluation"
-        },
-        "4": {
-            "1": "Learn Function",
-            "2": "Learn Function",
-            "3": "Evaluation"
-        },
-        "5": {
-            "1": "Learn If-Then",
-            "2": "Learn If-Then-Else",
-            "3": "Evaluation"
-        },
-        "6": {
-            "1": "Learn For Loop",
-            "2": "Learn While Loop",
-            "3": "Evaluation"
-        }
-    }
-}
-"""
-        a = json.loads(a)
         cursor.execute(
             """
-            UPDATE classTB SET levels = '%s' WHERE name="Debugging"
+            SELECT ID FROM Debugging;
             """
-            % json.dumps(a)
         )
-        # db.commit()
-        # db.close()
+        result = cursor.fetchall()
+        self.response.out.write(json.dumps(result,indent=4))
 
-
-        # finishOrNot('Debugging','321')
-        # """Simple request handler that shows all of the MySQL variables."""
-        # self.response.headers['Content-Type'] = 'text/plain'
-        # db = connect_to_cloudsql()
-        # cursor = db.cursor()
-        # a = """
-        #     {"Debugging": {"1": {"1": "Learn Move", "2": "Learn Grab and Drop"}, "2": {"1": "Learn Goto", "3": "Evaluation"}, "3": {"3": "Evaluation"}, "4": {"2": "Learn Function"}, "5": {"1": "Learn If-Then"}, "6": {"1": "Learn For Loop", "3": "Evaluation"}}}
-        #     """
-        # a = json.loads(a)
-
-        # cursor.execute("""
-        #     UPDATE classTB SET levels = '%s' WHERE name="Debugging"
-        #     """ % json.dumps(a))
-        # db.commit()
-        # db.close()
-        # for r in cursor.fetchall():
-        #     self.response.write('{}\n'.format(r))
+    def post(self):
+        request = self.request.body
+        print(request)
                 
 class MainPage(webapp2.RequestHandler):
 
@@ -773,13 +727,13 @@ class Class(webapp2.RequestHandler):
             userTask.append(result)
         return userTask
 
-    def __searchCourse(self):
+    def __searchCourse(self, option):
         db = connect_to_cloudsql()
         cursor = db.cursor()
         cursor.execute(
             """
-            SELECT name FROM classTB;
-            """
+            SELECT name FROM classTB WHERE type='%s';
+            """%option
         )
         result = cursor.fetchall()
         courses = []
@@ -829,7 +783,7 @@ class Class(webapp2.RequestHandler):
                     courseData['levels'][i][j[0]][j[2]] = result[i][j[0]][j[2]]
         
         # part 2 insert level into classTB
-        pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        # pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
         # a = json.dumps(courseData['levels'])
         
         # print('randomChoice')
@@ -842,7 +796,7 @@ class Class(webapp2.RequestHandler):
             """  
             INSERT INTO classTB(name, levels ,description, exp, type, public, NO, developer)
             VALUES('%s', '%s','%s', %s, '%s', %s, '%s', '%s')
-            """ % (courseData['name'], json.dumps(courseData['levels']),courseData['description'], '0', 'custom', '0' , ''.join(random.sample(pool, 5)), courseData['developer'])
+            """ % (courseData['name'], json.dumps(courseData['levels']),courseData['description'], '0', 'custom', '0' , courseData['CourseCode'], courseData['developer'])
 
         )
 
@@ -862,7 +816,50 @@ class Class(webapp2.RequestHandler):
         db.commit()
         db.close()
 
+    def __checkCourseData(self, courseData):
+        # part 1 check if course name is duplicate
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        print('\n\ncheckCourseData')
+        print(json.dumps(courseData,indent=4))
+        cursor.execute(
+            """
+            SELECT name FROM classTB WHERE name='%s'
+            """ % courseData['name']
+        )
+        result = cursor.fetchall()
+        if len(result):
+            print('Duplicated course name')
+            return False
+        
+        # part 2 generate the course no
+        cursor.execute(
+            """
+            SELECT NO FROM classTB
+            """
+        )
+        result = cursor.fetchall()
+        existCodes = []
+        for i in result:
+            existCodes.append(i[0])
+        print(existCodes)
+        pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        courseCode = ''.join(random.sample(pool, 5))
+        wrapper = 10000
+        times = 0
+        while(courseCode in existCodes):
+            courseCode = ''.join(random.sample(pool, 5))
+            times += 1
+            if(times > wrapper):
+                return False
+            
+        courseData['CourseCode'] = courseCode
 
+        return True
+
+
+        pass
+    
     def post(self,**kwargs):
         request = self.request
         arguments = request.arguments()
@@ -893,15 +890,16 @@ class Class(webapp2.RequestHandler):
                 """
                 % (request.get('course'), GameID)
             )
-            # db.commit()
+            
             db.close()
             return self.response.out.write('successful')
         elif len(kwargs) == 2 : 
             print(json.dumps(kwargs, indent=4))
             courseData = json.loads(self.request.body)
             courseData['developer'] = kwargs['user']
-            print(json.dumps(courseData, indent=4))
-            self.__creatCourse(courseData)
+            # print(json.dumps(courseData, indent=4))
+            if self.__checkCourseData(courseData):
+                self.__creatCourse(courseData)
             pass
                  
     def get(self,**kwargs):
@@ -920,8 +918,18 @@ class Class(webapp2.RequestHandler):
             result = self.__CourseToJSON(result)
             self.response.headers['Content-Type'] = 'application/json'
             return self.response.out.write(json.dumps(result,indent=4))
-
-        else:
+        elif len(kwargs.keys()) == 1:
+            cursor.execute(
+                """
+                SELECT * FROM classTB WHERE type='custom';
+                """
+            )
+            result = cursor.fetchall()
+            result = self.__CourseToJSON(result)
+            self.response.headers['Content-Type'] = 'application/json'
+            return self.response.out.write(json.dumps(result,indent=4))
+            pass
+        elif len(kwargs.keys()) == 2:
             user = kwargs['user']
             cursor.execute(
                 """
@@ -951,27 +959,36 @@ class Class(webapp2.RequestHandler):
                 
                 result = json.loads(cursor.fetchall()[0][0])
                 result = set(result)
-                coursesList = set(self.__searchCourse())
-                coursesList = list(coursesList.difference(result))
-                
-                
+                coursesList = set(self.__searchCourse('official'))
+                coursesList = list(coursesList.difference(result)) ## set difference
                 
                 returnData = self.__getUserTaskData(coursesList)
-                # for i in Courseresult:
-                #     if not i[0] in userCourse:
-                #         returnData.append({
-                #             "name": i[0],
-                #             "description":i[1]
-                #         })
-                # print(json.dumps(returnData,indent=4))
                 self.response.headers['Content-Type'] = 'application/json'
                 return self.response.out.write(json.dumps(returnData,indent=4))
+            
+            elif kwargs['request'] == 'custom':
+                cursor.execute(
+                    """
+                    SELECT courses FROM users WHERE email='%s';
+                    """ % (user)
+                )
+                result = cursor.fetchall()[0][0]
+                print(result)
+                result = json.loads(result)
+                result = set(result)
+                coursesList = set(self.__searchCourse('custom'))
+                coursesList = list(coursesList.difference(result)) ## set difference
+                
+                returnData = self.__getUserTaskData(coursesList)
+                self.response.headers['Content-Type'] = 'application/json'
+                return self.response.out.write(json.dumps(returnData,indent=4))
+                
 
             elif kwargs['request'] == 'userTask':
                 courseData = []
-                print('\n\n\nuserCourse')
+                # print('\n\n\nuserCourse')
                 print(json.dumps(userCourse,indent=4))
-                print('\n\n\n')
+                # print('\n\n\n')
                 for i in userCourse:
                     finish = 0
                     failed = 0
@@ -1000,7 +1017,7 @@ class GameBackendHandler(webapp2.RequestHandler):
             """
             % (task, user)
         )
-    
+
         result = json.loads(cursor.fetchall()[0][0])
         finishedTask = set(result.keys())
         
@@ -1010,9 +1027,12 @@ class GameBackendHandler(webapp2.RequestHandler):
         for i in range(len(sortedList)):
             if(re.search(r'Success',sortedList[i]['action']) != None):
                 endOfTaskAction = i
-        
-        if(not endOfTaskAction):
-            return
+        # print("=================len of action================")
+        # print(json.dumps(sortedList,indent=4))
+        # print(len(sortedList[i]['action']))
+        if(len(sortedList) == 1):
+            # print("backend will not stored the code")
+            return False
 
         deltaTime = actionList[endOfTaskAction]['time'] - actionList[0]['time']
         print(deltaTime)
@@ -1041,7 +1061,7 @@ class GameBackendHandler(webapp2.RequestHandler):
 
         
         
-        return False
+        return True
         
 
     def extractXML(self,xmlStr):
@@ -1123,6 +1143,9 @@ class GameBackendHandler(webapp2.RequestHandler):
             user = kwargs['user']
             
             gamedata = json.loads(request.body)
+            print("\n\n\n\n===================================================")
+            print("post user's game record")
+            print(json.dumps(gamedata,indent=4))
             # print(json.dumps(gamedata,indent=4,encoding='utf'))
             # print('-'*50)
             # print('*' * 30 + 'Action' + '*'*30)
@@ -1203,8 +1226,154 @@ class GameBackendHandler(webapp2.RequestHandler):
             db.commit()
 
 class StatisticHandler(webapp2.RequestHandler):
+
+    def __getCourseLevelNameSpace(self,className):
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        cursor.execute(
+            """
+            SELECT levels FROM classTB WHERE name='%s'
+            """
+            % className
+        )
+        result = json.loads(cursor.fetchall()[0][0])
+        return list(result.keys())
+        
+
+    def __DescTable(self, tableName):
+        """
+        Desc specific table 
+        """
+        col = []
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        cursor.execute(
+            """
+            DESC %s;
+            """ % tableName
+        )
+        result = list(cursor.fetchall())
+        del result[0]
+        del result[len(result) - 1]
+        for i in result:
+            col.append(i[0])
+    
+        return col
+
+    def __getThePassTaskList(self,className, col):
+        userRecord = []
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        cursor.execute(
+            """
+            SELECT * FROM %s
+            """
+            % className
+        )
+        result = list(cursor.fetchall())
+        for i in range(len(result)):
+            result[i] = list(result[i])
+            user = {}
+            user['name'] = result[i][0]
+            user['finished'] = json.loads(result[i][len(result[i]) - 1])
+            taskList = {}
+            
+            del result[i][0]
+            for j in range(len(col)):
+                if result[i][j] != None :
+                    taskList[col[j]] = True
+
+                else:
+                    taskList[col[j]] = False
+                    
+            
+            user['taskList'] = taskList
+            
+            userRecord.append(user)
+            
+
+        return userRecord
+        
+        # pass
+        
+
+    def passNum(self, className):
+        col = self.__DescTable(className)
+        namespace = self.__getCourseLevelNameSpace(className)
+        namespaceTasks = {}
+        for i in namespace:
+            namespaceTasks[i] = []
+        
+        for i in range(len(namespace)) : 
+            # print(namespace[i])
+            for j in range(len(col)):
+                print(col[j])
+                if re.search(namespace[i],col[j]) != None:
+                    namespaceTasks[namespace[i]].append(col[j])
+
+        col = []
+        
+        # sorted the task
+        for i in namespaceTasks.keys():
+            namespaceTasks[i] = multikeySort(namespaceTasks[i],i)
+            for j in namespaceTasks[i]:
+                col.append(j)
+
+        userStatisitc = []
+        pnum = 0
+        fnum = 0
+        trynum = 0
+        userRecord = self.__getThePassTaskList(className, col)
+        tasknum = r'\d_\d'
+        for i in userRecord:
+            user = {}
+            passTask = []
+            haveTried = []
+            notTried = []
+            user['name'] = i['name']
+            taskList = i['taskList'].keys()
+            for j in taskList:
+                taskNamespace = re.sub(tasknum, '', j)
+                if i['finished'].has_key(j):
+                    passTask.append(j)
+                elif i['taskList'][j]:
+                    haveTried.append(j)
+                else:
+                    notTried.append(j)
+            user['passed'] = passTask
+            user['tried'] = haveTried
+            user['nottried'] = notTried
+            userStatisitc.append(user)
+       
+        courseStatistic = {}
+        courseStatistic['passed'] = []
+        courseStatistic['not_pass'] = []
+        courseStatistic['not_tried'] = []
+        for j in col:
+            pnum = 0
+            fnum = 0
+            trynum = 0
+            for i in userStatisitc:
+                if j in i['passed']:
+                    pnum += 1
+                elif j in i['tried']:
+                    trynum += 1
+                else:
+                    fnum += 1
+            courseStatistic['passed'].append(pnum)
+            courseStatistic['not_pass'].append(trynum)
+            courseStatistic['not_tried'].append(fnum)
+    
+        courseStatistic['taskList'] = col
+
+        return courseStatistic
+            
+
+        
     def get(self, **kwargs):
-        pass
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.out.write(json.dumps(self.passNum("Debugging"),indent=4))
+        
         
 class backTrack(webapp2.RequestHandler):
 
@@ -1356,6 +1525,7 @@ app = webapp2.WSGIApplication([
     webapp2.Route(r'/userGameData/<user>/<task>',handler=GameBackendHandler,name='userGameData'),
     webapp2.Route(r'/backTrack/<user>/<task>/<level>',handler=backTrack,name="backTrackData"),
     webapp2.Route(r'/notice/<mode>/<user>',handler=Notice,name="notice"),
+    webapp2.Route(r'/chart',handler=StatisticHandler, name="statistic")
     # webapp2.Route(r'/debugging/public', handler=DebugPublic, name='debuuging_punlic'),
     # webapp2.Route(r'/debugging/js', handler=LogPage, name='log'),
 

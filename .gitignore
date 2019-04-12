@@ -9,3 +9,4 @@
 *.pyc
 *.swp
 /Project/appengine/SQL_Operation/config.yaml
+/startEngine.sh

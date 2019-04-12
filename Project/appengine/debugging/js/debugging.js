@@ -1408,12 +1408,6 @@ Scope.actionPlay = function (actionNum){
     console.log('[Scope.actionPlay] ' + actionNum)
     var backTrackList = JSON.parse(localStorage.backTrackList);
     var action = Object.keys(backTrackList[actionNum])[0];
-    // if(action === 'run'){
-    //     var fakeEvent = new Event('click');
-    //     Scope.runButtonClick(fakeEvent);
-    // }else{
-    //     Scope.command[action](actionNum);
-    // }
     try{
         Scope.command[action](actionNum);
     }catch(e){
@@ -1424,9 +1418,18 @@ Scope.actionPlay = function (actionNum){
 }
 
 
+// Scope.sendDataBeforeLeave = function(){
+//     if(BlocklyGames.MODE == 'gamming')
+//         Debugging.bigQueryLogSend();
+// }
+
 
 
 /**
  * Initialize Blockly and the game.
  */
 window.addEventListener('load', Scope.init);
+window.onbeforeunload = function(){
+    if(BlocklyGames.MODE == 'gamming')
+        Debugging.bigQueryLogSend();
+};

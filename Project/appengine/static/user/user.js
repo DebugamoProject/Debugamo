@@ -2,6 +2,7 @@ let LANGUAGE_API = '/language/user/'
 let UPDATE_API = '/user/'
 let REPEAT_CHEACK_API = '/record'
 var data = getClassData();
+var customData = getCustomData();
 var userCourseData = getUserTaskData();
 
 var language_package;
@@ -38,6 +39,8 @@ $('#log-out').click(function(e){
 })
 
 IsLogin();
+
+
 
 function getUserData(){
   user = Cookies.get('user');
@@ -141,14 +144,36 @@ function getClassData(){
   return data;
 }
 
+function getCustomData(){
+  var user = Cookies.get('user');
+  var data;
+  $.ajax({
+    type: "GET",
+    url: "/class/" + user + '/custom',
+    async: false,
+    success: function (response) {
+      data = response;
+    }
+  });
+  return data;
+}
+
 function ClassDataDomCreater(){
   
   for(var i of data){
     var name = i['name'];
     $('#mainTasklist').append(`<li id="${name}" class="courseItem"><a href="javascript:void(0);">${i['name']}</a></li>`);
+
   }
-  // $('#mainTasklist').append('<li><a href="javascript:void(0);">Home</a></li>');
+  console.log('ClassDataDomCreater');
+  console.log(customData);
+  for(var i of customData){
+    var name = i['name'];
+    $('#customTasklist').append(`<li id="${name}" class="courseItem"><a href="javascript:void(0);">${i['name']}</a></li>`);
+  }
 }
+
+
 
 function userClassDataDomCreater(){
   for(var i of userCourseData){
@@ -168,7 +193,18 @@ function taskContentModify(name){
       document.getElementById('taskDescription').innerHTML = i['target'];
       // document.getElementById('getCourse').onclick = `addCourse('${name}');`
       $('#getCourse').attr('onclick',`addCourse('${name}');`);
-      break;
+      return
+    }
+  }
+
+  for (var i of customData){
+    if(i['name'] == name){
+      document.getElementById('taskDescription').innerText = i["description"];
+      document.getElementById('joinBonus').innerHTML = '解完任務的會得到經驗值 : ' + i['exp'] + ' exp'
+      document.getElementById('taskDescription').innerHTML = i['target'];
+      // document.getElementById('getCourse').onclick = `addCourse('${name}');`
+      $('#getCourse').attr('onclick',`addCourse('${name}');`);
+      return
     }
   }
 }
