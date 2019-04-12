@@ -83,8 +83,9 @@ def finishOrNot(courseName, userID):
         sec = result[i].keys()
         for j in sec : 
             tasks = result[i][j].keys()
-            for k in tasks:
-                taskList[i].append(i + str(j) + '_' + str(k))
+            for k in range(len(tasks)):
+                if tasks[k] != 'desc':
+                    taskList[i].append(i + str(j) + '_' + str(tasks[k]))
     print(json.dumps(taskList))
 
     # part 2
@@ -1281,7 +1282,7 @@ class StatisticHandler(webapp2.RequestHandler):
         for i in range(len(result)):
             result[i] = list(result[i])
             user = {}
-            user['name'] = result[i][0]
+            user['ID'] = result[i][0]
             user['finished'] = json.loads(result[i][len(result[i]) - 1])
             taskList = {}
             
@@ -1317,7 +1318,6 @@ class StatisticHandler(webapp2.RequestHandler):
             
         return finishedList
         
-
     def passTime(self, className):
 
         # part 1. sort the tasklist and get the finished data
@@ -1360,7 +1360,6 @@ class StatisticHandler(webapp2.RequestHandler):
                 timestatistic.append(0.0)
         returndata['averagetime'] = timestatistic
         return returndata
-
 
     def passNum(self, className):
         col = self.__DescTable(className)
@@ -1433,15 +1432,46 @@ class StatisticHandler(webapp2.RequestHandler):
 
         return courseStatistic
             
+    def scoreBoard(self, className):
+        col = self.__DescTable(className)
+        userRecord = self.__getThePassTaskList(className,col)
+        returndata = []
+        for i in userRecord:
+            pnum = 0
+            fnum = 0
+            trynum = 0
+            user =  {}
+            for j in i['taskList'].keys():
+                if i['finished'].has_key(j):
+                    pnum += 1
+                elif i['taskList'][j]:
+                    trynum += 1
+                elif not i['taskList'][j]:
+                    fnum += 1
+            user['ID'] = i['ID']
+            user['score'] = []
+            user['score'].append(pnum)
+            user['score'].append(trynum)
+            user['score'].append(fnum)
+            returndata.append(user)
 
-        
+        return sorted(returndata,key=lambda x : (x['score'][0],x['score'][1],x['score'][2]),reverse=True)
+
+
+
+    
     def get(self, **kwargs):
         self.response.headers['Content-Type'] = 'application/json'
         if kwargs['mode'] == 'passNum':
             self.response.out.write(json.dumps(self.passNum(kwargs['courseName']),indent=4))
         elif kwargs['mode'] == 'passTime':
             self.response.out.write(json.dumps(self.passTime(kwargs['courseName']),indent=4))
-            pass
+        elif kwargs['mode'] == 'scoreBoard':
+            self.response.out.write(json.dumps(self.scoreBoard(kwargs['courseName']),indent=4))
+        elif kwargs['mode'] == 'taskNum':
+            self.response.out.write(len(self.__DescTable(kwargs['courseName'])))
+        
+        
         
         
 class backTrack(webapp2.RequestHandler):
