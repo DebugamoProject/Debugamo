@@ -1245,8 +1245,7 @@ class StatisticHandler(webapp2.RequestHandler):
             % className
         )
         result = json.loads(cursor.fetchall()[0][0])
-        return list(result.keys())
-        
+        return list(result.keys())   
 
     def __DescTable(self, tableName):
         """
@@ -1301,9 +1300,67 @@ class StatisticHandler(webapp2.RequestHandler):
             
 
         return userRecord
+
+    def __getfinished(self,tableName):
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        cursor.execute(
+            """
+            SELECT finished FROM %s
+            """ % tableName
+        )
+        result = cursor.fetchall()
+
+        finishedList = []
+        for i in result:
+            finishedList.append(json.loads(i[0]))
+            
+        return finishedList
         
-        # pass
+
+    def passTime(self, className):
+
+        # part 1. sort the tasklist and get the finished data
+        taskList = self.__DescTable(className)
+        courseNamespace = self.__getCourseLevelNameSpace(className)
+
+        taskInNamespace = {}
+        for i in courseNamespace:
+            taskInNamespace[i] = []
+            for j in taskList:
+                if re.search(i, j) != None:
+                    taskInNamespace[i].append(j)
+
+        for i in taskInNamespace.keys():
+            taskInNamespace[i] = multikeySort(taskInNamespace[i],i)
         
+        col = []
+        for i in taskInNamespace.keys():
+            for j in taskInNamespace[i]:
+                col.append(j)
+
+        finished = self.__getfinished(className)
+
+        # part 2. statistic
+        returndata = {}
+        returndata['courseList'] = col
+        timestatistic = []
+        
+        for i in col:
+            time = 0
+            finishedAmount = 0
+            for j in finished:
+                if j.has_key(i):
+                    finishedAmount += 1
+                    time += j[i]
+            
+            if finishedAmount:
+                timestatistic.append(float(time) / float(finishedAmount))
+            else:
+                timestatistic.append(0.0)
+        returndata['averagetime'] = timestatistic
+        return returndata
+
 
     def passNum(self, className):
         col = self.__DescTable(className)
@@ -1380,7 +1437,11 @@ class StatisticHandler(webapp2.RequestHandler):
         
     def get(self, **kwargs):
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.out.write(json.dumps(self.passNum("Debugging"),indent=4))
+        if kwargs['mode'] == 'passNum':
+            self.response.out.write(json.dumps(self.passNum(kwargs['courseName']),indent=4))
+        elif kwargs['mode'] == 'passTime':
+            self.response.out.write(json.dumps(self.passTime(kwargs['courseName']),indent=4))
+            pass
         
         
 class backTrack(webapp2.RequestHandler):
@@ -1533,7 +1594,9 @@ app = webapp2.WSGIApplication([
     webapp2.Route(r'/userGameData/<user>/<task>',handler=GameBackendHandler,name='userGameData'),
     webapp2.Route(r'/backTrack/<user>/<task>/<level>',handler=backTrack,name="backTrackData"),
     webapp2.Route(r'/notice/<mode>/<user>',handler=Notice,name="notice"),
-    webapp2.Route(r'/chart',handler=StatisticHandler, name="statistic")
+    webapp2.Route(r'/chart/<mode>/<courseName>',handler=StatisticHandler, name="statistic"),
+    # webapp2.Route(r'/chart/passTime/<courseName>',handler=StatisticHandler, name="passTime"),
+
     # webapp2.Route(r'/debugging/public', handler=DebugPublic, name='debuuging_punlic'),
     # webapp2.Route(r'/debugging/js', handler=LogPage, name='log'),
 
