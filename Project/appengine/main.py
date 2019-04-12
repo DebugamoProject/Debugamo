@@ -405,10 +405,14 @@ class UserPage(webapp2.RequestHandler):
                     self.response.location = '/'
                 return self.response
             
-            path = path.format(result)
-            # return webapp2.redirect('/')
-            template_values = ''
-            return self.response.write(template.render(path, template_values))
+            if result == 'teacher':
+                backend_url = '/backend/' + self.request.cookies.get('user')
+                return webapp2.redirect(backend_url)
+            else:
+                path = path.format(result)
+                # return webapp2.redirect('/')
+                template_values = ''
+                return self.response.write(template.render(path, template_values))
         else:
             return webapp2.redirect('/')
 
@@ -1095,45 +1099,49 @@ class GameBackendHandler(webapp2.RequestHandler):
         /backend/<user>/<request>
         Needs login check!!!!
         """
-        db = connect_to_cloudsql()
-        cursor = db.cursor()
-        user = kwargs['user']
-        sql = """
-        SELECT identity FROM users WHERE email='%s'
-        """ % (user)
-        try:
-            cursor.execute(sql)
-        except:
-            raise TypeError(sql)
-        result = cursor.fetchall()
-
-        if(len(result) > 0 and result[0][0] == 'teacher'):
-            print('I am a teacher')
-        else:
-            return self.response.set_status(404)
-
-        if kwargs.has_key('request') and kwargs['request'] == 'courses':
-            cursor.execute("""
-            SELECT * FROM classTB WHERE developer = "%s"
-            """ % (kwargs['user']))
+        print(self.request.cookies)
+        if self.request.cookies.get('login') == 'TRUE':
+            db = connect_to_cloudsql()
+            cursor = db.cursor()
+            user = kwargs['user']
+            sql = """
+            SELECT identity FROM users WHERE email='%s'
+            """ % (user)
+            try:
+                cursor.execute(sql)
+            except:
+                raise TypeError(sql)
             result = cursor.fetchall()
-            self.response.headers['Content-Type'] = 'application/json'
-            return self.response.out.write(json.dumps(result,indent=4))
-        for key,item in kwargs.iteritems():
-            print('key is %s item is %s' % (key,item))
 
-        if kwargs.has_key('request') and kwargs['request'] == 'members':
-            cursor.execute("""
-            SELECT ID FROM %s
-            """ % (kwargs['course_id']))
-            result = cursor.fetchall()
-            self.response.headers['Content-Type'] = 'application/json'
-            return self.response.out.write(json.dumps(result, indent=4))
+            if(len(result) > 0 and result[0][0] == 'teacher'):
+                print('I am a teacher')
+            else:
+                return self.response.set_status(404)
+
+            if kwargs.has_key('request') and kwargs['request'] == 'courses':
+                cursor.execute("""
+                SELECT * FROM classTB WHERE developer = "%s"
+                """ % (kwargs['user']))
+                result = cursor.fetchall()
+                self.response.headers['Content-Type'] = 'application/json'
+                return self.response.out.write(json.dumps(result,indent=4))
+            for key,item in kwargs.iteritems():
+                print('key is %s item is %s' % (key,item))
+
+            if kwargs.has_key('request') and kwargs['request'] == 'members':
+                cursor.execute("""
+                SELECT ID FROM %s
+                """ % (kwargs['course_id']))
+                result = cursor.fetchall()
+                self.response.headers['Content-Type'] = 'application/json'
+                return self.response.out.write(json.dumps(result, indent=4))
+            else:
+                db.commit()
+                db.close()
+
+                return self.response.out.write(template.render('templates/backend/teacher1.html',''))
         else:
-            db.commit()
-            db.close()
-
-            return self.response.out.write(template.render('templates/backend/teacher1.html',''))
+            return webapp2.redirect('/')
 
     def post(self,**kwargs):
 

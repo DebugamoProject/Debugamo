@@ -32,7 +32,7 @@ function getCourse(){
         $(objCourses[c.id]).find('.dropdownBar').attr('onclick',"$(this).parent().parent().children('.levels').slideToggle();");
         $(objCourses[c.id]).find('.up').attr('onclick',"$(this).parent().slideToggle();");
     }
-    console.log(objCourses)
+    // console.log(objCourses)
     return objCourses
 }
 
