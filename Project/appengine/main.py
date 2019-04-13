@@ -339,20 +339,55 @@ class LogPage(webapp2.RequestHandler):
             self.response.out.write(log.ip_address + ',')
 
 class TestPage(webapp2.RequestHandler):
-    def get(self):
+    def getzhTestTableData(self):
         db = connect_to_cloudsql()
         cursor = db.cursor()
         cursor.execute(
             """
-            SELECT ID FROM Debugging;
+            select * from zhTest;
             """
         )
         result = cursor.fetchall()
-        self.response.out.write(json.dumps(result,indent=4))
+        data = []
+        subdata = []
+        for i in result:
+            subdata = []
+            subdata.append(i[0])
+            subdata.append(json.loads(i[1].decode('utf-8')))
+            data.append(subdata)
+        print(data)
+        return data
+
+    def get(self,**kwargs):
+        
+        if len(kwargs.keys()) == 0:
+            return self.response.out.write(template.render('testpage.html', ''))
+        elif kwargs.has_key('data'):
+            if kwargs['data'] == 'data':
+                self.response.headers['Content-Type'] = 'application/json'
+                data = self.getzhTestTableData()
+                # print(json.dumps())
+                return self.response.out.write(json.dumps(self.getzhTestTableData(),indent=4).encode('utf-8'))
+            
 
     def post(self):
-        request = self.request.body
-        print(request)
+        request = json.loads(self.request.body)
+        print(json.dumps(request, indent=4))
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        # a = str()
+        
+        # print("""
+        #     INSERT INTO zhTest(name, Data) VALUES('%s','%s')
+        #     """ % (request['name'].encode('utf-8'), json.dumps(request['data'])))
+        cursor.execute(
+            u"""
+            INSERT INTO zhTest(name, Data) VALUES('{}','{}')
+            """ .format(request['name'], json.dumps(request['data'])).encode('latin-1')
+        )
+        db.commit()
+        db.close()
+        
                 
 class MainPage(webapp2.RequestHandler):
 
@@ -788,11 +823,6 @@ class Class(webapp2.RequestHandler):
                     courseData['levels'][i][j[0]][j[2]] = result[i][j[0]][j[2]]
         
         # part 2 insert level into classTB
-        # pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-        # a = json.dumps(courseData['levels'])
-        
-        # print('randomChoice')
-        # print(random.sample(pool,5))
     
         ################# HERE occure BUG!
         print(json.dumps(courseData,indent=4))
@@ -814,9 +844,19 @@ class Class(webapp2.RequestHandler):
         for i in courseData['tableLevels']:
             tableInstruction.append(i + ' JSON')
         tableInstruction = ' , '.join(tableInstruction) 
-
+        tableInstruction = 'ID CHAR(11) ,' + tableInstruction + ', finished JSON'
+        print(tableInstruction)
         cursor.execute("""create table %s(%s);""" % (courseData['name'],tableInstruction))
+        
+        # part 4 teacher course update
 
+        # it is no need to check the courseData['name'] is in the json array,
+        # because call self.__createCourse after self.__checkCourseData
+        cursor.execute(
+            """
+            UPDATE users SET courses=JSON_ARRAY_APPEND(courses, '$', '%s') where ID='%s'
+            """% (courseData['name'],courseData['developer'])
+        )
 
         db.commit()
         db.close()
@@ -861,26 +901,21 @@ class Class(webapp2.RequestHandler):
         courseData['CourseCode'] = courseCode
 
         return True
-
-
-        pass
     
-    def post(self,**kwargs):
+    def participate(self):
         request = self.request
-        arguments = request.arguments()
         db = connect_to_cloudsql()
         cursor = db.cursor()
-
-        if len(kwargs) == 1 : 
-            print("request.get('user')",request.get('user'))
-            cursor.execute(
-                """
-                SELECT courses,gameID FROM users WHERE email='%s'
-                """ % request.get('user')
-            )
-            data = cursor.fetchall()
-            GameID = data[0][1]
-            result = list(json.loads(data[0][0]))
+        print("request.get('user')",request.get('user'))
+        cursor.execute(
+            """
+            SELECT courses,gameID FROM users WHERE email='%s'
+            """ % request.get('user')
+        )
+        data = cursor.fetchall()
+        GameID = data[0][1]
+        result = list(json.loads(data[0][0]))
+        if not (request.get('course') in result):
             result.append(request.get('course'))
             print(result)
             cursor.execute(
@@ -895,14 +930,24 @@ class Class(webapp2.RequestHandler):
                 """
                 % (request.get('course'), GameID)
             )
-            
+            db.commit()
             db.close()
+        else:
+            return False
+        
+    def post(self,**kwargs):
+        request = self.request
+        arguments = request.arguments()
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+
+        if len(kwargs) == 1 : 
+            self.participate()
             return self.response.out.write('successful')
         elif len(kwargs) == 2 : 
             print(json.dumps(kwargs, indent=4))
             courseData = json.loads(self.request.body)
             courseData['developer'] = kwargs['user']
-            # print(json.dumps(courseData, indent=4))
             if self.__checkCourseData(courseData):
                 self.__creatCourse(courseData)
             pass
@@ -1457,9 +1502,6 @@ class StatisticHandler(webapp2.RequestHandler):
 
         return sorted(returndata,key=lambda x : (x['score'][0],x['score'][1],x['score'][2]),reverse=True)
 
-
-
-    
     def get(self, **kwargs):
         self.response.headers['Content-Type'] = 'application/json'
         if kwargs['mode'] == 'passNum':
@@ -1603,6 +1645,7 @@ app = webapp2.WSGIApplication([
     webapp2.Route(r'/user/<email>', handler=Email, name='email'),
     webapp2.Route(r'/user/<email>/<item>', handler=Email_Item, name='email_item'),
     webapp2.Route(r'/test', handler=TestPage, name='test'),
+    webapp2.Route(r'/test/<data>', handler=TestPage, name='testData'),
     webapp2.Route(r'/language/<page>/<lang>', handler=LangPage, name='lang'),
     webapp2.Route(r'/register', handler=Register, name='register'),
     webapp2.Route(r'/login', handler=Login, name='login'),

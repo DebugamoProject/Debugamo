@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="input">
+    <button id="submit">
+        Submit
+    </button>
+    <div id="zhTest">
+        
+    </div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    $('#submit').click(function(e){
+        var text = $('#input').val()
+        $.ajax({
+            type: "POST",
+            url: "/test",
+            data:JSON.stringify({
+                "name" : text,
+                "data" : {
+                    "desc" : "這是測試資料"
+                }
+            }),
+            dataType: "JSON",
+            success: function (response) {
+                console.log(response);
+            }
+        });
+    })
+</script>
+</html>
