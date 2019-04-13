@@ -65,73 +65,26 @@ def connect_to_cloudsql():
 def finishOrNot(courseName, userID):
     db = connect_to_cloudsql()
     cursor = db.cursor()
-    
-    #part 1
-    #extract all of levels of course from classTB 
+    ## get the finshed
     cursor.execute(
         """
-        SELECT levels FROM classTB WHERE name='%s'
+        SELECT finished FROM %s WHERE ID='%s'
+        """ %(courseName, userID)
+    )
+    finished = json.loads(cursor.fetchall()[0][0])
+
+    ## get the tasklist
+    cursor.execute(
+        """
+        DESC %s
         """ % courseName
     )
-    
-    result = json.loads(cursor.fetchall()[0][0])
-    # print(json.dumps(result,indent=4))
-    taskList = {}
-    keys = result.keys()
-    for i in keys:
-        taskList[i] = []
-        sec = result[i].keys()
-        for j in sec : 
-            tasks = result[i][j].keys()
-            for k in range(len(tasks)):
-                if tasks[k] != 'desc':
-                    taskList[i].append(i + str(j) + '_' + str(tasks[k]))
-    print(json.dumps(taskList))
+    desc = cursor.fetchall()
+    tasklist = []
+    for i in desc:
+        tasklist.append(i[0])
+    return float(len(finished.keys()) / float(len(tasklist) - 2))
 
-    # part 2
-    # judge the task if it has been completed.
-
-    taskScopeKeys = taskList.keys()
-
-    taskSQLQuery = {}
-    
-    for i in taskScopeKeys:
-        sqlInstruction = 'SELECT '
-        col = ', '.join(taskList[i])
-        sqlInstruction += col + ' FROM ' + i + " WHERE ID='%s';" % userID
-        taskSQLQuery[i]= sqlInstruction
-    print(json.dumps(taskList,indent=4))    
-    print('\n\n\nSQLquery')
-    print(taskSQLQuery)
-    taskResult = {}
-    for i in taskScopeKeys:
-        cursor.execute(
-            taskSQLQuery[i]
-        )
-        result = cursor.fetchall()[0]
-        taskResult[i] = {}
-        taskResult[i]['finish'] = []
-        taskResult[i]['failed'] = []
-        
-        for j in range(len(taskList[i])) :
-            # print(type(result[j])) 
-            if(result[j] is not None):
-                # print(len(result[j]))
-                if (finishOrNotJsonProcess(json.loads(result[j])) == 1):
-                    taskResult[i]['finish'].append(taskList[i][j])
-                else:
-                    taskResult[i]['failed'].append(taskList[i][j])
-            # taskResult[i][taskList[i][j]] = json.loads(result[j])
-            else : 
-                taskResult[i]['failed'].append(taskList[i][j])
-                # taskResult[i][taskList[i][j]] = 0
-    # print(json.dumps(taskResult,indent=4))
-    return taskResult
-
-
-    # part 3 
-    # sort the finish tasks and unfinish task
-    
     pass
 
 def finishOrNotJsonProcess(data):
@@ -978,7 +931,7 @@ class Class(webapp2.RequestHandler):
             result = self.__CourseToJSON(result)
             self.response.headers['Content-Type'] = 'application/json'
             return self.response.out.write(json.dumps(result,indent=4))
-            pass
+            
         elif len(kwargs.keys()) == 2:
             user = kwargs['user']
             cursor.execute(
@@ -1043,12 +996,11 @@ class Class(webapp2.RequestHandler):
                     finish = 0
                     failed = 0
                     result = finishOrNot(i['name'],userID)
-                    gameKeys = result.keys()
-                    for j in gameKeys:
-                        finish += len(result[j]['finish'])
-                        failed += len(result[j]['failed'])
+                    # print('================================')
+                    # print(result)
+
                     i["url"] = "&user=%s&task=%s" %(str(userID),i["name"])
-                    i["rate"] = round((float(finish) / float(failed + finish)), 3)
+                    i["rate"] = round(result, 3)
                 self.response.headers['Content-Type'] = 'application/json'
                 self.response.out.write(json.dumps(userCourse,indent=4))
                 pass
