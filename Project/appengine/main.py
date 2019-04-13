@@ -1085,10 +1085,12 @@ class GameBackendHandler(webapp2.RequestHandler):
             return False
 
         deltaTime = actionList[endOfTaskAction]['time'] - actionList[0]['time']
-        print(deltaTime)
+        
+        if not deltaTime:
+            return False
         
         if(level in finishedTask):
-            if result[level] < deltaTime:
+            if deltaTime < result[level]  :
                 result[level] = deltaTime
                 cursor.execute(
                     """
@@ -1109,8 +1111,6 @@ class GameBackendHandler(webapp2.RequestHandler):
             db.commit()
             return True
 
-        
-        
         return True
         
 
