@@ -926,9 +926,9 @@ class Class(webapp2.RequestHandler):
             
             cursor.execute(
                 """
-                INSERT INTO %s(ID) VALUES('%s')
+                INSERT INTO %s(ID,finished) VALUES('%s','%s')
                 """
-                % (request.get('course'), GameID)
+                % (request.get('course'), GameID, json.dumps({}))
             )
             db.commit()
             db.close()
@@ -1439,7 +1439,7 @@ class StatisticHandler(webapp2.RequestHandler):
             passTask = []
             haveTried = []
             notTried = []
-            user['name'] = i['name']
+            user['name'] = i['ID']
             taskList = i['taskList'].keys()
             for j in taskList:
                 taskNamespace = re.sub(tasknum, '', j)
