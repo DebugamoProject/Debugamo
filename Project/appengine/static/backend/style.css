@@ -198,3 +198,15 @@ a{
     float: right;
     margin-right: 10px;
 }
+
+.chart-selector{
+    cursor: pointer;
+}
+.chart-selector.active{
+    background-color: lightgray !important;
+}
+
+#course_id_display{
+    font-weight: bold;
+    font-size: 25px;
+}
