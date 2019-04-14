@@ -71,7 +71,13 @@ def finishOrNot(courseName, userID):
         SELECT finished FROM %s WHERE ID='%s'
         """ %(courseName, userID)
     )
-    finished = json.loads(cursor.fetchall()[0][0])
+    print('=================')
+    print(courseName)
+    print(userID)
+    print('=================')
+    result = cursor.fetchall()
+    print(result)
+    finished = json.loads(result[0][0])
 
     ## get the tasklist
     cursor.execute(
@@ -713,7 +719,8 @@ class Class(webapp2.RequestHandler):
                 "target" : result[0][3],
                 "exp" : result[0][4],
                 "type" : result[0][5],
-                "public" : result[0][6]
+                "public" : result[0][6],
+                "NO" : result[0][7]
             }
             userTask.append(result)
         return userTask
@@ -885,7 +892,7 @@ class Class(webapp2.RequestHandler):
             db.close()
         else:
             return False
-        
+
     def post(self,**kwargs):
         request = self.request
         arguments = request.arguments()
@@ -1000,6 +1007,13 @@ class Class(webapp2.RequestHandler):
                 self.response.headers['Content-Type'] = 'application/json'
                 self.response.out.write(json.dumps(userCourse,indent=4))
                 pass
+            elif kwargs['request'] == 'classID':
+                data = {}
+                for i in userCourse:
+                    data[i['name']] = i['NO']
+                self.response.headers['Content-Type'] = 'application/json'
+                return self.response.out.write(json.dumps(data,indent=4))
+                
                 
 class GameBackendHandler(webapp2.RequestHandler):
 
