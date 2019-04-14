@@ -30,7 +30,7 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     autoescape=True)
 
 def multikeySort(sameNamespaceTask, namespace):
-    
+
     return sorted(sameNamespaceTask, key = lambda x : ((re.sub(namespace,'',x)[0],re.sub(namespace,'',x)[2])))
     
 
@@ -340,8 +340,7 @@ class TestPage(webapp2.RequestHandler):
         )
         db.commit()
         db.close()
-        
-                
+                        
 class MainPage(webapp2.RequestHandler):
 
     def get(self):
@@ -412,7 +411,6 @@ class Email(webapp2.RequestHandler):
             cursor = db.cursor()
             cursor.execute("SELECT name, gameID, email, birthday, level, exp FROM users WHERE email = '{}'".format(email))
             sqlresult = cursor.fetchall()[0]
-            
             userdata = {}
             userdata['name'] = sqlresult[0]
             userdata['id'] = sqlresult[1]
@@ -996,11 +994,9 @@ class Class(webapp2.RequestHandler):
                     finish = 0
                     failed = 0
                     result = finishOrNot(i['name'],userID)
-                    # print('================================')
-                    # print(result)
-
                     i["url"] = "&user=%s&task=%s" %(str(userID),i["name"])
                     i["rate"] = round(result, 3)
+
                 self.response.headers['Content-Type'] = 'application/json'
                 self.response.out.write(json.dumps(userCourse,indent=4))
                 pass
@@ -1065,7 +1061,6 @@ class GameBackendHandler(webapp2.RequestHandler):
 
         return True
         
-
     def extractXML(self,xmlStr):
         pattern = r'\sxmlns=\\?"http://www.w3.org/1999/xhtml\\?"'
         xmlStr = re.sub(pattern,'',xmlStr)
@@ -1464,10 +1459,7 @@ class StatisticHandler(webapp2.RequestHandler):
             self.response.out.write(json.dumps(self.scoreBoard(kwargs['courseName']),indent=4))
         elif kwargs['mode'] == 'taskNum':
             self.response.out.write(len(self.__DescTable(kwargs['courseName'])))
-        
-        
-        
-        
+            
 class backTrack(webapp2.RequestHandler):
 
     def fillXML(self,xmlJson):
@@ -1586,8 +1578,6 @@ class Notice(webapp2.RequestHandler):
             )
             db.commit()
         pass
-
-
 
 LANGUAGE_API = '/language/'
 
