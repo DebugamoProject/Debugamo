@@ -45,6 +45,17 @@ $('.userTaskItem').on('click', function (e) {
     userTaskContentModify(this.id)
 })
 
+$('#musicVolumn').on('change',(e)=>{
+    e.preventDefault();
+    var value = $('#musicVolumn').val();
+    console.log(value);
+    var audio = document.getElementById('audio');
+    console.log(audio)
+    console.log(audio.volumn);
+    audio.volumn = String(value*0.01);
+    audio.play();
+})
+
 /*
 $('#add-class-trigger').on('click', function (e) {
     e.preventDefault();

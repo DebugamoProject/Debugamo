@@ -218,6 +218,7 @@ function userTaskContentModify(name){
     if(i['name'] == name){
       document.getElementById('userTaskBonus').innerHTML = '解完任務的會得到經驗值 : ' + i['exp'] + ' exp'
       document.getElementById('usertaskDescription').innerHTML = i['target'];
+      // document.getElementById('startMission').onclick = 'window.location.replace(' + `/debugging?lang=zh-hant&level=1${i['url']}&mode=gamming` + ');';
       $('#startMission').attr('href', `/debugging?lang=zh-hant&level=1${i['url']}&mode=gamming`);
       $('#backTrackMission').attr('href',`/debugging?lang=zh-hant&level=1${i['url']}&mode=backTrack`);
       var rate = i['rate'] * 100 + '%';
@@ -278,3 +279,34 @@ function getUserTaskData(){
   return userTaskData;
 }
 
+var init = function(){
+  var volumn;
+  if (localStorage.musicVolumn == undefined){
+    localStorage.musicVolumn = '0.3';
+  }else{
+    volumn = localStorage.musicVolumn;
+  }
+
+  var audio = document.getElementById('audio');
+  audio.volumn = volumn;
+  
+  var promise = audio.play();
+  if(promise !== undefined){
+    promise.then(_=>{
+      audio.play();
+    }).catch(error=>{
+      localStorage.musicVolumn = '0';
+      document.getElementById('musicVolumn').value = '0'
+    })
+  }
+  // if(promise !== null){
+  //   promise.catch(error=>{
+  //     audio.play();
+  //   })
+  // }
+  
+  var musicVolumn = document.getElementById('musicVolumn');
+  musicVolumn.value = volumn * 100;
+}
+
+// init();

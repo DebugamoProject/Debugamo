@@ -83,7 +83,7 @@
   } catch (e) {
     // Don't even think of throwing an error.
   }
-  var debug = false;
+  var debug = true;
 
   // DebugamO: add done property into localStorage
   if (!window.localStorage.hasOwnProperty('done')) {

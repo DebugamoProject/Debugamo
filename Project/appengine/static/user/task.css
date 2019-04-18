@@ -13,6 +13,20 @@
     text-align: center;
 }
 
+button{
+    text-decoration: none;
+    color: white;
+}
+
+.buttonLink{
+    text-decoration: none;
+    color: white;
+}
+.buttonLink:hover{
+    text-decoration: none;
+    color: white;
+}
+
 .nameTitle{
     /* color: white; */
     font-size: 2em;

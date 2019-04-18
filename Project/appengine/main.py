@@ -471,8 +471,8 @@ class Login(webapp2.RequestHandler):
         request = self.request
         email = request.get('login-email')
         password = request.get('login-password')
-        loginSQL = "SELECT * FROM users WHERE email = '{}' and password = '{}'".format(email,password)
-
+        loginSQL = "SELECT * FROM users WHERE email = '{}' and password = '{}' or gameID='{}' and password = '{}' ".format(email,password,email,password)
+        
         db = connect_to_cloudsql()
         cursor = db.cursor()
         cursor.execute(loginSQL)
@@ -481,6 +481,7 @@ class Login(webapp2.RequestHandler):
         # if(result[4] == 'teacher'):
         
         if len(result) == 1:
+            self.response.set_cookie('ID',result[0][1])
             self.response.set_cookie('identity',result[0][4])
             return self.response.write('successful')
         else:
@@ -1013,8 +1014,7 @@ class Class(webapp2.RequestHandler):
                     data[i['name']] = i['NO']
                 self.response.headers['Content-Type'] = 'application/json'
                 return self.response.out.write(json.dumps(data,indent=4))
-                
-                
+                            
 class GameBackendHandler(webapp2.RequestHandler):
 
     def checkFinishTask(self, task, user, actionList, level):
@@ -1242,7 +1242,7 @@ class GameBackendHandler(webapp2.RequestHandler):
 
 class StatisticHandler(webapp2.RequestHandler):
 
-    def __getCourseLevelNameSpace(self,className):
+    def getCourseLevelNameSpace(self,className):
         db = connect_to_cloudsql()
         cursor = db.cursor()
         cursor.execute(
@@ -1254,7 +1254,7 @@ class StatisticHandler(webapp2.RequestHandler):
         result = json.loads(cursor.fetchall()[0][0])
         return list(result.keys())   
 
-    def __DescTable(self, tableName):
+    def DescTable(self, tableName):
         """
         Desc specific table 
         """
@@ -1274,7 +1274,7 @@ class StatisticHandler(webapp2.RequestHandler):
     
         return col
 
-    def __getThePassTaskList(self,className, col):
+    def getThePassTaskList(self,className, col):
         userRecord = []
         db = connect_to_cloudsql()
         cursor = db.cursor()
@@ -1308,7 +1308,7 @@ class StatisticHandler(webapp2.RequestHandler):
 
         return userRecord
 
-    def __getfinished(self,tableName):
+    def getfinished(self,tableName):
         db = connect_to_cloudsql()
         cursor = db.cursor()
         cursor.execute(
@@ -1323,13 +1323,9 @@ class StatisticHandler(webapp2.RequestHandler):
             finishedList.append(json.loads(i[0]))
             
         return finishedList
-        
-    def passTime(self, className):
 
-        # part 1. sort the tasklist and get the finished data
-        taskList = self.__DescTable(className)
-        courseNamespace = self.__getCourseLevelNameSpace(className)
-
+    def sortedTheTaskList(self,className,taskList):
+        courseNamespace = self.getCourseLevelNameSpace(className)
         taskInNamespace = {}
         for i in courseNamespace:
             taskInNamespace[i] = []
@@ -1344,8 +1340,14 @@ class StatisticHandler(webapp2.RequestHandler):
         for i in taskInNamespace.keys():
             for j in taskInNamespace[i]:
                 col.append(j)
+        return col
+        
+    def passTime(self, className):
 
-        finished = self.__getfinished(className)
+        # part 1. sort the tasklist and get the finished data
+        taskList = self.DescTable(className)
+        col = self.sortedTheTaskList(className,taskList)
+        finished = self.getfinished(className)
 
         # part 2. statistic
         returndata = {}
@@ -1368,8 +1370,8 @@ class StatisticHandler(webapp2.RequestHandler):
         return returndata
 
     def passNum(self, className):
-        col = self.__DescTable(className)
-        namespace = self.__getCourseLevelNameSpace(className)
+        col = self.DescTable(className)
+        namespace = self.getCourseLevelNameSpace(className)
         namespaceTasks = {}
         for i in namespace:
             namespaceTasks[i] = []
@@ -1393,7 +1395,7 @@ class StatisticHandler(webapp2.RequestHandler):
         pnum = 0
         fnum = 0
         trynum = 0
-        userRecord = self.__getThePassTaskList(className, col)
+        userRecord = self.getThePassTaskList(className, col)
         tasknum = r'\d_\d'
         for i in userRecord:
             user = {}
@@ -1439,8 +1441,8 @@ class StatisticHandler(webapp2.RequestHandler):
         return courseStatistic
             
     def scoreBoard(self, className):
-        col = self.__DescTable(className)
-        userRecord = self.__getThePassTaskList(className,col)
+        col = self.DescTable(className)
+        userRecord = self.getThePassTaskList(className,col)
         returndata = []
         for i in userRecord:
             pnum = 0
@@ -1472,7 +1474,7 @@ class StatisticHandler(webapp2.RequestHandler):
         elif kwargs['mode'] == 'scoreBoard':
             self.response.out.write(json.dumps(self.scoreBoard(kwargs['courseName']),indent=4))
         elif kwargs['mode'] == 'taskNum':
-            self.response.out.write(len(self.__DescTable(kwargs['courseName'])))
+            self.response.out.write(len(self.DescTable(kwargs['courseName'])))
             
 class backTrack(webapp2.RequestHandler):
 
@@ -1593,6 +1595,123 @@ class Notice(webapp2.RequestHandler):
             db.commit()
         pass
 
+class Ranking(StatisticHandler):
+
+    def ranking(self,courseName,user):
+        # step 1 get the user's finish data
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        cursor.execute(
+            """
+            SELECT users.gameID, %s.finished FROM users JOIN %s ON %s.ID=users.gameID WHERE users.email='%s';
+            """ %(courseName,courseName, courseName, user)
+        )
+        result = cursor.fetchall()
+
+        userdata = {}
+        userdata['id'] = result[0][0]
+        userdata['finished'] = json.loads(result[0][1])
+        userdata['finishedTask'] = set(userdata['finished'].keys())
+        time = 0
+        for i in userdata['finishedTask']:
+            time += userdata['finished'][i]
+        userdata['time'] = time
+
+        # step 2 get the course finishe userdata
+
+        # cursor.execute()
+
+        cursor.execute(
+            """
+            SELECT ID, finished FROM %s WHERE ID <> '%s'
+            """ % (courseName, userdata['id'])
+        )
+        data = []
+        result = cursor.fetchall()
+        for i in data:
+            ikeys = set(json.loads(i[1]).keys())
+            
+
+
+
+        # data = json.loads(data)
+        return userdata
+        pass
+    
+    def eachTask(self,courseName,taskCol,user):
+        """
+        get the user's task from table
+        """
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        cursor.execute(
+            """
+            SELECT users.gameID, %s.finished FROM users JOIN %s ON %s.ID = users.gameID WHERE users.email = '%s'
+            """ % (courseName,courseName, courseName, user)
+        )
+        result = cursor.fetchall()
+        userData = {}
+        userData['id'] = result[0][0]
+        userData['finished'] = json.loads(result[0][1])
+        userData['finishedTask'] = userData['finished'].keys()
+
+        data = {}
+
+        for i in range(len(userData['finishedTask'])):
+            # each task
+            cursor.execute(
+                """
+                SELECT ID, finished FROM %s WHERE JSON_EXTRACT(%s.finished, '$.%s') IS NOT NULL
+                """ % (courseName, courseName, userData['finishedTask'][i])
+            )
+            result = cursor.fetchall()
+            data[userData['finishedTask'][i]] = []
+            for j in range(len(result)):
+                u = {
+                    "ID" : result[j][0],
+                    "finished" : json.loads(result[j][1])
+                }
+                data[userData['finishedTask'][i]].append(u)
+            
+            pass
+        
+        # sort each task
+        for i in data.keys():
+            data[i] = sorted(data[i],key=lambda x : x['finished'][i])
+
+        # create url
+        for i in data.keys():
+            pattern = r'\d_\d'
+            level = re.search(pattern,i).group(0)
+            level = (int(level[0]) - 1) * 3 + int(level[2])
+            for j in range(len(data[i])):
+                data[i][j]['url'] ="/debugging?lang=zh-hant&level=%s&user=%s&task=%s&mode=backTrack" % (level, data[i][j]['ID'],courseName)
+
+        return data
+        pass
+
+
+    def get(self,**kwargs):
+        print(kwargs)
+        self.response.headers['Content-Type'] = 'application/json'
+        if kwargs['mode'] == 'overview':
+            return self.response.out.write(json.dumps(self.scoreBoard(kwargs['courseName']),indent=4))
+        elif kwargs['mode'] == 'eachTask':
+            return self.response.out.write(json.dumps(self.eachTask(kwargs['courseName'],kwargs['task'], kwargs['user']),indent=4))
+            pass
+        elif kwargs['mode'] == 'ranking':
+            return self.response.out.write(json.dumps(self.ranking(kwargs['courseName'],kwargs['user']),indent=4))
+            pass
+        return self.response.out.write(json.dumps(kwargs,indent=4))
+        
+        pass
+
+class TeacherBackTrack(GameBackendHandler):
+    def get(self,**kwargs):
+        
+        pass
+    pass
+
 LANGUAGE_API = '/language/'
 
 app = webapp2.WSGIApplication([
@@ -1624,10 +1743,11 @@ app = webapp2.WSGIApplication([
     webapp2.Route(r'/backTrack/<user>/<task>/<level>',handler=backTrack,name="backTrackData"),
     webapp2.Route(r'/notice/<mode>/<user>',handler=Notice,name="notice"),
     webapp2.Route(r'/chart/<mode>/<courseName>',handler=StatisticHandler, name="statistic"),
-    # webapp2.Route(r'/chart/passTime/<courseName>',handler=StatisticHandler, name="passTime"),
-
-    # webapp2.Route(r'/debugging/public', handler=DebugPublic, name='debuuging_punlic'),
-    # webapp2.Route(r'/debugging/js', handler=LogPage, name='log'),
+    webapp2.Route(r'/ranking/<mode>/<courseName>',handler=Ranking, name="ranking"),
+    webapp2.Route(r'/ranking/<mode>/<courseName>/<user>/<task>',handler=Ranking, name="ranking"),
+    webapp2.Route(r'/teacherBackTrack/<courseName>',handler=TeacherBackTrack,name="teacherBackTrack"),
+    webapp2.Route(r'/teacherBackTrack/<courseName>/<task>/<student>',handler=TeacherBackTrack, name='trackTask')
+  
 
 ], debug=True)
 

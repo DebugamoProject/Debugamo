@@ -62,7 +62,7 @@ function makeChart(selected, course_id){
         },
         tooltip: {
             headerFormat: '<b>{point.x}</b><br/>',
-            pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+            pointFormat: '{series.name}: {point.y}<br/>總數: {point.stackTotal}'
         },
         plotOptions: {
             column: {
@@ -96,13 +96,13 @@ function makeChart(selected, course_id){
         let pass_num_data = getPassNum('/chart/passNum/' + course_id);
         statisticChart.update({
             series: [{
-                name: 'passed',
+                name: '通過',
                 data: pass_num_data['passed']
             },{
-                name: 'not_pass',
+                name: '未通過',
                 data: pass_num_data['not_pass']
             }, {
-                name: 'not_tried',
+                name: '未嘗試',
                 data: pass_num_data['not_tried']
             }]
         });
@@ -139,13 +139,13 @@ function makeChart(selected, course_id){
         }
         statisticChart.update({
             series: [{
-                name: 'pass num',
+                name: '通過數',
                 data: student_status['pass_num']
             },{
-                name: 'not pass yet',
+                name: '未通過',
                 data: student_status['unpass_num']
             }, {
-                name: 'not tried yet',
+                name: '未嘗試',
                 data: student_status['not_tried_num']
             }]
         });

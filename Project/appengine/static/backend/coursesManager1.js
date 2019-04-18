@@ -15,7 +15,6 @@ function getCourse(){
         classItem.id = c.id;
         classItem.style = 'cursor: pointer';
         var a = document.createElement('nav');
-        // a.id = c.id;
         a.className = 'course';
         a.innerText = c.id;
         $(classItem).append(a);
