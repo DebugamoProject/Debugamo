@@ -1,4 +1,4 @@
-
+var data;
 $('.dropdownBar').on('click', function (e) {
     e.preventDefault();
     console.log(this)
@@ -42,7 +42,8 @@ $('.userTaskItem').on('click', function (e) {
     if ($('.hint').css('display') === 'block') {
         $('.sec').toggle(400);
     }
-    userTaskContentModify(this.id)
+    userTaskContentModify(this.id);
+    rankingManager(this.id);
 })
 
 $('#musicVolumn').on('change',(e)=>{
@@ -165,4 +166,49 @@ function mainContainerHandler() {
         for (var i = 0; i < content.length; i++)
             content[i].style.display = 'none'
     }
+}
+
+function rankingBackTrack(courseName,email){
+    var data
+    $.ajax({
+        type: "GET",
+        url: `/ranking/eachTask/${courseName}/${email}`,
+        dataType: "JSON",
+        async:false,
+        success: function (response) {
+            data = response;
+        }
+    });
+    return data;
+}
+
+function rankingManager(courseName){
+    data = rankingBackTrack(courseName, Cookies.get('user'));
+    var finishedTask = data.length;
+    $('#levelBar').empty();
+    var leveldot = '<div class="level_done level_in_progress">1</div>'
+    for(var i = 0; i < finishedTask - 1; i++){
+        leveldot += `<a href="javascript:checkoutTask(${i + 1})" class="levelItem level_dot" id="task${i + 1}"></a>`
+    }
+    $('#levelBar').append(leveldot);
+    checkoutTask(0);
+}
+
+function checkoutTask(num){
+    console.log('in checkout Task');
+    $('.level_in_progress').replaceWith(`<a href="javascript:checkoutTask(${document.getElementsByClassName('level_in_progress')[0].innerHTML - 1})" class="levelItem level_dot" id="task${document.getElementsByClassName('level_in_progress')[0].innerHTML - 1}"></a>`);
+    $('#task' + num).replaceWith(`<div class="level_done level_in_progress">${num + 1}</div>`)
+    $('#userPart').empty();
+    var content = ''
+    // for(var i = ; i < finishedTask; i++){
+    for (var j = 0; j < data[num].length; j++){
+        content += `<div class="userItem">
+    <ul>
+        <li class="firstItem">${j + 1}</li>
+        <li class="modalItem">${data[num][j]['ID']}</li>
+        <li class="modalItem"><a href="${data[num][j]['url']}">連結</a></li>
+    </ul>
+    </div>`
+    }
+    $('#userPart').append(content);
 }

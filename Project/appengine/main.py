@@ -1638,7 +1638,7 @@ class Ranking(StatisticHandler):
         return userdata
         pass
     
-    def eachTask(self,courseName,taskCol,user):
+    def eachTask(self,courseName,user):
         """
         get the user's task from table
         """
@@ -1655,10 +1655,26 @@ class Ranking(StatisticHandler):
         userData['finished'] = json.loads(result[0][1])
         userData['finishedTask'] = userData['finished'].keys()
 
+        pattern = r'\d_\d'
+        # def finishedTaskSort(k1, k2):
+        #     level1 = re.search(pattern,k1).group(0)
+        #     level1 = (int(level1[0]) - 1) * 3 + int(level1[2])
+
+        #     level2 = re.search(pattern,k2).group(0)
+        #     level2 = (int(level2[0]) - 1) * 3 + int(level2[2])
+        #     return k1 > k2
+            # pass
+        
+        # return userData
+        print(json.dumps(userData,indent=4))
         data = {}
 
         for i in range(len(userData['finishedTask'])):
             # each task
+            # pattern = r'\d_\d'
+            level = re.search(pattern,userData['finishedTask'][i]).group(0)
+            level = (int(level[0]) - 1) * 3 + int(level[2])
+
             cursor.execute(
                 """
                 SELECT ID, finished FROM %s WHERE JSON_EXTRACT(%s.finished, '$.%s') IS NOT NULL
@@ -1666,6 +1682,7 @@ class Ranking(StatisticHandler):
             )
             result = cursor.fetchall()
             data[userData['finishedTask'][i]] = []
+            data[userData['finishedTask'][i]].append(level)
             for j in range(len(result)):
                 u = {
                     "ID" : result[j][0],
@@ -1675,19 +1692,40 @@ class Ranking(StatisticHandler):
             
             pass
         
-        # sort each task
+         # sort each task
         for i in data.keys():
-            data[i] = sorted(data[i],key=lambda x : x['finished'][i])
+            data[i] = sorted(data[i][1:],key=lambda x : x['finished'][i])
+
+        
 
         # create url
         for i in data.keys():
             pattern = r'\d_\d'
             level = re.search(pattern,i).group(0)
             level = (int(level[0]) - 1) * 3 + int(level[2])
-            for j in range(len(data[i])):
+            data[i].insert(0,level)
+            for j in range(1,len(data[i])):
+                
                 data[i][j]['url'] ="/debugging?lang=zh-hant&level=%s&user=%s&task=%s&mode=backTrack" % (level, data[i][j]['ID'],courseName)
+                data[i][j]['task'] = i
+        # return data
 
-        return data
+        returnData = []
+        
+        for i in userData['finishedTask']:
+            # pattern = r'\d_\d'
+            level = re.search(pattern,i).group(0)
+            # returnData.append(level)
+            returnData.append(data[i])
+
+        #sort the array by taskNum
+        returnData = sorted(returnData, key=lambda x : x[0])
+        for i in range(len(returnData)):
+            del returnData[i][0]
+
+       
+
+        return returnData
         pass
 
 
@@ -1697,7 +1735,7 @@ class Ranking(StatisticHandler):
         if kwargs['mode'] == 'overview':
             return self.response.out.write(json.dumps(self.scoreBoard(kwargs['courseName']),indent=4))
         elif kwargs['mode'] == 'eachTask':
-            return self.response.out.write(json.dumps(self.eachTask(kwargs['courseName'],kwargs['task'], kwargs['user']),indent=4))
+            return self.response.out.write(json.dumps(self.eachTask(kwargs['courseName'], kwargs['user']),indent=4))
             pass
         elif kwargs['mode'] == 'ranking':
             return self.response.out.write(json.dumps(self.ranking(kwargs['courseName'],kwargs['user']),indent=4))
@@ -1744,7 +1782,7 @@ app = webapp2.WSGIApplication([
     webapp2.Route(r'/notice/<mode>/<user>',handler=Notice,name="notice"),
     webapp2.Route(r'/chart/<mode>/<courseName>',handler=StatisticHandler, name="statistic"),
     webapp2.Route(r'/ranking/<mode>/<courseName>',handler=Ranking, name="ranking"),
-    webapp2.Route(r'/ranking/<mode>/<courseName>/<user>/<task>',handler=Ranking, name="ranking"),
+    webapp2.Route(r'/ranking/<mode>/<courseName>/<user>',handler=Ranking, name="ranking"),
     webapp2.Route(r'/teacherBackTrack/<courseName>',handler=TeacherBackTrack,name="teacherBackTrack"),
     webapp2.Route(r'/teacherBackTrack/<courseName>/<task>/<student>',handler=TeacherBackTrack, name='trackTask')
   

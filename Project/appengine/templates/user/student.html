@@ -11,6 +11,7 @@
   <!-- <script src="/static/user/user.js"></script> -->
   <link rel="stylesheet" href="../../static/user/style.css">
   <link rel="stylesheet" href="../../static/user/edit.css">
+  <link rel="stylesheet" href="../../common/common.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css"
     integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
     
@@ -52,11 +53,11 @@
     </div>
     <div id="headerRight" class="headerContent">
       <ul class="nav justify-content-center nav-fill">
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link active" href="#" id="news">最新消息</a>
-        </li>
+        </li> -->
         <li class="nav-item" id="missionOverview">
-          <a class="nav-link active" href="#" onclick="tasksOverview();" >任務總覽</a>
+          <a class="nav-link active" href="#" onclick="tasksOverview();">任務總覽</a>
         </li>
         <li class="nav-item" id="missionList">
           <a class="nav-link active" href="javascript:void(0);" onclick="myTaskShow();" >任務清單</a>
@@ -100,7 +101,7 @@
         </div>
       </div>
       <div id="right" class="col-8">
-        <div id="edit" style="display:block;height:auto;">
+        <div id="edit" style="display:none;height:auto;">
           <div id="infoEdit" class="frame" style="height:auto">
             <div id="edit-title">
               <span style="font-size: 40px" data-i18n="edit.title.edit">修改個人資料</span>
@@ -210,7 +211,7 @@
           </div>
         </div>
 
-        <div id="joinTask" style="display:none;" class="frame">
+        <div id="joinTask" style="display:block;" class="frame">
           <div id="taskLeft" class="taskContent framleft">
             <div id="mainTask" class="tasktype dropdown">
               <div class="taskTitle">
@@ -282,7 +283,7 @@
 
             <div class="sec" style="display:none;">
               <button class="btn btn-primary">
-                <a href="javascript:void(0);" id="getCourse">領取</a>
+                <a href="javascript:void(0);" id="getCourse" style="color:white;">領取</a>
               </button>
             </div>
 
@@ -429,7 +430,39 @@
           </button>
         </div>
         <div class="modal-body">
+          <div id="overview">
+            <div id="levelBar">
 
+            </div>
+            <div id="overViewNav">
+              <ul>
+                <li class="firstItem"><span>排行</span></li>
+                <li class="modalItem"><span>ID</span></li>
+                <li class="modalItem"><span>遊戲過程</span></li>
+              </ul>
+            </div>
+
+            <div id="userPart">
+                <!-- <div class="userItem">
+                  <ul>
+                    <li class="firstItem">1</li>
+                    <li class="modalItem">qqq</li>
+                    <li class="modalItem"><a href="">link</a></li>
+                  </ul>
+                </div>
+
+                <div class="userItem">
+                    <ul>
+                        <li class="firstItem">2</li>
+                        <li class="modalItem">new</li>
+                        <li class="modalItem"><a href="">link</a></li>
+                      </ul>
+                </div> -->
+            </div>
+          </div>
+          <div id="eachTaskBackTrack" style="display:none">
+
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
