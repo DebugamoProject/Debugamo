@@ -1078,3 +1078,7 @@ img.showCodeRobot {
 .acItem:hover{
     background-color: lightgray;
 }
+
+.backTrackContainers{
+    border-right: 1px solid lightgrey;
+}

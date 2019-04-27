@@ -166,7 +166,8 @@ Scope.init = function() {
             Scope.studentsbackTrackUIInit();
             // UIinitMode = Scope.studentsbackTrackUIInit;
         }else{
-            Scope.teacherBackTrackUIInit();
+            Scope.studentsbackTrackUIInit();
+            // Scope.teacherBackTrackUIInit();
         }
     }
 
@@ -1244,6 +1245,7 @@ Scope.studentsbackTrackUIInit = function (){
 
 
 Scope.teacherBackTrackUIInit = function (){
+    var height = document.getElementById('debugamo-code-editor-container').getBoundingClientRect().height;
     var backTrackContainer = document.getElementById('backTrackContainer');
     backTrackContainer.style.display = 'grid';
     backTrackContainer.style.gridTemplateColumns = 'repeat(2,1fr)';
@@ -1251,6 +1253,8 @@ Scope.teacherBackTrackUIInit = function (){
     // append students list;
     var sList = document.createElement('div');
     sList.id = 'studentsContainer';
+    sList.className = 'backTrackContainers'
+    // sList.style.borderRight = '1px solid lightgrey;'
     var subTitle = document.createElement('div');
     subTitle.id = 'studentsTitle';
     subTitle.className = 'backTrackContainerTiTle';
@@ -1261,6 +1265,29 @@ Scope.teacherBackTrackUIInit = function (){
     list.id = 'studentsList';
     list.className = 'list';
     sList.append(list);
+    backTrackContainer.append(sList)
+
+
+    ///////////////////////////
+    var actionContainer = document.createElement('div');
+    actionContainer.id = 'actionListContainer';
+    actionContainer.className = 'backTrackContainers';
+
+    var actionList = document.createElement('div');
+    actionList.id = 'actionList';
+    actionList.className = 'list';
+    actionList.style.height = (height - 30) + 'px';
+    
+    var actionSubTitle = document.createElement('div');
+    actionSubTitle.id = 'acrionSubTitle';
+    actionSubTitle.className = 'backTrackContainerTiTle';
+    actionSubTitle.innerText = '動作列表';
+
+    actionContainer.append(actionSubTitle);
+    actionContainer.append(actionList);
+
+    backTrackContainer.append(actionContainer)
+
 }
 
 
@@ -1418,12 +1445,9 @@ Scope.actionPlay = function (actionNum){
 }
 
 
-// Scope.sendDataBeforeLeave = function(){
-//     if(BlocklyGames.MODE == 'gamming')
-//         Debugging.bigQueryLogSend();
-// }
+Scope.loadStudent = function(){
 
-
+}
 
 /**
  * Initialize Blockly and the game.
@@ -1433,3 +1457,5 @@ window.onbeforeunload = function(){
     if(BlocklyGames.MODE == 'gamming')
         Debugging.bigQueryLogSend();
 };
+
+

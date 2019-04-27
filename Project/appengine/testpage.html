@@ -14,6 +14,10 @@
     <div id="zhTest">
         
     </div>
+    <audio loop src="./debugging/public/sound/gidget_tutorial.mp3" id="myAudio" volumn="0.2"></audio>
+    <button id="test">
+        play
+    </button>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>
@@ -33,6 +37,10 @@
                 console.log(response);
             }
         });
+    })
+    $('#test').click((e)=>{
+        var x = document.getElementById('myAudio');
+        x.play();
     })
 </script>
 </html>

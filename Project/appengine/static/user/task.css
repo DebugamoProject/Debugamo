@@ -13,6 +13,20 @@
     text-align: center;
 }
 
+button{
+    text-decoration: none;
+    color: white;
+}
+
+.buttonLink{
+    text-decoration: none;
+    color: white;
+}
+.buttonLink:hover{
+    text-decoration: none;
+    color: white;
+}
+
 .nameTitle{
     /* color: white; */
     font-size: 2em;
@@ -226,4 +240,59 @@ ul#mainTasklist,.tasklist{
     height: 50%;
 
     padding-top: 3em;
+}
+
+.userItem{
+    height: 50px;
+}
+
+.modalItem{
+    display: inline-block;
+    font-size: 18px;
+    width: 30%;
+}
+
+.firstItem{
+    width: 20%;
+    font-size: 18px;
+    display: inline-block;
+}
+
+#overViewNav{
+    border-bottom: 1px solid lightgrey;
+}
+
+.modalItem a{
+    color: blue;
+}
+
+.modalItem a:hover{
+    text-decoration: none;
+}
+
+.levelItem{
+    background: rgb(178, 255, 255);
+    border: 2px solid lightgrey;
+}
+
+.level_in_progress{
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    display: inline-block;
+    border-radius: 50%;
+    margin: 0px 10px;
+}
+
+.level_dot{
+    margin: 0px 5px;
+}
+
+#levelBar{
+    display: block;
+    padding: 5px;
+    border: 1px solid lightgrey;
+    margin: 10px auto;
+    width: 70%;
+    border-radius: 5px;
 }
