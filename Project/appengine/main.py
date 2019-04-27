@@ -1010,8 +1010,15 @@ class Class(webapp2.RequestHandler):
                 pass
             elif kwargs['request'] == 'classID':
                 data = {}
-                for i in userCourse:
-                    data[i['name']] = i['NO']
+                cursor.execute(
+                    """
+                    SELECT name, NO FROM classTB WHERE developer='%s';
+                    """ % (user)
+                )
+                result = cursor.fetchall()
+                print(result)
+                for i in result:
+                    data[i[0]] = i[1]
                 self.response.headers['Content-Type'] = 'application/json'
                 return self.response.out.write(json.dumps(data,indent=4))
                             

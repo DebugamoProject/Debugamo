@@ -46,7 +46,33 @@ function getMembers(id) {
     return members;
 }
 
+function getClassID() {
+    let url = window.location.href;
+    for(let i = 0; i < url.length - 1; i++) {
+        if(url[i] === '/') {
+            if(url.substring(i + 1, i + 8) === "backend") {
+                url = url.substring(0, i + 1); // take https://xxx.xxx.x.x/, the string before 'backend'
+            }
+        }
+    }
+    url = url + 'class/' + Cookies.get('user') + '/classID';
+
+
+    let classID;
+    $.ajax({
+        type: "GET",
+        url: url,
+        datatype: "json",
+        async: false,
+        success: function (response) {
+            classID = response;
+        }
+    });
+    return classID;
+}
+
 var courses = getCourse();
+let classID = getClassID();
 // var courses = new Object;
 
 $('.course').on('click',function(e){
@@ -71,14 +97,17 @@ $(document).on('click', '.courseManage', function(){
         $("#statistic-selected").remove();
         $("#side-selector .row").first().append(course_setting_html);
     }
-    console.log('in course');
-    console.log(courses);
     $('.task-list').children('div').remove();
     $('.task-list').append(courses[$(this)[0].id]);
     // $(this).parent().slideToggle();
 
     // highlight the left pannel course that is selected
     $('#courses #' + $(this)[0].id).addClass('list-group-item-primary');
+
+    // update classID
+    let new_classID = classID[$(this)[0].id];
+    $('#course_id_display').empty();
+    $('#course_id_display').append(new_classID);
 })
 
 
@@ -139,15 +168,16 @@ function getInputValue() {
 }
 
 
+
 function initContent() {
     let id = $('.memberManage.list-group-item-primary')[0].id
 
     // class id for student
     // let class_id = getClassID(id);
     // $('#course_id_display').append(class_id);
-    $('#course_id_display').append('fefewf');
-
-    // task-list
+    let new_classID = classID[id];
+    $('#course_id_display').append(new_classID);
+    // task-list)
     $('.task-list').append(courses[id]);
     
     
