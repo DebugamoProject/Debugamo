@@ -141,10 +141,13 @@ function getInputValue() {
 
 
 function initContent() {
-    // class id for student
-    $('#course_id_display').append('afefwe');
-
     let id = $('.memberManage.list-group-item-primary')[0].id
+
+    // class id for student
+    // let class_id = getClassID(id);
+    // $('#course_id_display').append(class_id);
+    $('#course_id_display').append('fefewf');
+
     // task-list
     $('.task-list').append(courses[id]);
     
