@@ -1757,6 +1757,13 @@ class TeacherBackTrack(GameBackendHandler):
         pass
     pass
 
+class AboutUs(webapp2.RequestHandler):
+    def get(self):
+        path = 'templates/aboutUs/index.html'
+        return self.response.out.write(template.render(path,''))
+        pass
+
+
 LANGUAGE_API = '/language/'
 
 app = webapp2.WSGIApplication([
@@ -1791,8 +1798,9 @@ app = webapp2.WSGIApplication([
     webapp2.Route(r'/ranking/<mode>/<courseName>',handler=Ranking, name="ranking"),
     webapp2.Route(r'/ranking/<mode>/<courseName>/<user>',handler=Ranking, name="ranking"),
     webapp2.Route(r'/teacherBackTrack/<courseName>',handler=TeacherBackTrack,name="teacherBackTrack"),
-    webapp2.Route(r'/teacherBackTrack/<courseName>/<task>/<student>',handler=TeacherBackTrack, name='trackTask')
-  
+    webapp2.Route(r'/teacherBackTrack/<courseName>/<task>/<student>',handler=TeacherBackTrack, name='trackTask'),
+    webapp2.Route(r'/aboutUs',handler=AboutUs, name='AboutUs')
+
 
 ], debug=True)
 

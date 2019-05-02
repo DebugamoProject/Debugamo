@@ -49,6 +49,31 @@
         margin-top: 5px;
         padding: 30px;
     }
+    .mainText{
+        /* height: 5em; */
+        padding: 0px 5px;
+        font-size: 1em;
+        background-color: rgb(233, 233, 233);
+        line-height: 3em;
+        color: rgb(131, 127, 127);
+        border-radius: 5px;
+        font-style: italic;
+    }
+
+    .introTitle{
+        width: 100%;
+        padding: 20px 20px;
+    }
+
+    .introContent{
+        width: 90%;
+        margin: auto;
+    }
+    .introText{
+        font-size: 1em;
+        margin: 3em 0em auto;
+        line-height: 2em;
+    }
 }
 
 @media only screen and (min-width:501px){
@@ -64,76 +89,70 @@
         transition: .8s ease;
         margin-top: 5px;
     }
-    /* .content-left{
-        border-right: 1px solid lightgrey;
-    } */
+    .introContent{
+        display: inline-block;
+        /* border: 1px solid black; */
+        width: 48%;
+    }
+    
+    
+    .introTitle{
+        margin: auto;
+        padding: 5em 15em 5em 15em;
+    }
+    
+    .introText{
+        font-size: 1.5em;
+        margin: 5em 0em auto;
+        line-height: 2em;
+    }
+    
+    
+    .mainText{
+        height: 5em;
+        font-size: 1.5em;
+        background-color: rgb(233, 233, 233);
+        line-height: 5em;
+        color: rgb(131, 127, 127);
+        border-radius: 5px;
+        font-style: italic;
+    }
+    
+    .introSec{
+        padding: 3em 5em 3em 5em;
+    }
+    
+    .content-right{
+        float: right;
+    }
+    
+    .content p{
+        line-height: 1.5em;
+        font-size: 1.5em;
+    }
+    
+    .group1,.group2{
+        width: 48%;
+        display: inline-block;
+    }
+    
+    .group1.right, .group2.right{
+        float: right;
+    }
+    
+    .group3{
+        width:32%;
+        display: inline-block;
+    }
+    
+    .divider{
+        border-top: 1px solid lightgrey;
+        margin: 0% 10% 0% 10%;
+    }
+    
+    #introduction{
+        height: 100px;
+    }
+    
 }
 
-.introContent{
-    display: inline-block;
-    /* border: 1px solid black; */
-    width: 48%;
-}
-
-
-.introTitle{
-    margin: auto;
-    padding: 5em 15em 5em 15em;
-}
-
-.introText{
-    font-size: 1.5em;
-    margin: 5em 0em auto;
-    line-height: 2em;
-}
-
-
-.mainText{
-    height: 5em;
-    font-size: 1.5em;
-    background-color: rgb(233, 233, 233);
-    line-height: 5em;
-    color: rgb(131, 127, 127);
-    border-radius: 5px;
-    font-style: italic;
-}
-
-.introSec{
-    padding: 3em 5em 3em 5em;
-}
-
-.content-right{
-    float: right;
-}
-
-.content p{
-    line-height: 1.5em;
-    font-size: 1.5em;
-}
-
-.group1,.group2{
-    width: 48%;
-    display: inline-block;
-}
-
-.group1.right, .group2.right{
-    float: right;
-}
-
-.group3{
-    width:32%;
-    display: inline-block;
-}
-
-.divider{
-    border-top: 1px solid lightgrey;
-    margin: 0% 10% 0% 10%;
-}
-
-#introduction{
-    height: 100px;
-}
-
-/* .registerRules{
-    color: grey;
-} */
