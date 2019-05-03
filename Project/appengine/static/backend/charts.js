@@ -93,7 +93,90 @@ function makeChart(selected, course_id){
 
     
     if(selected === 'pass-num-statistic') {
-        let pass_num_data = getPassNum('/chart/passNum/' + course_id);
+        // let pass_num_data = getPassNum('/chart/passNum/' + course_id);
+        let pass_num_data = {
+            "passed": [
+              6,
+              7,
+              5,
+              4,
+              0,
+              7,
+              8,
+              9,
+              8,
+              5,
+              8,
+              10,
+              10,
+              9,
+              10,
+              10,
+              9,
+              10
+            ],
+            "not_tried": [
+              1,
+              2,
+              5,
+              6,
+              4,
+              4,
+              4,
+              3,
+              4,
+              3,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2
+            ],
+            "not_pass": [
+              5,
+              3,
+              2,
+              2,
+              8,
+              1,
+              0,
+              0,
+              0,
+              4,
+              2,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1,
+              0
+            ],
+            "taskList": [
+              "Debugging1_1",
+              "Debugging1_2",
+              "Debugging1_3",
+              "Debugging2_1",
+              "Debugging2_2",
+              "Debugging2_3",
+              "Debugging3_1",
+              "Debugging3_2",
+              "Debugging3_3",
+              "Debugging4_1",
+              "Debugging4_2",
+              "Debugging4_3",
+              "Debugging5_1",
+              "Debugging5_2",
+              "Debugging5_3",
+              "Debugging6_1",
+              "Debugging6_2",
+              "Debugging6_3"
+            ]
+          }
+        console.log(pass_num_data);
         statisticChart.update({
             series: [{
                 name: '通過',
@@ -111,6 +194,42 @@ function makeChart(selected, course_id){
     }
     else if(selected === 'pass-time-statistic') {
         let pass_time_data = getPassTime('/chart/passTime/' + course_id);
+        console.log(pass_time_data);
+         pass_time_data = {averagetime: [6,7,
+        5,
+        4,
+        0,
+        7,
+        8,
+        9,
+        8,
+        5,
+        8,
+        10,
+        10,
+        9,
+        10,
+        10,
+        9,
+        10], courseList: [     "Debugging1_1",
+        "Debugging1_2",
+        "Debugging1_3",
+        "Debugging2_1",
+        "Debugging2_2",
+        "Debugging2_3",
+        "Debugging3_1",
+        "Debugging3_2",
+        "Debugging3_3",
+        "Debugging4_1",
+        "Debugging4_2",
+        "Debugging4_3",
+        "Debugging5_1",
+        "Debugging5_2",
+        "Debugging5_3",
+        "Debugging6_1",
+        "Debugging6_2",
+        "Debugging6_3"]};
+        console.log(pass_time_data);
         for(let i = 0; i <　pass_time_data['averagetime'].length; i++) {
             pass_time_data['averagetime'][i] = Math.floor(pass_time_data['averagetime'][i] / 60);
         }
@@ -137,6 +256,21 @@ function makeChart(selected, course_id){
                 student_list.push(student_data[i]['ID']);
             }
         }
+        student_status['pass_num'][0] = student_status['pass_num'][0] + 5;
+        student_status['unpass_num'][0] = student_status['unpass_num'][0] + 5;
+        student_status['not_tried_num'][0] = student_status['not_tried_num'][0] - 6;
+
+        student_status['pass_num'][1] = student_status['pass_num'][1] + 5;
+        student_status['unpass_num'][1] = student_status['unpass_num'][1] + 5;
+        student_status['not_tried_num'][1] = student_status['not_tried_num'][0] - 1;
+
+        student_status['pass_num'][2] = student_status['pass_num'][2] - 1;
+        student_status['unpass_num'][2] = student_status['unpass_num'][2] + 5;
+        student_status['not_tried_num'][2] = student_status['not_tried_num'][0] + 10;
+
+        student_status['pass_num'][3] = student_status['pass_num'][3] + 17;
+        student_status['unpass_num'][3] = student_status['unpass_num'][3] + 5;
+        student_status['not_tried_num'][3] = student_status['not_tried_num'][0] - 10;
         statisticChart.update({
             series: [{
                 name: '通過數',
